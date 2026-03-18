@@ -1,0 +1,132 @@
+# \HealthAPI
+
+All URIs are relative to *https://cloud.dev.mudbase*
+
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**HealthCheck**](HealthAPI.md#HealthCheck) | **Get** /health | Health check
+[**HealthSystemStatus**](HealthAPI.md#HealthSystemStatus) | **Get** /api/status | System status
+
+
+
+## HealthCheck
+
+> HealthResponse HealthCheck(ctx).Execute()
+
+Health check
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+)
+
+func main() {
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.HealthAPI.HealthCheck(context.Background()).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `HealthAPI.HealthCheck``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `HealthCheck`: HealthResponse
+	fmt.Fprintf(os.Stdout, "Response from `HealthAPI.HealthCheck`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+This endpoint does not need any parameter.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiHealthCheckRequest struct via the builder pattern
+
+
+### Return type
+
+[**HealthResponse**](HealthResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## HealthSystemStatus
+
+> SystemStatusResponse HealthSystemStatus(ctx).Execute()
+
+System status
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+)
+
+func main() {
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.HealthAPI.HealthSystemStatus(context.Background()).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `HealthAPI.HealthSystemStatus``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `HealthSystemStatus`: SystemStatusResponse
+	fmt.Fprintf(os.Stdout, "Response from `HealthAPI.HealthSystemStatus`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+This endpoint does not need any parameter.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiHealthSystemStatusRequest struct via the builder pattern
+
+
+### Return type
+
+[**SystemStatusResponse**](SystemStatusResponse.md)
+
+### Authorization
+
+[BearerToken](../README.md#BearerToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
