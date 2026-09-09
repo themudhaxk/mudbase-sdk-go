@@ -30,11 +30,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	apiGdprErasePostRequest := *openapiclient.NewApiGdprErasePostRequest("Confirm_example") // ApiGdprErasePostRequest | 
+	apiGdprErasePostRequest := *models.NewApiGdprErasePostRequest("Confirm_example") // ApiGdprErasePostRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -96,7 +97,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -158,11 +160,12 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	generateAccessReviewRequest := *openapiclient.NewGenerateAccessReviewRequest("685acbe0e129932fbb7a0fc3", *openapiclient.NewGenerateAccessReviewRequestReviewPeriod(time.Now(), time.Now())) // GenerateAccessReviewRequest | 
+	generateAccessReviewRequest := *models.NewGenerateAccessReviewRequest("685acbe0e129932fbb7a0fc3", *models.NewGenerateAccessReviewRequestReviewPeriod(time.Now(), time.Now())) // GenerateAccessReviewRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -224,11 +227,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	generateDataProcessingRecordRequest := *openapiclient.NewGenerateDataProcessingRecordRequest("685acbe0e129932fbb7a0fc3") // GenerateDataProcessingRecordRequest | 
+	generateDataProcessingRecordRequest := *models.NewGenerateDataProcessingRecordRequest("685acbe0e129932fbb7a0fc3") // GenerateDataProcessingRecordRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -290,7 +294,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -351,11 +356,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	logSecurityEventRequest := *openapiclient.NewLogSecurityEventRequest("unauthorized_access_attempt", "high") // LogSecurityEventRequest | 
+	logSecurityEventRequest := *models.NewLogSecurityEventRequest("unauthorized_access_attempt", "high") // LogSecurityEventRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

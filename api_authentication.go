@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -18,6 +18,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -27,15 +29,15 @@ type AuthenticationAPIService service
 type ApiAcceptInviteRequest struct {
 	ctx context.Context
 	ApiService *AuthenticationAPIService
-	acceptInviteRequest *AcceptInviteRequest
+	acceptInviteRequest *models.AcceptInviteRequest
 }
 
-func (r ApiAcceptInviteRequest) AcceptInviteRequest(acceptInviteRequest AcceptInviteRequest) ApiAcceptInviteRequest {
+func (r ApiAcceptInviteRequest) AcceptInviteRequest(acceptInviteRequest models.AcceptInviteRequest) ApiAcceptInviteRequest {
 	r.acceptInviteRequest = &acceptInviteRequest
 	return r
 }
 
-func (r ApiAcceptInviteRequest) Execute() (*AcceptInvite201Response, *http.Response, error) {
+func (r ApiAcceptInviteRequest) Execute() (*models.AcceptInvite201Response, *http.Response, error) {
 	return r.ApiService.AcceptInviteExecute(r)
 }
 
@@ -58,13 +60,13 @@ func (a *AuthenticationAPIService) AcceptInvite(ctx context.Context) ApiAcceptIn
 }
 
 // Execute executes the request
-//  @return AcceptInvite201Response
-func (a *AuthenticationAPIService) AcceptInviteExecute(r ApiAcceptInviteRequest) (*AcceptInvite201Response, *http.Response, error) {
+//  @return models.AcceptInvite201Response
+func (a *AuthenticationAPIService) AcceptInviteExecute(r ApiAcceptInviteRequest) (*models.AcceptInvite201Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *AcceptInvite201Response
+		localVarReturnValue  *models.AcceptInvite201Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.AcceptInvite")
@@ -123,7 +125,7 @@ func (a *AuthenticationAPIService) AcceptInviteExecute(r ApiAcceptInviteRequest)
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v RefreshToken400Response
+			var v models.RefreshToken400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -134,7 +136,7 @@ func (a *AuthenticationAPIService) AcceptInviteExecute(r ApiAcceptInviteRequest)
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v RefreshToken400Response
+			var v models.RefreshToken400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -145,7 +147,7 @@ func (a *AuthenticationAPIService) AcceptInviteExecute(r ApiAcceptInviteRequest)
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -172,15 +174,15 @@ func (a *AuthenticationAPIService) AcceptInviteExecute(r ApiAcceptInviteRequest)
 type ApiConfirmLocalPasswordResetWithOtpRequest struct {
 	ctx context.Context
 	ApiService *AuthenticationAPIService
-	confirmLocalPasswordResetWithOtpRequest *ConfirmLocalPasswordResetWithOtpRequest
+	confirmLocalPasswordResetWithOtpRequest *models.ConfirmLocalPasswordResetWithOtpRequest
 }
 
-func (r ApiConfirmLocalPasswordResetWithOtpRequest) ConfirmLocalPasswordResetWithOtpRequest(confirmLocalPasswordResetWithOtpRequest ConfirmLocalPasswordResetWithOtpRequest) ApiConfirmLocalPasswordResetWithOtpRequest {
+func (r ApiConfirmLocalPasswordResetWithOtpRequest) ConfirmLocalPasswordResetWithOtpRequest(confirmLocalPasswordResetWithOtpRequest models.ConfirmLocalPasswordResetWithOtpRequest) ApiConfirmLocalPasswordResetWithOtpRequest {
 	r.confirmLocalPasswordResetWithOtpRequest = &confirmLocalPasswordResetWithOtpRequest
 	return r
 }
 
-func (r ApiConfirmLocalPasswordResetWithOtpRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiConfirmLocalPasswordResetWithOtpRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.ConfirmLocalPasswordResetWithOtpExecute(r)
 }
 
@@ -203,13 +205,13 @@ func (a *AuthenticationAPIService) ConfirmLocalPasswordResetWithOtp(ctx context.
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *AuthenticationAPIService) ConfirmLocalPasswordResetWithOtpExecute(r ApiConfirmLocalPasswordResetWithOtpRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *AuthenticationAPIService) ConfirmLocalPasswordResetWithOtpExecute(r ApiConfirmLocalPasswordResetWithOtpRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.ConfirmLocalPasswordResetWithOtp")
@@ -268,7 +270,7 @@ func (a *AuthenticationAPIService) ConfirmLocalPasswordResetWithOtpExecute(r Api
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -279,7 +281,7 @@ func (a *AuthenticationAPIService) ConfirmLocalPasswordResetWithOtpExecute(r Api
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -306,15 +308,15 @@ func (a *AuthenticationAPIService) ConfirmLocalPasswordResetWithOtpExecute(r Api
 type ApiConvertAnonymousAccountRequest struct {
 	ctx context.Context
 	ApiService *AuthenticationAPIService
-	convertAnonymousAccountRequest *ConvertAnonymousAccountRequest
+	convertAnonymousAccountRequest *models.ConvertAnonymousAccountRequest
 }
 
-func (r ApiConvertAnonymousAccountRequest) ConvertAnonymousAccountRequest(convertAnonymousAccountRequest ConvertAnonymousAccountRequest) ApiConvertAnonymousAccountRequest {
+func (r ApiConvertAnonymousAccountRequest) ConvertAnonymousAccountRequest(convertAnonymousAccountRequest models.ConvertAnonymousAccountRequest) ApiConvertAnonymousAccountRequest {
 	r.convertAnonymousAccountRequest = &convertAnonymousAccountRequest
 	return r
 }
 
-func (r ApiConvertAnonymousAccountRequest) Execute() (*ConvertAnonymousAccount200Response, *http.Response, error) {
+func (r ApiConvertAnonymousAccountRequest) Execute() (*models.ConvertAnonymousAccount200Response, *http.Response, error) {
 	return r.ApiService.ConvertAnonymousAccountExecute(r)
 }
 
@@ -335,13 +337,13 @@ func (a *AuthenticationAPIService) ConvertAnonymousAccount(ctx context.Context) 
 }
 
 // Execute executes the request
-//  @return ConvertAnonymousAccount200Response
-func (a *AuthenticationAPIService) ConvertAnonymousAccountExecute(r ApiConvertAnonymousAccountRequest) (*ConvertAnonymousAccount200Response, *http.Response, error) {
+//  @return models.ConvertAnonymousAccount200Response
+func (a *AuthenticationAPIService) ConvertAnonymousAccountExecute(r ApiConvertAnonymousAccountRequest) (*models.ConvertAnonymousAccount200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ConvertAnonymousAccount200Response
+		localVarReturnValue  *models.ConvertAnonymousAccount200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.ConvertAnonymousAccount")
@@ -400,7 +402,7 @@ func (a *AuthenticationAPIService) ConvertAnonymousAccountExecute(r ApiConvertAn
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -411,7 +413,7 @@ func (a *AuthenticationAPIService) ConvertAnonymousAccountExecute(r ApiConvertAn
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -438,15 +440,15 @@ func (a *AuthenticationAPIService) ConvertAnonymousAccountExecute(r ApiConvertAn
 type ApiCreateAnonymousSessionRequest struct {
 	ctx context.Context
 	ApiService *AuthenticationAPIService
-	createAnonymousSessionRequest *CreateAnonymousSessionRequest
+	createAnonymousSessionRequest *models.CreateAnonymousSessionRequest
 }
 
-func (r ApiCreateAnonymousSessionRequest) CreateAnonymousSessionRequest(createAnonymousSessionRequest CreateAnonymousSessionRequest) ApiCreateAnonymousSessionRequest {
+func (r ApiCreateAnonymousSessionRequest) CreateAnonymousSessionRequest(createAnonymousSessionRequest models.CreateAnonymousSessionRequest) ApiCreateAnonymousSessionRequest {
 	r.createAnonymousSessionRequest = &createAnonymousSessionRequest
 	return r
 }
 
-func (r ApiCreateAnonymousSessionRequest) Execute() (*CreateAnonymousSession200Response, *http.Response, error) {
+func (r ApiCreateAnonymousSessionRequest) Execute() (*models.CreateAnonymousSession200Response, *http.Response, error) {
 	return r.ApiService.CreateAnonymousSessionExecute(r)
 }
 
@@ -466,13 +468,13 @@ func (a *AuthenticationAPIService) CreateAnonymousSession(ctx context.Context) A
 }
 
 // Execute executes the request
-//  @return CreateAnonymousSession200Response
-func (a *AuthenticationAPIService) CreateAnonymousSessionExecute(r ApiCreateAnonymousSessionRequest) (*CreateAnonymousSession200Response, *http.Response, error) {
+//  @return models.CreateAnonymousSession200Response
+func (a *AuthenticationAPIService) CreateAnonymousSessionExecute(r ApiCreateAnonymousSessionRequest) (*models.CreateAnonymousSession200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CreateAnonymousSession200Response
+		localVarReturnValue  *models.CreateAnonymousSession200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.CreateAnonymousSession")
@@ -528,7 +530,7 @@ func (a *AuthenticationAPIService) CreateAnonymousSessionExecute(r ApiCreateAnon
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -539,7 +541,7 @@ func (a *AuthenticationAPIService) CreateAnonymousSessionExecute(r ApiCreateAnon
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -550,7 +552,7 @@ func (a *AuthenticationAPIService) CreateAnonymousSessionExecute(r ApiCreateAnon
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -579,7 +581,7 @@ type ApiGetAvailableOAuthProvidersRequest struct {
 	ApiService *AuthenticationAPIService
 }
 
-func (r ApiGetAvailableOAuthProvidersRequest) Execute() (*GetAvailableOAuthProviders200Response, *http.Response, error) {
+func (r ApiGetAvailableOAuthProvidersRequest) Execute() (*models.GetAvailableOAuthProviders200Response, *http.Response, error) {
 	return r.ApiService.GetAvailableOAuthProvidersExecute(r)
 }
 
@@ -599,13 +601,13 @@ func (a *AuthenticationAPIService) GetAvailableOAuthProviders(ctx context.Contex
 }
 
 // Execute executes the request
-//  @return GetAvailableOAuthProviders200Response
-func (a *AuthenticationAPIService) GetAvailableOAuthProvidersExecute(r ApiGetAvailableOAuthProvidersRequest) (*GetAvailableOAuthProviders200Response, *http.Response, error) {
+//  @return models.GetAvailableOAuthProviders200Response
+func (a *AuthenticationAPIService) GetAvailableOAuthProvidersExecute(r ApiGetAvailableOAuthProvidersRequest) (*models.GetAvailableOAuthProviders200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetAvailableOAuthProviders200Response
+		localVarReturnValue  *models.GetAvailableOAuthProviders200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.GetAvailableOAuthProviders")
@@ -678,7 +680,7 @@ type ApiGetCurrentSessionRequest struct {
 	ApiService *AuthenticationAPIService
 }
 
-func (r ApiGetCurrentSessionRequest) Execute() (*SessionResponse, *http.Response, error) {
+func (r ApiGetCurrentSessionRequest) Execute() (*models.SessionResponse, *http.Response, error) {
 	return r.ApiService.GetCurrentSessionExecute(r)
 }
 
@@ -700,13 +702,13 @@ func (a *AuthenticationAPIService) GetCurrentSession(ctx context.Context) ApiGet
 }
 
 // Execute executes the request
-//  @return SessionResponse
-func (a *AuthenticationAPIService) GetCurrentSessionExecute(r ApiGetCurrentSessionRequest) (*SessionResponse, *http.Response, error) {
+//  @return models.SessionResponse
+func (a *AuthenticationAPIService) GetCurrentSessionExecute(r ApiGetCurrentSessionRequest) (*models.SessionResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *SessionResponse
+		localVarReturnValue  *models.SessionResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.GetCurrentSession")
@@ -785,7 +787,7 @@ func (r ApiGetLocalSessionRequest) ProjectId(projectId string) ApiGetLocalSessio
 	return r
 }
 
-func (r ApiGetLocalSessionRequest) Execute() (*GetLocalSession200Response, *http.Response, error) {
+func (r ApiGetLocalSessionRequest) Execute() (*models.GetLocalSession200Response, *http.Response, error) {
 	return r.ApiService.GetLocalSessionExecute(r)
 }
 
@@ -807,13 +809,13 @@ func (a *AuthenticationAPIService) GetLocalSession(ctx context.Context) ApiGetLo
 }
 
 // Execute executes the request
-//  @return GetLocalSession200Response
-func (a *AuthenticationAPIService) GetLocalSessionExecute(r ApiGetLocalSessionRequest) (*GetLocalSession200Response, *http.Response, error) {
+//  @return models.GetLocalSession200Response
+func (a *AuthenticationAPIService) GetLocalSessionExecute(r ApiGetLocalSessionRequest) (*models.GetLocalSession200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetLocalSession200Response
+		localVarReturnValue  *models.GetLocalSession200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.GetLocalSession")
@@ -870,7 +872,7 @@ func (a *AuthenticationAPIService) GetLocalSessionExecute(r ApiGetLocalSessionRe
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -881,7 +883,7 @@ func (a *AuthenticationAPIService) GetLocalSessionExecute(r ApiGetLocalSessionRe
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -910,7 +912,7 @@ type ApiGetOrgOAuthProvidersRequest struct {
 	ApiService *AuthenticationAPIService
 }
 
-func (r ApiGetOrgOAuthProvidersRequest) Execute() (*GetOrgOAuthProviders200Response, *http.Response, error) {
+func (r ApiGetOrgOAuthProvidersRequest) Execute() (*models.GetOrgOAuthProviders200Response, *http.Response, error) {
 	return r.ApiService.GetOrgOAuthProvidersExecute(r)
 }
 
@@ -932,13 +934,13 @@ func (a *AuthenticationAPIService) GetOrgOAuthProviders(ctx context.Context) Api
 }
 
 // Execute executes the request
-//  @return GetOrgOAuthProviders200Response
-func (a *AuthenticationAPIService) GetOrgOAuthProvidersExecute(r ApiGetOrgOAuthProvidersRequest) (*GetOrgOAuthProviders200Response, *http.Response, error) {
+//  @return models.GetOrgOAuthProviders200Response
+func (a *AuthenticationAPIService) GetOrgOAuthProvidersExecute(r ApiGetOrgOAuthProvidersRequest) (*models.GetOrgOAuthProviders200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetOrgOAuthProviders200Response
+		localVarReturnValue  *models.GetOrgOAuthProviders200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.GetOrgOAuthProviders")
@@ -1111,7 +1113,7 @@ func (a *AuthenticationAPIService) InitiateOAuthExecute(r ApiInitiateOAuthReques
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v InitiateOAuth400Response
+			var v models.InitiateOAuth400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1122,7 +1124,7 @@ func (a *AuthenticationAPIService) InitiateOAuthExecute(r ApiInitiateOAuthReques
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v InitiateOAuth404Response
+			var v models.InitiateOAuth404Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1133,7 +1135,7 @@ func (a *AuthenticationAPIService) InitiateOAuthExecute(r ApiInitiateOAuthReques
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1248,7 +1250,7 @@ func (a *AuthenticationAPIService) InitiateOrgOAuthExecute(r ApiInitiateOrgOAuth
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v InitiateOrgOAuth400Response
+			var v models.InitiateOrgOAuth400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1259,7 +1261,7 @@ func (a *AuthenticationAPIService) InitiateOrgOAuthExecute(r ApiInitiateOrgOAuth
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1277,15 +1279,15 @@ func (a *AuthenticationAPIService) InitiateOrgOAuthExecute(r ApiInitiateOrgOAuth
 type ApiLoginLocalUserRequest struct {
 	ctx context.Context
 	ApiService *AuthenticationAPIService
-	loginLocalUserRequest *LoginLocalUserRequest
+	loginLocalUserRequest *models.LoginLocalUserRequest
 }
 
-func (r ApiLoginLocalUserRequest) LoginLocalUserRequest(loginLocalUserRequest LoginLocalUserRequest) ApiLoginLocalUserRequest {
+func (r ApiLoginLocalUserRequest) LoginLocalUserRequest(loginLocalUserRequest models.LoginLocalUserRequest) ApiLoginLocalUserRequest {
 	r.loginLocalUserRequest = &loginLocalUserRequest
 	return r
 }
 
-func (r ApiLoginLocalUserRequest) Execute() (*LoginLocalUser200Response, *http.Response, error) {
+func (r ApiLoginLocalUserRequest) Execute() (*models.LoginLocalUser200Response, *http.Response, error) {
 	return r.ApiService.LoginLocalUserExecute(r)
 }
 
@@ -1306,13 +1308,13 @@ func (a *AuthenticationAPIService) LoginLocalUser(ctx context.Context) ApiLoginL
 }
 
 // Execute executes the request
-//  @return LoginLocalUser200Response
-func (a *AuthenticationAPIService) LoginLocalUserExecute(r ApiLoginLocalUserRequest) (*LoginLocalUser200Response, *http.Response, error) {
+//  @return models.LoginLocalUser200Response
+func (a *AuthenticationAPIService) LoginLocalUserExecute(r ApiLoginLocalUserRequest) (*models.LoginLocalUser200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *LoginLocalUser200Response
+		localVarReturnValue  *models.LoginLocalUser200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.LoginLocalUser")
@@ -1371,7 +1373,7 @@ func (a *AuthenticationAPIService) LoginLocalUserExecute(r ApiLoginLocalUserRequ
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1382,7 +1384,7 @@ func (a *AuthenticationAPIService) LoginLocalUserExecute(r ApiLoginLocalUserRequ
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v LoginLocalUser403Response
+			var v models.LoginLocalUser403Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1393,7 +1395,7 @@ func (a *AuthenticationAPIService) LoginLocalUserExecute(r ApiLoginLocalUserRequ
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
-			var v RegisterUser429Response
+			var v models.RegisterUser429Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1404,7 +1406,7 @@ func (a *AuthenticationAPIService) LoginLocalUserExecute(r ApiLoginLocalUserRequ
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1431,15 +1433,15 @@ func (a *AuthenticationAPIService) LoginLocalUserExecute(r ApiLoginLocalUserRequ
 type ApiLoginUserRequest struct {
 	ctx context.Context
 	ApiService *AuthenticationAPIService
-	loginRequest *LoginRequest
+	loginRequest *models.LoginRequest
 }
 
-func (r ApiLoginUserRequest) LoginRequest(loginRequest LoginRequest) ApiLoginUserRequest {
+func (r ApiLoginUserRequest) LoginRequest(loginRequest models.LoginRequest) ApiLoginUserRequest {
 	r.loginRequest = &loginRequest
 	return r
 }
 
-func (r ApiLoginUserRequest) Execute() (*AuthResponse, *http.Response, error) {
+func (r ApiLoginUserRequest) Execute() (*models.AuthResponse, *http.Response, error) {
 	return r.ApiService.LoginUserExecute(r)
 }
 
@@ -1457,13 +1459,13 @@ func (a *AuthenticationAPIService) LoginUser(ctx context.Context) ApiLoginUserRe
 }
 
 // Execute executes the request
-//  @return AuthResponse
-func (a *AuthenticationAPIService) LoginUserExecute(r ApiLoginUserRequest) (*AuthResponse, *http.Response, error) {
+//  @return models.AuthResponse
+func (a *AuthenticationAPIService) LoginUserExecute(r ApiLoginUserRequest) (*models.AuthResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *AuthResponse
+		localVarReturnValue  *models.AuthResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.LoginUser")
@@ -1522,7 +1524,7 @@ func (a *AuthenticationAPIService) LoginUserExecute(r ApiLoginUserRequest) (*Aut
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1551,7 +1553,7 @@ type ApiLogoutLocalUserRequest struct {
 	ApiService *AuthenticationAPIService
 }
 
-func (r ApiLogoutLocalUserRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiLogoutLocalUserRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.LogoutLocalUserExecute(r)
 }
 
@@ -1573,13 +1575,13 @@ func (a *AuthenticationAPIService) LogoutLocalUser(ctx context.Context) ApiLogou
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *AuthenticationAPIService) LogoutLocalUserExecute(r ApiLogoutLocalUserRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *AuthenticationAPIService) LogoutLocalUserExecute(r ApiLogoutLocalUserRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.LogoutLocalUser")
@@ -1652,7 +1654,7 @@ type ApiLogoutUserRequest struct {
 	ApiService *AuthenticationAPIService
 }
 
-func (r ApiLogoutUserRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiLogoutUserRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.LogoutUserExecute(r)
 }
 
@@ -1674,13 +1676,13 @@ func (a *AuthenticationAPIService) LogoutUser(ctx context.Context) ApiLogoutUser
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *AuthenticationAPIService) LogoutUserExecute(r ApiLogoutUserRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *AuthenticationAPIService) LogoutUserExecute(r ApiLogoutUserRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.LogoutUser")
@@ -1838,7 +1840,7 @@ func (a *AuthenticationAPIService) OauthCallbackExecute(r ApiOauthCallbackReques
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1849,7 +1851,7 @@ func (a *AuthenticationAPIService) OauthCallbackExecute(r ApiOauthCallbackReques
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
-			var v RegisterUser429Response
+			var v models.RegisterUser429Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1974,7 +1976,7 @@ func (a *AuthenticationAPIService) OrgOAuthCallbackExecute(r ApiOrgOAuthCallback
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v OrgOAuthCallback400Response
+			var v models.OrgOAuthCallback400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1985,7 +1987,7 @@ func (a *AuthenticationAPIService) OrgOAuthCallbackExecute(r ApiOrgOAuthCallback
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2003,15 +2005,15 @@ func (a *AuthenticationAPIService) OrgOAuthCallbackExecute(r ApiOrgOAuthCallback
 type ApiRefreshTokenRequest struct {
 	ctx context.Context
 	ApiService *AuthenticationAPIService
-	refreshTokenRequest *RefreshTokenRequest
+	refreshTokenRequest *models.RefreshTokenRequest
 }
 
-func (r ApiRefreshTokenRequest) RefreshTokenRequest(refreshTokenRequest RefreshTokenRequest) ApiRefreshTokenRequest {
+func (r ApiRefreshTokenRequest) RefreshTokenRequest(refreshTokenRequest models.RefreshTokenRequest) ApiRefreshTokenRequest {
 	r.refreshTokenRequest = &refreshTokenRequest
 	return r
 }
 
-func (r ApiRefreshTokenRequest) Execute() (*RefreshToken200Response, *http.Response, error) {
+func (r ApiRefreshTokenRequest) Execute() (*models.RefreshToken200Response, *http.Response, error) {
 	return r.ApiService.RefreshTokenExecute(r)
 }
 
@@ -2034,13 +2036,13 @@ func (a *AuthenticationAPIService) RefreshToken(ctx context.Context) ApiRefreshT
 }
 
 // Execute executes the request
-//  @return RefreshToken200Response
-func (a *AuthenticationAPIService) RefreshTokenExecute(r ApiRefreshTokenRequest) (*RefreshToken200Response, *http.Response, error) {
+//  @return models.RefreshToken200Response
+func (a *AuthenticationAPIService) RefreshTokenExecute(r ApiRefreshTokenRequest) (*models.RefreshToken200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *RefreshToken200Response
+		localVarReturnValue  *models.RefreshToken200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.RefreshToken")
@@ -2099,7 +2101,7 @@ func (a *AuthenticationAPIService) RefreshTokenExecute(r ApiRefreshTokenRequest)
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v RefreshToken400Response
+			var v models.RefreshToken400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2110,7 +2112,7 @@ func (a *AuthenticationAPIService) RefreshTokenExecute(r ApiRefreshTokenRequest)
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v RefreshToken400Response
+			var v models.RefreshToken400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2137,15 +2139,15 @@ func (a *AuthenticationAPIService) RefreshTokenExecute(r ApiRefreshTokenRequest)
 type ApiRegisterLocalUserRequest struct {
 	ctx context.Context
 	ApiService *AuthenticationAPIService
-	registerLocalUserRequest *RegisterLocalUserRequest
+	registerLocalUserRequest *models.RegisterLocalUserRequest
 }
 
-func (r ApiRegisterLocalUserRequest) RegisterLocalUserRequest(registerLocalUserRequest RegisterLocalUserRequest) ApiRegisterLocalUserRequest {
+func (r ApiRegisterLocalUserRequest) RegisterLocalUserRequest(registerLocalUserRequest models.RegisterLocalUserRequest) ApiRegisterLocalUserRequest {
 	r.registerLocalUserRequest = &registerLocalUserRequest
 	return r
 }
 
-func (r ApiRegisterLocalUserRequest) Execute() (*RegisterLocalUser201Response, *http.Response, error) {
+func (r ApiRegisterLocalUserRequest) Execute() (*models.RegisterLocalUser201Response, *http.Response, error) {
 	return r.ApiService.RegisterLocalUserExecute(r)
 }
 
@@ -2166,13 +2168,13 @@ func (a *AuthenticationAPIService) RegisterLocalUser(ctx context.Context) ApiReg
 }
 
 // Execute executes the request
-//  @return RegisterLocalUser201Response
-func (a *AuthenticationAPIService) RegisterLocalUserExecute(r ApiRegisterLocalUserRequest) (*RegisterLocalUser201Response, *http.Response, error) {
+//  @return models.RegisterLocalUser201Response
+func (a *AuthenticationAPIService) RegisterLocalUserExecute(r ApiRegisterLocalUserRequest) (*models.RegisterLocalUser201Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *RegisterLocalUser201Response
+		localVarReturnValue  *models.RegisterLocalUser201Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.RegisterLocalUser")
@@ -2231,7 +2233,7 @@ func (a *AuthenticationAPIService) RegisterLocalUserExecute(r ApiRegisterLocalUs
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2242,7 +2244,7 @@ func (a *AuthenticationAPIService) RegisterLocalUserExecute(r ApiRegisterLocalUs
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2253,7 +2255,7 @@ func (a *AuthenticationAPIService) RegisterLocalUserExecute(r ApiRegisterLocalUs
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
-			var v RegisterUser429Response
+			var v models.RegisterUser429Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2264,7 +2266,7 @@ func (a *AuthenticationAPIService) RegisterLocalUserExecute(r ApiRegisterLocalUs
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2291,15 +2293,15 @@ func (a *AuthenticationAPIService) RegisterLocalUserExecute(r ApiRegisterLocalUs
 type ApiRegisterUserRequest struct {
 	ctx context.Context
 	ApiService *AuthenticationAPIService
-	registerRequest *RegisterRequest
+	registerRequest *models.RegisterRequest
 }
 
-func (r ApiRegisterUserRequest) RegisterRequest(registerRequest RegisterRequest) ApiRegisterUserRequest {
+func (r ApiRegisterUserRequest) RegisterRequest(registerRequest models.RegisterRequest) ApiRegisterUserRequest {
 	r.registerRequest = &registerRequest
 	return r
 }
 
-func (r ApiRegisterUserRequest) Execute() (*AuthResponse, *http.Response, error) {
+func (r ApiRegisterUserRequest) Execute() (*models.AuthResponse, *http.Response, error) {
 	return r.ApiService.RegisterUserExecute(r)
 }
 
@@ -2317,13 +2319,13 @@ func (a *AuthenticationAPIService) RegisterUser(ctx context.Context) ApiRegister
 }
 
 // Execute executes the request
-//  @return AuthResponse
-func (a *AuthenticationAPIService) RegisterUserExecute(r ApiRegisterUserRequest) (*AuthResponse, *http.Response, error) {
+//  @return models.AuthResponse
+func (a *AuthenticationAPIService) RegisterUserExecute(r ApiRegisterUserRequest) (*models.AuthResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *AuthResponse
+		localVarReturnValue  *models.AuthResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.RegisterUser")
@@ -2382,7 +2384,7 @@ func (a *AuthenticationAPIService) RegisterUserExecute(r ApiRegisterUserRequest)
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2393,7 +2395,7 @@ func (a *AuthenticationAPIService) RegisterUserExecute(r ApiRegisterUserRequest)
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 409 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2404,7 +2406,7 @@ func (a *AuthenticationAPIService) RegisterUserExecute(r ApiRegisterUserRequest)
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
-			var v RegisterUser429Response
+			var v models.RegisterUser429Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2415,7 +2417,7 @@ func (a *AuthenticationAPIService) RegisterUserExecute(r ApiRegisterUserRequest)
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2442,15 +2444,15 @@ func (a *AuthenticationAPIService) RegisterUserExecute(r ApiRegisterUserRequest)
 type ApiRequestLocalPasswordResetRequest struct {
 	ctx context.Context
 	ApiService *AuthenticationAPIService
-	requestLocalPasswordResetRequest *RequestLocalPasswordResetRequest
+	requestLocalPasswordResetRequest *models.RequestLocalPasswordResetRequest
 }
 
-func (r ApiRequestLocalPasswordResetRequest) RequestLocalPasswordResetRequest(requestLocalPasswordResetRequest RequestLocalPasswordResetRequest) ApiRequestLocalPasswordResetRequest {
+func (r ApiRequestLocalPasswordResetRequest) RequestLocalPasswordResetRequest(requestLocalPasswordResetRequest models.RequestLocalPasswordResetRequest) ApiRequestLocalPasswordResetRequest {
 	r.requestLocalPasswordResetRequest = &requestLocalPasswordResetRequest
 	return r
 }
 
-func (r ApiRequestLocalPasswordResetRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiRequestLocalPasswordResetRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.RequestLocalPasswordResetExecute(r)
 }
 
@@ -2472,13 +2474,13 @@ func (a *AuthenticationAPIService) RequestLocalPasswordReset(ctx context.Context
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *AuthenticationAPIService) RequestLocalPasswordResetExecute(r ApiRequestLocalPasswordResetRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *AuthenticationAPIService) RequestLocalPasswordResetExecute(r ApiRequestLocalPasswordResetRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.RequestLocalPasswordReset")
@@ -2537,7 +2539,7 @@ func (a *AuthenticationAPIService) RequestLocalPasswordResetExecute(r ApiRequest
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2548,7 +2550,7 @@ func (a *AuthenticationAPIService) RequestLocalPasswordResetExecute(r ApiRequest
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2559,7 +2561,7 @@ func (a *AuthenticationAPIService) RequestLocalPasswordResetExecute(r ApiRequest
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2586,15 +2588,15 @@ func (a *AuthenticationAPIService) RequestLocalPasswordResetExecute(r ApiRequest
 type ApiRequestPasswordResetRequest struct {
 	ctx context.Context
 	ApiService *AuthenticationAPIService
-	requestPasswordResetRequest *RequestPasswordResetRequest
+	requestPasswordResetRequest *models.RequestPasswordResetRequest
 }
 
-func (r ApiRequestPasswordResetRequest) RequestPasswordResetRequest(requestPasswordResetRequest RequestPasswordResetRequest) ApiRequestPasswordResetRequest {
+func (r ApiRequestPasswordResetRequest) RequestPasswordResetRequest(requestPasswordResetRequest models.RequestPasswordResetRequest) ApiRequestPasswordResetRequest {
 	r.requestPasswordResetRequest = &requestPasswordResetRequest
 	return r
 }
 
-func (r ApiRequestPasswordResetRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiRequestPasswordResetRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.RequestPasswordResetExecute(r)
 }
 
@@ -2616,13 +2618,13 @@ func (a *AuthenticationAPIService) RequestPasswordReset(ctx context.Context) Api
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *AuthenticationAPIService) RequestPasswordResetExecute(r ApiRequestPasswordResetRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *AuthenticationAPIService) RequestPasswordResetExecute(r ApiRequestPasswordResetRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.RequestPasswordReset")
@@ -2698,15 +2700,15 @@ func (a *AuthenticationAPIService) RequestPasswordResetExecute(r ApiRequestPassw
 type ApiResendVerificationAuthRequest struct {
 	ctx context.Context
 	ApiService *AuthenticationAPIService
-	resendVerificationAuthRequest *ResendVerificationAuthRequest
+	resendVerificationAuthRequest *models.ResendVerificationAuthRequest
 }
 
-func (r ApiResendVerificationAuthRequest) ResendVerificationAuthRequest(resendVerificationAuthRequest ResendVerificationAuthRequest) ApiResendVerificationAuthRequest {
+func (r ApiResendVerificationAuthRequest) ResendVerificationAuthRequest(resendVerificationAuthRequest models.ResendVerificationAuthRequest) ApiResendVerificationAuthRequest {
 	r.resendVerificationAuthRequest = &resendVerificationAuthRequest
 	return r
 }
 
-func (r ApiResendVerificationAuthRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiResendVerificationAuthRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.ResendVerificationAuthExecute(r)
 }
 
@@ -2728,13 +2730,13 @@ func (a *AuthenticationAPIService) ResendVerificationAuth(ctx context.Context) A
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *AuthenticationAPIService) ResendVerificationAuthExecute(r ApiResendVerificationAuthRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *AuthenticationAPIService) ResendVerificationAuthExecute(r ApiResendVerificationAuthRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.ResendVerificationAuth")
@@ -2811,15 +2813,15 @@ type ApiResetLocalPasswordRequest struct {
 	ctx context.Context
 	ApiService *AuthenticationAPIService
 	token string
-	resetLocalPasswordRequest *ResetLocalPasswordRequest
+	resetLocalPasswordRequest *models.ResetLocalPasswordRequest
 }
 
-func (r ApiResetLocalPasswordRequest) ResetLocalPasswordRequest(resetLocalPasswordRequest ResetLocalPasswordRequest) ApiResetLocalPasswordRequest {
+func (r ApiResetLocalPasswordRequest) ResetLocalPasswordRequest(resetLocalPasswordRequest models.ResetLocalPasswordRequest) ApiResetLocalPasswordRequest {
 	r.resetLocalPasswordRequest = &resetLocalPasswordRequest
 	return r
 }
 
-func (r ApiResetLocalPasswordRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiResetLocalPasswordRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.ResetLocalPasswordExecute(r)
 }
 
@@ -2843,13 +2845,13 @@ func (a *AuthenticationAPIService) ResetLocalPassword(ctx context.Context, token
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *AuthenticationAPIService) ResetLocalPasswordExecute(r ApiResetLocalPasswordRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *AuthenticationAPIService) ResetLocalPasswordExecute(r ApiResetLocalPasswordRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.ResetLocalPassword")
@@ -2909,7 +2911,7 @@ func (a *AuthenticationAPIService) ResetLocalPasswordExecute(r ApiResetLocalPass
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2920,7 +2922,7 @@ func (a *AuthenticationAPIService) ResetLocalPasswordExecute(r ApiResetLocalPass
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2948,15 +2950,15 @@ type ApiResetPasswordRequest struct {
 	ctx context.Context
 	ApiService *AuthenticationAPIService
 	token string
-	resetPasswordRequest *ResetPasswordRequest
+	resetPasswordRequest *models.ResetPasswordRequest
 }
 
-func (r ApiResetPasswordRequest) ResetPasswordRequest(resetPasswordRequest ResetPasswordRequest) ApiResetPasswordRequest {
+func (r ApiResetPasswordRequest) ResetPasswordRequest(resetPasswordRequest models.ResetPasswordRequest) ApiResetPasswordRequest {
 	r.resetPasswordRequest = &resetPasswordRequest
 	return r
 }
 
-func (r ApiResetPasswordRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiResetPasswordRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.ResetPasswordExecute(r)
 }
 
@@ -2981,13 +2983,13 @@ func (a *AuthenticationAPIService) ResetPassword(ctx context.Context, token stri
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *AuthenticationAPIService) ResetPasswordExecute(r ApiResetPasswordRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *AuthenticationAPIService) ResetPasswordExecute(r ApiResetPasswordRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.ResetPassword")
@@ -3064,15 +3066,15 @@ func (a *AuthenticationAPIService) ResetPasswordExecute(r ApiResetPasswordReques
 type ApiSendMagicLinkRequest struct {
 	ctx context.Context
 	ApiService *AuthenticationAPIService
-	magicLinkRequest *MagicLinkRequest
+	magicLinkRequest *models.MagicLinkRequest
 }
 
-func (r ApiSendMagicLinkRequest) MagicLinkRequest(magicLinkRequest MagicLinkRequest) ApiSendMagicLinkRequest {
+func (r ApiSendMagicLinkRequest) MagicLinkRequest(magicLinkRequest models.MagicLinkRequest) ApiSendMagicLinkRequest {
 	r.magicLinkRequest = &magicLinkRequest
 	return r
 }
 
-func (r ApiSendMagicLinkRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiSendMagicLinkRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.SendMagicLinkExecute(r)
 }
 
@@ -3090,13 +3092,13 @@ func (a *AuthenticationAPIService) SendMagicLink(ctx context.Context) ApiSendMag
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *AuthenticationAPIService) SendMagicLinkExecute(r ApiSendMagicLinkRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *AuthenticationAPIService) SendMagicLinkExecute(r ApiSendMagicLinkRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.SendMagicLink")
@@ -3172,15 +3174,15 @@ func (a *AuthenticationAPIService) SendMagicLinkExecute(r ApiSendMagicLinkReques
 type ApiSendOTPRequest struct {
 	ctx context.Context
 	ApiService *AuthenticationAPIService
-	oTPSendRequest *OTPSendRequest
+	oTPSendRequest *models.OTPSendRequest
 }
 
-func (r ApiSendOTPRequest) OTPSendRequest(oTPSendRequest OTPSendRequest) ApiSendOTPRequest {
+func (r ApiSendOTPRequest) OTPSendRequest(oTPSendRequest models.OTPSendRequest) ApiSendOTPRequest {
 	r.oTPSendRequest = &oTPSendRequest
 	return r
 }
 
-func (r ApiSendOTPRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiSendOTPRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.SendOTPExecute(r)
 }
 
@@ -3198,13 +3200,13 @@ func (a *AuthenticationAPIService) SendOTP(ctx context.Context) ApiSendOTPReques
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *AuthenticationAPIService) SendOTPExecute(r ApiSendOTPRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *AuthenticationAPIService) SendOTPExecute(r ApiSendOTPRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.SendOTP")
@@ -3280,15 +3282,15 @@ func (a *AuthenticationAPIService) SendOTPExecute(r ApiSendOTPRequest) (*Message
 type ApiValidatePasswordResetTokenRequest struct {
 	ctx context.Context
 	ApiService *AuthenticationAPIService
-	validatePasswordResetTokenRequest *ValidatePasswordResetTokenRequest
+	validatePasswordResetTokenRequest *models.ValidatePasswordResetTokenRequest
 }
 
-func (r ApiValidatePasswordResetTokenRequest) ValidatePasswordResetTokenRequest(validatePasswordResetTokenRequest ValidatePasswordResetTokenRequest) ApiValidatePasswordResetTokenRequest {
+func (r ApiValidatePasswordResetTokenRequest) ValidatePasswordResetTokenRequest(validatePasswordResetTokenRequest models.ValidatePasswordResetTokenRequest) ApiValidatePasswordResetTokenRequest {
 	r.validatePasswordResetTokenRequest = &validatePasswordResetTokenRequest
 	return r
 }
 
-func (r ApiValidatePasswordResetTokenRequest) Execute() (*ValidatePasswordResetToken200Response, *http.Response, error) {
+func (r ApiValidatePasswordResetTokenRequest) Execute() (*models.ValidatePasswordResetToken200Response, *http.Response, error) {
 	return r.ApiService.ValidatePasswordResetTokenExecute(r)
 }
 
@@ -3296,7 +3298,7 @@ func (r ApiValidatePasswordResetTokenRequest) Execute() (*ValidatePasswordResetT
 ValidatePasswordResetToken Validate password reset token
 
 Call before showing the "set new password" form. Validates that the token from the reset link
-is still valid and not expired. Organization (platform) reset only.
+is still valid and not expired. models.Organization (platform) reset only.
 
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -3310,13 +3312,13 @@ func (a *AuthenticationAPIService) ValidatePasswordResetToken(ctx context.Contex
 }
 
 // Execute executes the request
-//  @return ValidatePasswordResetToken200Response
-func (a *AuthenticationAPIService) ValidatePasswordResetTokenExecute(r ApiValidatePasswordResetTokenRequest) (*ValidatePasswordResetToken200Response, *http.Response, error) {
+//  @return models.ValidatePasswordResetToken200Response
+func (a *AuthenticationAPIService) ValidatePasswordResetTokenExecute(r ApiValidatePasswordResetTokenRequest) (*models.ValidatePasswordResetToken200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ValidatePasswordResetToken200Response
+		localVarReturnValue  *models.ValidatePasswordResetToken200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.ValidatePasswordResetToken")
@@ -3375,7 +3377,7 @@ func (a *AuthenticationAPIService) ValidatePasswordResetTokenExecute(r ApiValida
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v ValidatePasswordResetToken400Response
+			var v models.ValidatePasswordResetToken400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -3402,15 +3404,15 @@ func (a *AuthenticationAPIService) ValidatePasswordResetTokenExecute(r ApiValida
 type ApiVerifyEmailAuthRequest struct {
 	ctx context.Context
 	ApiService *AuthenticationAPIService
-	verifyEmailAuthRequest *VerifyEmailAuthRequest
+	verifyEmailAuthRequest *models.VerifyEmailAuthRequest
 }
 
-func (r ApiVerifyEmailAuthRequest) VerifyEmailAuthRequest(verifyEmailAuthRequest VerifyEmailAuthRequest) ApiVerifyEmailAuthRequest {
+func (r ApiVerifyEmailAuthRequest) VerifyEmailAuthRequest(verifyEmailAuthRequest models.VerifyEmailAuthRequest) ApiVerifyEmailAuthRequest {
 	r.verifyEmailAuthRequest = &verifyEmailAuthRequest
 	return r
 }
 
-func (r ApiVerifyEmailAuthRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiVerifyEmailAuthRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.VerifyEmailAuthExecute(r)
 }
 
@@ -3433,13 +3435,13 @@ func (a *AuthenticationAPIService) VerifyEmailAuth(ctx context.Context) ApiVerif
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *AuthenticationAPIService) VerifyEmailAuthExecute(r ApiVerifyEmailAuthRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *AuthenticationAPIService) VerifyEmailAuthExecute(r ApiVerifyEmailAuthRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.VerifyEmailAuth")
@@ -3515,15 +3517,15 @@ func (a *AuthenticationAPIService) VerifyEmailAuthExecute(r ApiVerifyEmailAuthRe
 type ApiVerifyMagicLinkRequest struct {
 	ctx context.Context
 	ApiService *AuthenticationAPIService
-	verifyMagicLinkRequest *VerifyMagicLinkRequest
+	verifyMagicLinkRequest *models.VerifyMagicLinkRequest
 }
 
-func (r ApiVerifyMagicLinkRequest) VerifyMagicLinkRequest(verifyMagicLinkRequest VerifyMagicLinkRequest) ApiVerifyMagicLinkRequest {
+func (r ApiVerifyMagicLinkRequest) VerifyMagicLinkRequest(verifyMagicLinkRequest models.VerifyMagicLinkRequest) ApiVerifyMagicLinkRequest {
 	r.verifyMagicLinkRequest = &verifyMagicLinkRequest
 	return r
 }
 
-func (r ApiVerifyMagicLinkRequest) Execute() (*AuthResponse, *http.Response, error) {
+func (r ApiVerifyMagicLinkRequest) Execute() (*models.AuthResponse, *http.Response, error) {
 	return r.ApiService.VerifyMagicLinkExecute(r)
 }
 
@@ -3541,13 +3543,13 @@ func (a *AuthenticationAPIService) VerifyMagicLink(ctx context.Context) ApiVerif
 }
 
 // Execute executes the request
-//  @return AuthResponse
-func (a *AuthenticationAPIService) VerifyMagicLinkExecute(r ApiVerifyMagicLinkRequest) (*AuthResponse, *http.Response, error) {
+//  @return models.AuthResponse
+func (a *AuthenticationAPIService) VerifyMagicLinkExecute(r ApiVerifyMagicLinkRequest) (*models.AuthResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *AuthResponse
+		localVarReturnValue  *models.AuthResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.VerifyMagicLink")
@@ -3623,15 +3625,15 @@ func (a *AuthenticationAPIService) VerifyMagicLinkExecute(r ApiVerifyMagicLinkRe
 type ApiVerifyOTPRequest struct {
 	ctx context.Context
 	ApiService *AuthenticationAPIService
-	oTPVerifyRequest *OTPVerifyRequest
+	oTPVerifyRequest *models.OTPVerifyRequest
 }
 
-func (r ApiVerifyOTPRequest) OTPVerifyRequest(oTPVerifyRequest OTPVerifyRequest) ApiVerifyOTPRequest {
+func (r ApiVerifyOTPRequest) OTPVerifyRequest(oTPVerifyRequest models.OTPVerifyRequest) ApiVerifyOTPRequest {
 	r.oTPVerifyRequest = &oTPVerifyRequest
 	return r
 }
 
-func (r ApiVerifyOTPRequest) Execute() (*AuthResponse, *http.Response, error) {
+func (r ApiVerifyOTPRequest) Execute() (*models.AuthResponse, *http.Response, error) {
 	return r.ApiService.VerifyOTPExecute(r)
 }
 
@@ -3649,13 +3651,13 @@ func (a *AuthenticationAPIService) VerifyOTP(ctx context.Context) ApiVerifyOTPRe
 }
 
 // Execute executes the request
-//  @return AuthResponse
-func (a *AuthenticationAPIService) VerifyOTPExecute(r ApiVerifyOTPRequest) (*AuthResponse, *http.Response, error) {
+//  @return models.AuthResponse
+func (a *AuthenticationAPIService) VerifyOTPExecute(r ApiVerifyOTPRequest) (*models.AuthResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *AuthResponse
+		localVarReturnValue  *models.AuthResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationAPIService.VerifyOTP")

@@ -28,7 +28,7 @@ Method | HTTP request | Description
 [**OrgCustomDomainPlatformReady**](OrganizationsAPI.md#OrgCustomDomainPlatformReady) | **Post** /api/orgs/{orgId}/projects/{projectId}/domains/{hostname}/platform-ready | Notify platform ops that hosting or edge work is ready (email)
 [**OrgCustomDomainSubmitCname**](OrganizationsAPI.md#OrgCustomDomainSubmitCname) | **Post** /api/orgs/{orgId}/projects/{projectId}/domains/{hostname}/submit-cname | Custom domain step 2 (optional): org confirms routing CNAME was added
 [**OrgCustomDomainSubmitPlatformDnsVerificationDeprecated**](OrganizationsAPI.md#OrgCustomDomainSubmitPlatformDnsVerificationDeprecated) | **Post** /api/orgs/{orgId}/projects/{projectId}/domains/{hostname}/submit-platform-dns-verification | Deprecated — use POST .../verify-platform-dns
-[**OrgCustomDomainVerifyPlatformDns**](OrganizationsAPI.md#OrgCustomDomainVerifyPlatformDns) | **Post** /api/orgs/{orgId}/projects/{projectId}/domains/{hostname}/verify-platform-dns | Custom domain step 3: verify platform DNS (manual TXT or Fly certificate readiness)
+[**OrgCustomDomainVerifyPlatformDns**](OrganizationsAPI.md#OrgCustomDomainVerifyPlatformDns) | **Post** /api/orgs/{orgId}/projects/{projectId}/domains/{hostname}/verify-platform-dns | Custom domain step 3: verify platform DNS (manual TXT or managed certificate readiness)
 [**PatchOrgCustomDomain**](OrganizationsAPI.md#PatchOrgCustomDomain) | **Patch** /api/orgs/{orgId}/projects/{projectId}/domains/{hostname} | Update domain status or regenerate verification token
 [**RemoveSubOrganizationMember**](OrganizationsAPI.md#RemoveSubOrganizationMember) | **Delete** /api/orgs/{orgId}/suborgs/{suborgId}/members/{userId} | ~~Remove member from sub-organization~~ (deprecated)
 [**RemoveTeamMember**](OrganizationsAPI.md#RemoveTeamMember) | **Delete** /api/orgs/{orgId}/members/{userId} | Remove team member from organization
@@ -60,13 +60,14 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	orgId := "orgId_example" // string | 
 	projectId := "projectId_example" // string | 
-	addOrgDomainRequest := *openapiclient.NewAddOrgDomainRequest("Hostname_example") // AddOrgDomainRequest | 
+	addOrgDomainRequest := *models.NewAddOrgDomainRequest("Hostname_example") // AddOrgDomainRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -135,11 +136,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	createOrganizationRequest := *openapiclient.NewCreateOrganizationRequest("Mudbase Inc") // CreateOrganizationRequest | 
+	createOrganizationRequest := *models.NewCreateOrganizationRequest("Mudbase Inc") // CreateOrganizationRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -197,7 +199,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -271,7 +274,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -339,7 +343,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -412,7 +417,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -488,7 +494,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -558,7 +565,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -628,7 +636,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -698,7 +707,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -770,7 +780,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -845,7 +856,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -915,7 +927,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -986,11 +999,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	internalCustomDomainAddonRequest := *openapiclient.NewInternalCustomDomainAddonRequest("OrgId_example", false) // InternalCustomDomainAddonRequest | 
+	internalCustomDomainAddonRequest := *models.NewInternalCustomDomainAddonRequest("OrgId_example", false) // InternalCustomDomainAddonRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1050,7 +1064,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -1107,11 +1122,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	internalDomainDnsRecheckBatchRequest := *openapiclient.NewInternalDomainDnsRecheckBatchRequest() // InternalDomainDnsRecheckBatchRequest |  (optional)
+	internalDomainDnsRecheckBatchRequest := *models.NewInternalDomainDnsRecheckBatchRequest() // InternalDomainDnsRecheckBatchRequest |  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1169,11 +1185,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	provisionEnterpriseRequest := *openapiclient.NewProvisionEnterpriseRequest("OrgId_example", "ProvisionRequestId_example", "ApiBaseUrl_example", "DbRef_example", "ServerId_example") // ProvisionEnterpriseRequest | 
+	provisionEnterpriseRequest := *models.NewProvisionEnterpriseRequest("OrgId_example", "ProvisionRequestId_example", "ApiBaseUrl_example", "DbRef_example", "ServerId_example") // ProvisionEnterpriseRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1231,13 +1248,14 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	orgId := "685acbe0e129932fbb7a0fc3" // string | 
 	suborgId := "685acbe0e129932fbb7a0fc4" // string | 
-	inviteMemberRequest := *openapiclient.NewInviteMemberRequest("Email_example", "Role_example") // InviteMemberRequest | 
+	inviteMemberRequest := *models.NewInviteMemberRequest("Email_example", "Role_example") // InviteMemberRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1306,12 +1324,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	orgId := "685acbe0e129932fbb7a0fc3" // string | 
-	inviteMemberRequest := *openapiclient.NewInviteMemberRequest("Email_example", "Role_example") // InviteMemberRequest | 
+	inviteMemberRequest := *models.NewInviteMemberRequest("Email_example", "Role_example") // InviteMemberRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1378,7 +1397,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -1451,7 +1471,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -1512,14 +1533,15 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	orgId := "orgId_example" // string | 
 	projectId := "projectId_example" // string | 
 	hostname := "hostname_example" // string | 
-	orgCustomDomainPlatformReadyRequest := *openapiclient.NewOrgCustomDomainPlatformReadyRequest() // OrgCustomDomainPlatformReadyRequest |  (optional)
+	orgCustomDomainPlatformReadyRequest := *models.NewOrgCustomDomainPlatformReadyRequest() // OrgCustomDomainPlatformReadyRequest |  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1588,7 +1610,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -1664,7 +1687,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -1727,7 +1751,7 @@ Name | Type | Description  | Notes
 
 > OrgPatchDomainResponse OrgCustomDomainVerifyPlatformDns(ctx, orgId, projectId, hostname).Execute()
 
-Custom domain step 3: verify platform DNS (manual TXT or Fly certificate readiness)
+Custom domain step 3: verify platform DNS (manual TXT or managed certificate readiness)
 
 
 
@@ -1740,7 +1764,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -1814,14 +1839,15 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	orgId := "orgId_example" // string | 
 	projectId := "projectId_example" // string | 
 	hostname := "hostname_example" // string | 
-	patchOrgDomainRequest := *openapiclient.NewPatchOrgDomainRequest() // PatchOrgDomainRequest |  (optional)
+	patchOrgDomainRequest := *models.NewPatchOrgDomainRequest() // PatchOrgDomainRequest |  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1890,7 +1916,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -1966,7 +1993,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -2037,13 +2065,14 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	orgId := "orgId_example" // string | 
 	projectId := "projectId_example" // string | 
-	setOrgPrimaryDomainRequest := *openapiclient.NewSetOrgPrimaryDomainRequest("Hostname_example") // SetOrgPrimaryDomainRequest | 
+	setOrgPrimaryDomainRequest := *models.NewSetOrgPrimaryDomainRequest("Hostname_example") // SetOrgPrimaryDomainRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -2110,13 +2139,14 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	orgId := "685acbe0e129932fbb7a0fc3" // string | 
 	userId := "685acbe0e129932fbb7a0fc2" // string | 
-	updateMemberRoleRequest := *openapiclient.NewUpdateMemberRoleRequest("admin") // UpdateMemberRoleRequest | 
+	updateMemberRoleRequest := *models.NewUpdateMemberRoleRequest("admin") // UpdateMemberRoleRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -2185,12 +2215,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	orgId := "685acbe0e129932fbb7a0fc3" // string | 
-	updateOrganizationRequest := *openapiclient.NewUpdateOrganizationRequest() // UpdateOrganizationRequest | 
+	updateOrganizationRequest := *models.NewUpdateOrganizationRequest() // UpdateOrganizationRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -2255,12 +2286,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	orgId := "685acbe0e129932fbb7a0fc3" // string | 
-	updateOrganizationPlanRequest := *openapiclient.NewUpdateOrganizationPlanRequest("pro") // UpdateOrganizationPlanRequest | 
+	updateOrganizationPlanRequest := *models.NewUpdateOrganizationPlanRequest("pro") // UpdateOrganizationPlanRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -2327,13 +2359,14 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	orgId := "685acbe0e129932fbb7a0fc3" // string | 
 	suborgId := "685acbe0e129932fbb7a0fc4" // string | 
-	updateOrganizationRequest := *openapiclient.NewUpdateOrganizationRequest() // UpdateOrganizationRequest | 
+	updateOrganizationRequest := *models.NewUpdateOrganizationRequest() // UpdateOrganizationRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -2400,14 +2433,15 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	orgId := "685acbe0e129932fbb7a0fc3" // string | 
 	suborgId := "685acbe0e129932fbb7a0fc4" // string | 
 	userId := "685acbe0e129932fbb7a0fc2" // string | 
-	updateMemberRoleRequest := *openapiclient.NewUpdateMemberRoleRequest("admin") // UpdateMemberRoleRequest | 
+	updateMemberRoleRequest := *models.NewUpdateMemberRoleRequest("admin") // UpdateMemberRoleRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -2478,13 +2512,14 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	orgId := "orgId_example" // string | 
 	userId := "userId_example" // string | 
-	updateUserAccountStatusRequest := *openapiclient.NewUpdateUserAccountStatusRequest("AccountStatus_example") // UpdateUserAccountStatusRequest | 
+	updateUserAccountStatusRequest := *models.NewUpdateUserAccountStatusRequest("AccountStatus_example") // UpdateUserAccountStatusRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -2553,7 +2588,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {

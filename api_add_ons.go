@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -18,6 +18,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -29,7 +31,7 @@ type ApiApiAddonsGetRequest struct {
 	ApiService *AddOnsAPIService
 }
 
-func (r ApiApiAddonsGetRequest) Execute() (*ApiAddonsGet200Response, *http.Response, error) {
+func (r ApiApiAddonsGetRequest) Execute() (*models.ApiAddonsGet200Response, *http.Response, error) {
 	return r.ApiService.ApiAddonsGetExecute(r)
 }
 
@@ -49,13 +51,13 @@ func (a *AddOnsAPIService) ApiAddonsGet(ctx context.Context) ApiApiAddonsGetRequ
 }
 
 // Execute executes the request
-//  @return ApiAddonsGet200Response
-func (a *AddOnsAPIService) ApiAddonsGetExecute(r ApiApiAddonsGetRequest) (*ApiAddonsGet200Response, *http.Response, error) {
+//  @return models.ApiAddonsGet200Response
+func (a *AddOnsAPIService) ApiAddonsGetExecute(r ApiApiAddonsGetRequest) (*models.ApiAddonsGet200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ApiAddonsGet200Response
+		localVarReturnValue  *models.ApiAddonsGet200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AddOnsAPIService.ApiAddonsGet")
@@ -136,7 +138,7 @@ func (r ApiApiProjectsProjectIdAddonsAddonInvokePostRequest) Body(body map[strin
 	return r
 }
 
-func (r ApiApiProjectsProjectIdAddonsAddonInvokePostRequest) Execute() (*ApiProjectsProjectIdAddonsAddonInvokePost200Response, *http.Response, error) {
+func (r ApiApiProjectsProjectIdAddonsAddonInvokePostRequest) Execute() (*models.ApiProjectsProjectIdAddonsAddonInvokePost200Response, *http.Response, error) {
 	return r.ApiService.ApiProjectsProjectIdAddonsAddonInvokePostExecute(r)
 }
 
@@ -160,13 +162,13 @@ func (a *AddOnsAPIService) ApiProjectsProjectIdAddonsAddonInvokePost(ctx context
 }
 
 // Execute executes the request
-//  @return ApiProjectsProjectIdAddonsAddonInvokePost200Response
-func (a *AddOnsAPIService) ApiProjectsProjectIdAddonsAddonInvokePostExecute(r ApiApiProjectsProjectIdAddonsAddonInvokePostRequest) (*ApiProjectsProjectIdAddonsAddonInvokePost200Response, *http.Response, error) {
+//  @return models.ApiProjectsProjectIdAddonsAddonInvokePost200Response
+func (a *AddOnsAPIService) ApiProjectsProjectIdAddonsAddonInvokePostExecute(r ApiApiProjectsProjectIdAddonsAddonInvokePostRequest) (*models.ApiProjectsProjectIdAddonsAddonInvokePost200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ApiProjectsProjectIdAddonsAddonInvokePost200Response
+		localVarReturnValue  *models.ApiProjectsProjectIdAddonsAddonInvokePost200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AddOnsAPIService.ApiProjectsProjectIdAddonsAddonInvokePost")
@@ -259,7 +261,7 @@ type ApiApiProjectsProjectIdAddonsJobsIdGetRequest struct {
 	id string
 }
 
-func (r ApiApiProjectsProjectIdAddonsJobsIdGetRequest) Execute() (*ApiProjectsProjectIdAddonsAddonInvokePost200Response, *http.Response, error) {
+func (r ApiApiProjectsProjectIdAddonsJobsIdGetRequest) Execute() (*models.ApiProjectsProjectIdAddonsAddonInvokePost200Response, *http.Response, error) {
 	return r.ApiService.ApiProjectsProjectIdAddonsJobsIdGetExecute(r)
 }
 
@@ -281,13 +283,13 @@ func (a *AddOnsAPIService) ApiProjectsProjectIdAddonsJobsIdGet(ctx context.Conte
 }
 
 // Execute executes the request
-//  @return ApiProjectsProjectIdAddonsAddonInvokePost200Response
-func (a *AddOnsAPIService) ApiProjectsProjectIdAddonsJobsIdGetExecute(r ApiApiProjectsProjectIdAddonsJobsIdGetRequest) (*ApiProjectsProjectIdAddonsAddonInvokePost200Response, *http.Response, error) {
+//  @return models.ApiProjectsProjectIdAddonsAddonInvokePost200Response
+func (a *AddOnsAPIService) ApiProjectsProjectIdAddonsJobsIdGetExecute(r ApiApiProjectsProjectIdAddonsJobsIdGetRequest) (*models.ApiProjectsProjectIdAddonsAddonInvokePost200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ApiProjectsProjectIdAddonsAddonInvokePost200Response
+		localVarReturnValue  *models.ApiProjectsProjectIdAddonsAddonInvokePost200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AddOnsAPIService.ApiProjectsProjectIdAddonsJobsIdGet")

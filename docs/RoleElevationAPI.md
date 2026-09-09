@@ -29,13 +29,14 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	orgId := "orgId_example" // string | 
 	requestId := "requestId_example" // string | 
-	approveRoleElevationRequest := *openapiclient.NewApproveRoleElevationRequest(false) // ApproveRoleElevationRequest | 
+	approveRoleElevationRequest := *models.NewApproveRoleElevationRequest(false) // ApproveRoleElevationRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -104,7 +105,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -180,7 +182,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -252,12 +255,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "projectId_example" // string | 
-	requestRoleElevationRequest := *openapiclient.NewRequestRoleElevationRequest("seller") // RequestRoleElevationRequest | 
+	requestRoleElevationRequest := *models.NewRequestRoleElevationRequest("seller") // RequestRoleElevationRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -324,12 +328,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "projectId_example" // string | 
-	uploadVerificationDocumentsRequest := *openapiclient.NewUploadVerificationDocumentsRequest("RoleSlug_example", []openapiclient.UploadVerificationDocumentsRequestDocumentsInner{*openapiclient.NewUploadVerificationDocumentsRequestDocumentsInner()}) // UploadVerificationDocumentsRequest | 
+	uploadVerificationDocumentsRequest := *models.NewUploadVerificationDocumentsRequest("RoleSlug_example", []models.UploadVerificationDocumentsRequestDocumentsInner{*models.NewUploadVerificationDocumentsRequestDocumentsInner()}) // UploadVerificationDocumentsRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

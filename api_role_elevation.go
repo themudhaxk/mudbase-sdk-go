@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -18,6 +18,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -29,15 +31,15 @@ type ApiApproveRoleElevationRequest struct {
 	ApiService *RoleElevationAPIService
 	orgId string
 	requestId string
-	approveRoleElevationRequest *ApproveRoleElevationRequest
+	approveRoleElevationRequest *models.ApproveRoleElevationRequest
 }
 
-func (r ApiApproveRoleElevationRequest) ApproveRoleElevationRequest(approveRoleElevationRequest ApproveRoleElevationRequest) ApiApproveRoleElevationRequest {
+func (r ApiApproveRoleElevationRequest) ApproveRoleElevationRequest(approveRoleElevationRequest models.ApproveRoleElevationRequest) ApiApproveRoleElevationRequest {
 	r.approveRoleElevationRequest = &approveRoleElevationRequest
 	return r
 }
 
-func (r ApiApproveRoleElevationRequest) Execute() (*ApproveRoleElevation200Response, *http.Response, error) {
+func (r ApiApproveRoleElevationRequest) Execute() (*models.ApproveRoleElevation200Response, *http.Response, error) {
 	return r.ApiService.ApproveRoleElevationExecute(r)
 }
 
@@ -61,13 +63,13 @@ func (a *RoleElevationAPIService) ApproveRoleElevation(ctx context.Context, orgI
 }
 
 // Execute executes the request
-//  @return ApproveRoleElevation200Response
-func (a *RoleElevationAPIService) ApproveRoleElevationExecute(r ApiApproveRoleElevationRequest) (*ApproveRoleElevation200Response, *http.Response, error) {
+//  @return models.ApproveRoleElevation200Response
+func (a *RoleElevationAPIService) ApproveRoleElevationExecute(r ApiApproveRoleElevationRequest) (*models.ApproveRoleElevation200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ApproveRoleElevation200Response
+		localVarReturnValue  *models.ApproveRoleElevation200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RoleElevationAPIService.ApproveRoleElevation")
@@ -166,7 +168,7 @@ func (r ApiGetPendingRoleElevationRequestsRequest) Limit(limit int32) ApiGetPend
 	return r
 }
 
-func (r ApiGetPendingRoleElevationRequestsRequest) Execute() (*GetPendingRoleElevationRequests200Response, *http.Response, error) {
+func (r ApiGetPendingRoleElevationRequestsRequest) Execute() (*models.GetPendingRoleElevationRequests200Response, *http.Response, error) {
 	return r.ApiService.GetPendingRoleElevationRequestsExecute(r)
 }
 
@@ -188,13 +190,13 @@ func (a *RoleElevationAPIService) GetPendingRoleElevationRequests(ctx context.Co
 }
 
 // Execute executes the request
-//  @return GetPendingRoleElevationRequests200Response
-func (a *RoleElevationAPIService) GetPendingRoleElevationRequestsExecute(r ApiGetPendingRoleElevationRequestsRequest) (*GetPendingRoleElevationRequests200Response, *http.Response, error) {
+//  @return models.GetPendingRoleElevationRequests200Response
+func (a *RoleElevationAPIService) GetPendingRoleElevationRequestsExecute(r ApiGetPendingRoleElevationRequestsRequest) (*models.GetPendingRoleElevationRequests200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetPendingRoleElevationRequests200Response
+		localVarReturnValue  *models.GetPendingRoleElevationRequests200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RoleElevationAPIService.GetPendingRoleElevationRequests")
@@ -296,7 +298,7 @@ func (r ApiGetRoleElevationStatusRequest) RoleSlug(roleSlug string) ApiGetRoleEl
 	return r
 }
 
-func (r ApiGetRoleElevationStatusRequest) Execute() (*GetRoleElevationStatus200Response, *http.Response, error) {
+func (r ApiGetRoleElevationStatusRequest) Execute() (*models.GetRoleElevationStatus200Response, *http.Response, error) {
 	return r.ApiService.GetRoleElevationStatusExecute(r)
 }
 
@@ -318,13 +320,13 @@ func (a *RoleElevationAPIService) GetRoleElevationStatus(ctx context.Context, pr
 }
 
 // Execute executes the request
-//  @return GetRoleElevationStatus200Response
-func (a *RoleElevationAPIService) GetRoleElevationStatusExecute(r ApiGetRoleElevationStatusRequest) (*GetRoleElevationStatus200Response, *http.Response, error) {
+//  @return models.GetRoleElevationStatus200Response
+func (a *RoleElevationAPIService) GetRoleElevationStatusExecute(r ApiGetRoleElevationStatusRequest) (*models.GetRoleElevationStatus200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetRoleElevationStatus200Response
+		localVarReturnValue  *models.GetRoleElevationStatus200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RoleElevationAPIService.GetRoleElevationStatus")
@@ -400,22 +402,22 @@ type ApiRequestRoleElevationRequest struct {
 	ctx context.Context
 	ApiService *RoleElevationAPIService
 	projectId string
-	requestRoleElevationRequest *RequestRoleElevationRequest
+	requestRoleElevationRequest *models.RequestRoleElevationRequest
 }
 
-func (r ApiRequestRoleElevationRequest) RequestRoleElevationRequest(requestRoleElevationRequest RequestRoleElevationRequest) ApiRequestRoleElevationRequest {
+func (r ApiRequestRoleElevationRequest) RequestRoleElevationRequest(requestRoleElevationRequest models.RequestRoleElevationRequest) ApiRequestRoleElevationRequest {
 	r.requestRoleElevationRequest = &requestRoleElevationRequest
 	return r
 }
 
-func (r ApiRequestRoleElevationRequest) Execute() (*RequestRoleElevation200Response, *http.Response, error) {
+func (r ApiRequestRoleElevationRequest) Execute() (*models.RequestRoleElevation200Response, *http.Response, error) {
 	return r.ApiService.RequestRoleElevationExecute(r)
 }
 
 /*
 RequestRoleElevation Request role elevation
 
-User requests to upgrade to a specific role. May require payment, KYC, or admin approval based on role configuration.
+models.User requests to upgrade to a specific role. May require payment, KYC, or admin approval based on role configuration.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param projectId
@@ -430,13 +432,13 @@ func (a *RoleElevationAPIService) RequestRoleElevation(ctx context.Context, proj
 }
 
 // Execute executes the request
-//  @return RequestRoleElevation200Response
-func (a *RoleElevationAPIService) RequestRoleElevationExecute(r ApiRequestRoleElevationRequest) (*RequestRoleElevation200Response, *http.Response, error) {
+//  @return models.RequestRoleElevation200Response
+func (a *RoleElevationAPIService) RequestRoleElevationExecute(r ApiRequestRoleElevationRequest) (*models.RequestRoleElevation200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *RequestRoleElevation200Response
+		localVarReturnValue  *models.RequestRoleElevation200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RoleElevationAPIService.RequestRoleElevation")
@@ -514,10 +516,10 @@ type ApiUploadVerificationDocumentsRequest struct {
 	ctx context.Context
 	ApiService *RoleElevationAPIService
 	projectId string
-	uploadVerificationDocumentsRequest *UploadVerificationDocumentsRequest
+	uploadVerificationDocumentsRequest *models.UploadVerificationDocumentsRequest
 }
 
-func (r ApiUploadVerificationDocumentsRequest) UploadVerificationDocumentsRequest(uploadVerificationDocumentsRequest UploadVerificationDocumentsRequest) ApiUploadVerificationDocumentsRequest {
+func (r ApiUploadVerificationDocumentsRequest) UploadVerificationDocumentsRequest(uploadVerificationDocumentsRequest models.UploadVerificationDocumentsRequest) ApiUploadVerificationDocumentsRequest {
 	r.uploadVerificationDocumentsRequest = &uploadVerificationDocumentsRequest
 	return r
 }

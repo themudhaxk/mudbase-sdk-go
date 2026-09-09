@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -18,6 +18,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -29,15 +31,15 @@ type ApiAssignRoleRequest struct {
 	ApiService *RolesAPIService
 	orgId string
 	userId string
-	assignRoleRequest *AssignRoleRequest
+	assignRoleRequest *models.AssignRoleRequest
 }
 
-func (r ApiAssignRoleRequest) AssignRoleRequest(assignRoleRequest AssignRoleRequest) ApiAssignRoleRequest {
+func (r ApiAssignRoleRequest) AssignRoleRequest(assignRoleRequest models.AssignRoleRequest) ApiAssignRoleRequest {
 	r.assignRoleRequest = &assignRoleRequest
 	return r
 }
 
-func (r ApiAssignRoleRequest) Execute() (*AssignRole200Response, *http.Response, error) {
+func (r ApiAssignRoleRequest) Execute() (*models.AssignRole200Response, *http.Response, error) {
 	return r.ApiService.AssignRoleExecute(r)
 }
 
@@ -65,14 +67,14 @@ func (a *RolesAPIService) AssignRole(ctx context.Context, orgId string, userId s
 }
 
 // Execute executes the request
-//  @return AssignRole200Response
+//  @return models.AssignRole200Response
 // Deprecated
-func (a *RolesAPIService) AssignRoleExecute(r ApiAssignRoleRequest) (*AssignRole200Response, *http.Response, error) {
+func (a *RolesAPIService) AssignRoleExecute(r ApiAssignRoleRequest) (*models.AssignRole200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *AssignRole200Response
+		localVarReturnValue  *models.AssignRole200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RolesAPIService.AssignRole")
@@ -133,7 +135,7 @@ func (a *RolesAPIService) AssignRoleExecute(r ApiAssignRoleRequest) (*AssignRole
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -164,7 +166,7 @@ type ApiCheckPermissionsRequest struct {
 	userId string
 }
 
-func (r ApiCheckPermissionsRequest) Execute() (*CheckPermissions200Response, *http.Response, error) {
+func (r ApiCheckPermissionsRequest) Execute() (*models.CheckPermissions200Response, *http.Response, error) {
 	return r.ApiService.CheckPermissionsExecute(r)
 }
 
@@ -190,14 +192,14 @@ func (a *RolesAPIService) CheckPermissions(ctx context.Context, orgId string, us
 }
 
 // Execute executes the request
-//  @return CheckPermissions200Response
+//  @return models.CheckPermissions200Response
 // Deprecated
-func (a *RolesAPIService) CheckPermissionsExecute(r ApiCheckPermissionsRequest) (*CheckPermissions200Response, *http.Response, error) {
+func (a *RolesAPIService) CheckPermissionsExecute(r ApiCheckPermissionsRequest) (*models.CheckPermissions200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CheckPermissions200Response
+		localVarReturnValue  *models.CheckPermissions200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RolesAPIService.CheckPermissions")
@@ -253,7 +255,7 @@ func (a *RolesAPIService) CheckPermissionsExecute(r ApiCheckPermissionsRequest) 
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -281,15 +283,15 @@ type ApiCreateRoleRequest struct {
 	ctx context.Context
 	ApiService *RolesAPIService
 	orgId string
-	createRoleRequest *CreateRoleRequest
+	createRoleRequest *models.CreateRoleRequest
 }
 
-func (r ApiCreateRoleRequest) CreateRoleRequest(createRoleRequest CreateRoleRequest) ApiCreateRoleRequest {
+func (r ApiCreateRoleRequest) CreateRoleRequest(createRoleRequest models.CreateRoleRequest) ApiCreateRoleRequest {
 	r.createRoleRequest = &createRoleRequest
 	return r
 }
 
-func (r ApiCreateRoleRequest) Execute() (*CreateRole201Response, *http.Response, error) {
+func (r ApiCreateRoleRequest) Execute() (*models.CreateRole201Response, *http.Response, error) {
 	return r.ApiService.CreateRoleExecute(r)
 }
 
@@ -315,14 +317,14 @@ func (a *RolesAPIService) CreateRole(ctx context.Context, orgId string) ApiCreat
 }
 
 // Execute executes the request
-//  @return CreateRole201Response
+//  @return models.CreateRole201Response
 // Deprecated
-func (a *RolesAPIService) CreateRoleExecute(r ApiCreateRoleRequest) (*CreateRole201Response, *http.Response, error) {
+func (a *RolesAPIService) CreateRoleExecute(r ApiCreateRoleRequest) (*models.CreateRole201Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CreateRole201Response
+		localVarReturnValue  *models.CreateRole201Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RolesAPIService.CreateRole")
@@ -382,7 +384,7 @@ func (a *RolesAPIService) CreateRoleExecute(r ApiCreateRoleRequest) (*CreateRole
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -393,7 +395,7 @@ func (a *RolesAPIService) CreateRoleExecute(r ApiCreateRoleRequest) (*CreateRole
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -424,7 +426,7 @@ type ApiDeleteRoleRequest struct {
 	roleId string
 }
 
-func (r ApiDeleteRoleRequest) Execute() (*DeleteRole200Response, *http.Response, error) {
+func (r ApiDeleteRoleRequest) Execute() (*models.DeleteRole200Response, *http.Response, error) {
 	return r.ApiService.DeleteRoleExecute(r)
 }
 
@@ -452,14 +454,14 @@ func (a *RolesAPIService) DeleteRole(ctx context.Context, orgId string, roleId s
 }
 
 // Execute executes the request
-//  @return DeleteRole200Response
+//  @return models.DeleteRole200Response
 // Deprecated
-func (a *RolesAPIService) DeleteRoleExecute(r ApiDeleteRoleRequest) (*DeleteRole200Response, *http.Response, error) {
+func (a *RolesAPIService) DeleteRoleExecute(r ApiDeleteRoleRequest) (*models.DeleteRole200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *DeleteRole200Response
+		localVarReturnValue  *models.DeleteRole200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RolesAPIService.DeleteRole")
@@ -515,7 +517,7 @@ func (a *RolesAPIService) DeleteRoleExecute(r ApiDeleteRoleRequest) (*DeleteRole
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v RefreshToken400Response
+			var v models.RefreshToken400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -526,7 +528,7 @@ func (a *RolesAPIService) DeleteRoleExecute(r ApiDeleteRoleRequest) (*DeleteRole
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -557,7 +559,7 @@ type ApiGetRoleRequest struct {
 	roleId string
 }
 
-func (r ApiGetRoleRequest) Execute() (*GetRole200Response, *http.Response, error) {
+func (r ApiGetRoleRequest) Execute() (*models.GetRole200Response, *http.Response, error) {
 	return r.ApiService.GetRoleExecute(r)
 }
 
@@ -585,14 +587,14 @@ func (a *RolesAPIService) GetRole(ctx context.Context, orgId string, roleId stri
 }
 
 // Execute executes the request
-//  @return GetRole200Response
+//  @return models.GetRole200Response
 // Deprecated
-func (a *RolesAPIService) GetRoleExecute(r ApiGetRoleRequest) (*GetRole200Response, *http.Response, error) {
+func (a *RolesAPIService) GetRoleExecute(r ApiGetRoleRequest) (*models.GetRole200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetRole200Response
+		localVarReturnValue  *models.GetRole200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RolesAPIService.GetRole")
@@ -648,7 +650,7 @@ func (a *RolesAPIService) GetRoleExecute(r ApiGetRoleRequest) (*GetRole200Respon
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -679,7 +681,7 @@ type ApiGetUsersByRoleRequest struct {
 	roleSlug string
 }
 
-func (r ApiGetUsersByRoleRequest) Execute() (*GetUsersByRole200Response, *http.Response, error) {
+func (r ApiGetUsersByRoleRequest) Execute() (*models.GetUsersByRole200Response, *http.Response, error) {
 	return r.ApiService.GetUsersByRoleExecute(r)
 }
 
@@ -703,14 +705,14 @@ func (a *RolesAPIService) GetUsersByRole(ctx context.Context, orgId string, role
 }
 
 // Execute executes the request
-//  @return GetUsersByRole200Response
+//  @return models.GetUsersByRole200Response
 // Deprecated
-func (a *RolesAPIService) GetUsersByRoleExecute(r ApiGetUsersByRoleRequest) (*GetUsersByRole200Response, *http.Response, error) {
+func (a *RolesAPIService) GetUsersByRoleExecute(r ApiGetUsersByRoleRequest) (*models.GetUsersByRole200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetUsersByRole200Response
+		localVarReturnValue  *models.GetUsersByRole200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RolesAPIService.GetUsersByRole")
@@ -766,7 +768,7 @@ func (a *RolesAPIService) GetUsersByRoleExecute(r ApiGetUsersByRoleRequest) (*Ge
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -796,7 +798,7 @@ type ApiListRolesRequest struct {
 	orgId string
 }
 
-func (r ApiListRolesRequest) Execute() (*ListRoles200Response, *http.Response, error) {
+func (r ApiListRolesRequest) Execute() (*models.ListRoles200Response, *http.Response, error) {
 	return r.ApiService.ListRolesExecute(r)
 }
 
@@ -822,14 +824,14 @@ func (a *RolesAPIService) ListRoles(ctx context.Context, orgId string) ApiListRo
 }
 
 // Execute executes the request
-//  @return ListRoles200Response
+//  @return models.ListRoles200Response
 // Deprecated
-func (a *RolesAPIService) ListRolesExecute(r ApiListRolesRequest) (*ListRoles200Response, *http.Response, error) {
+func (a *RolesAPIService) ListRolesExecute(r ApiListRolesRequest) (*models.ListRoles200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ListRoles200Response
+		localVarReturnValue  *models.ListRoles200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RolesAPIService.ListRoles")
@@ -905,7 +907,7 @@ type ApiRemoveRoleRequest struct {
 	userId string
 }
 
-func (r ApiRemoveRoleRequest) Execute() (*AssignRole200Response, *http.Response, error) {
+func (r ApiRemoveRoleRequest) Execute() (*models.AssignRole200Response, *http.Response, error) {
 	return r.ApiService.RemoveRoleExecute(r)
 }
 
@@ -933,14 +935,14 @@ func (a *RolesAPIService) RemoveRole(ctx context.Context, orgId string, userId s
 }
 
 // Execute executes the request
-//  @return AssignRole200Response
+//  @return models.AssignRole200Response
 // Deprecated
-func (a *RolesAPIService) RemoveRoleExecute(r ApiRemoveRoleRequest) (*AssignRole200Response, *http.Response, error) {
+func (a *RolesAPIService) RemoveRoleExecute(r ApiRemoveRoleRequest) (*models.AssignRole200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *AssignRole200Response
+		localVarReturnValue  *models.AssignRole200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RolesAPIService.RemoveRole")
@@ -996,7 +998,7 @@ func (a *RolesAPIService) RemoveRoleExecute(r ApiRemoveRoleRequest) (*AssignRole
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1025,15 +1027,15 @@ type ApiUpdateRoleRequest struct {
 	ApiService *RolesAPIService
 	orgId string
 	roleId string
-	updateRoleRequest *UpdateRoleRequest
+	updateRoleRequest *models.UpdateRoleRequest
 }
 
-func (r ApiUpdateRoleRequest) UpdateRoleRequest(updateRoleRequest UpdateRoleRequest) ApiUpdateRoleRequest {
+func (r ApiUpdateRoleRequest) UpdateRoleRequest(updateRoleRequest models.UpdateRoleRequest) ApiUpdateRoleRequest {
 	r.updateRoleRequest = &updateRoleRequest
 	return r
 }
 
-func (r ApiUpdateRoleRequest) Execute() (*UpdateRole200Response, *http.Response, error) {
+func (r ApiUpdateRoleRequest) Execute() (*models.UpdateRole200Response, *http.Response, error) {
 	return r.ApiService.UpdateRoleExecute(r)
 }
 
@@ -1057,14 +1059,14 @@ func (a *RolesAPIService) UpdateRole(ctx context.Context, orgId string, roleId s
 }
 
 // Execute executes the request
-//  @return UpdateRole200Response
+//  @return models.UpdateRole200Response
 // Deprecated
-func (a *RolesAPIService) UpdateRoleExecute(r ApiUpdateRoleRequest) (*UpdateRole200Response, *http.Response, error) {
+func (a *RolesAPIService) UpdateRoleExecute(r ApiUpdateRoleRequest) (*models.UpdateRole200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPut
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *UpdateRole200Response
+		localVarReturnValue  *models.UpdateRole200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RolesAPIService.UpdateRole")
@@ -1125,7 +1127,7 @@ func (a *RolesAPIService) UpdateRoleExecute(r ApiUpdateRoleRequest) (*UpdateRole
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

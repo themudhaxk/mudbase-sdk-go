@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -19,6 +19,8 @@ import (
 	"net/url"
 	"strings"
 	"os"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -38,7 +40,7 @@ func (r ApiApiFilesDownloadFileIdGetRequest) ExpiresIn(expiresIn int32) ApiApiFi
 	return r
 }
 
-func (r ApiApiFilesDownloadFileIdGetRequest) Execute() (*ApiFilesDownloadFileIdGet200Response, *http.Response, error) {
+func (r ApiApiFilesDownloadFileIdGetRequest) Execute() (*models.ApiFilesDownloadFileIdGet200Response, *http.Response, error) {
 	return r.ApiService.ApiFilesDownloadFileIdGetExecute(r)
 }
 
@@ -60,13 +62,13 @@ func (a *FilesAPIService) ApiFilesDownloadFileIdGet(ctx context.Context, fileId 
 }
 
 // Execute executes the request
-//  @return ApiFilesDownloadFileIdGet200Response
-func (a *FilesAPIService) ApiFilesDownloadFileIdGetExecute(r ApiApiFilesDownloadFileIdGetRequest) (*ApiFilesDownloadFileIdGet200Response, *http.Response, error) {
+//  @return models.ApiFilesDownloadFileIdGet200Response
+func (a *FilesAPIService) ApiFilesDownloadFileIdGetExecute(r ApiApiFilesDownloadFileIdGetRequest) (*models.ApiFilesDownloadFileIdGet200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ApiFilesDownloadFileIdGet200Response
+		localVarReturnValue  *models.ApiFilesDownloadFileIdGet200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FilesAPIService.ApiFilesDownloadFileIdGet")
@@ -345,15 +347,15 @@ func (a *FilesAPIService) ApiFilesPublicFileIdGetExecute(r ApiApiFilesPublicFile
 type ApiConfirmDirectUploadRequest struct {
 	ctx context.Context
 	ApiService *FilesAPIService
-	confirmDirectUploadRequest *ConfirmDirectUploadRequest
+	confirmDirectUploadRequest *models.ConfirmDirectUploadRequest
 }
 
-func (r ApiConfirmDirectUploadRequest) ConfirmDirectUploadRequest(confirmDirectUploadRequest ConfirmDirectUploadRequest) ApiConfirmDirectUploadRequest {
+func (r ApiConfirmDirectUploadRequest) ConfirmDirectUploadRequest(confirmDirectUploadRequest models.ConfirmDirectUploadRequest) ApiConfirmDirectUploadRequest {
 	r.confirmDirectUploadRequest = &confirmDirectUploadRequest
 	return r
 }
 
-func (r ApiConfirmDirectUploadRequest) Execute() (*ConfirmUploadResponse, *http.Response, error) {
+func (r ApiConfirmDirectUploadRequest) Execute() (*models.ConfirmUploadResponse, *http.Response, error) {
 	return r.ApiService.ConfirmDirectUploadExecute(r)
 }
 
@@ -373,13 +375,13 @@ func (a *FilesAPIService) ConfirmDirectUpload(ctx context.Context) ApiConfirmDir
 }
 
 // Execute executes the request
-//  @return ConfirmUploadResponse
-func (a *FilesAPIService) ConfirmDirectUploadExecute(r ApiConfirmDirectUploadRequest) (*ConfirmUploadResponse, *http.Response, error) {
+//  @return models.ConfirmUploadResponse
+func (a *FilesAPIService) ConfirmDirectUploadExecute(r ApiConfirmDirectUploadRequest) (*models.ConfirmUploadResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ConfirmUploadResponse
+		localVarReturnValue  *models.ConfirmUploadResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FilesAPIService.ConfirmDirectUpload")
@@ -452,7 +454,7 @@ func (a *FilesAPIService) ConfirmDirectUploadExecute(r ApiConfirmDirectUploadReq
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v ConfirmDirectUpload400Response
+			var v models.ConfirmDirectUpload400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -463,7 +465,7 @@ func (a *FilesAPIService) ConfirmDirectUploadExecute(r ApiConfirmDirectUploadReq
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -474,7 +476,7 @@ func (a *FilesAPIService) ConfirmDirectUploadExecute(r ApiConfirmDirectUploadReq
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -485,7 +487,7 @@ func (a *FilesAPIService) ConfirmDirectUploadExecute(r ApiConfirmDirectUploadReq
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 413 {
-			var v UploadFiles413Response
+			var v models.UploadFiles413Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -496,7 +498,7 @@ func (a *FilesAPIService) ConfirmDirectUploadExecute(r ApiConfirmDirectUploadReq
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
-			var v RegisterUser429Response
+			var v models.RegisterUser429Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -507,7 +509,7 @@ func (a *FilesAPIService) ConfirmDirectUploadExecute(r ApiConfirmDirectUploadReq
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -539,7 +541,7 @@ type ApiDeleteFileRequest struct {
 	fileId string
 }
 
-func (r ApiDeleteFileRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiDeleteFileRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.DeleteFileExecute(r)
 }
 
@@ -567,13 +569,13 @@ func (a *FilesAPIService) DeleteFile(ctx context.Context, projectId string, buck
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *FilesAPIService) DeleteFileExecute(r ApiDeleteFileRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *FilesAPIService) DeleteFileExecute(r ApiDeleteFileRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FilesAPIService.DeleteFile")
@@ -630,7 +632,7 @@ func (a *FilesAPIService) DeleteFileExecute(r ApiDeleteFileRequest) (*MessageRes
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -641,7 +643,7 @@ func (a *FilesAPIService) DeleteFileExecute(r ApiDeleteFileRequest) (*MessageRes
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -652,7 +654,7 @@ func (a *FilesAPIService) DeleteFileExecute(r ApiDeleteFileRequest) (*MessageRes
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -663,7 +665,7 @@ func (a *FilesAPIService) DeleteFileExecute(r ApiDeleteFileRequest) (*MessageRes
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 409 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -674,7 +676,7 @@ func (a *FilesAPIService) DeleteFileExecute(r ApiDeleteFileRequest) (*MessageRes
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
-			var v RegisterUser429Response
+			var v models.RegisterUser429Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -685,7 +687,7 @@ func (a *FilesAPIService) DeleteFileExecute(r ApiDeleteFileRequest) (*MessageRes
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -810,7 +812,7 @@ func (a *FilesAPIService) DownloadBucketFileExecute(r ApiDownloadBucketFileReque
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v DownloadBucketFile403Response
+			var v models.DownloadBucketFile403Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -821,7 +823,7 @@ func (a *FilesAPIService) DownloadBucketFileExecute(r ApiDownloadBucketFileReque
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v DownloadBucketFile404Response
+			var v models.DownloadBucketFile404Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -857,7 +859,7 @@ func (r ApiDownloadFileRequest) Token(token string) ApiDownloadFileRequest {
 	return r
 }
 
-func (r ApiDownloadFileRequest) Execute() (*SignedUrlResponse, *http.Response, error) {
+func (r ApiDownloadFileRequest) Execute() (*models.SignedUrlResponse, *http.Response, error) {
 	return r.ApiService.DownloadFileExecute(r)
 }
 
@@ -879,13 +881,13 @@ func (a *FilesAPIService) DownloadFile(ctx context.Context, fileId string) ApiDo
 }
 
 // Execute executes the request
-//  @return SignedUrlResponse
-func (a *FilesAPIService) DownloadFileExecute(r ApiDownloadFileRequest) (*SignedUrlResponse, *http.Response, error) {
+//  @return models.SignedUrlResponse
+func (a *FilesAPIService) DownloadFileExecute(r ApiDownloadFileRequest) (*models.SignedUrlResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *SignedUrlResponse
+		localVarReturnValue  *models.SignedUrlResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FilesAPIService.DownloadFile")
@@ -957,7 +959,7 @@ func (a *FilesAPIService) DownloadFileExecute(r ApiDownloadFileRequest) (*Signed
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -968,7 +970,7 @@ func (a *FilesAPIService) DownloadFileExecute(r ApiDownloadFileRequest) (*Signed
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -979,7 +981,7 @@ func (a *FilesAPIService) DownloadFileExecute(r ApiDownloadFileRequest) (*Signed
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -990,7 +992,7 @@ func (a *FilesAPIService) DownloadFileExecute(r ApiDownloadFileRequest) (*Signed
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 409 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1001,7 +1003,7 @@ func (a *FilesAPIService) DownloadFileExecute(r ApiDownloadFileRequest) (*Signed
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
-			var v RegisterUser429Response
+			var v models.RegisterUser429Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1012,7 +1014,7 @@ func (a *FilesAPIService) DownloadFileExecute(r ApiDownloadFileRequest) (*Signed
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1039,15 +1041,15 @@ func (a *FilesAPIService) DownloadFileExecute(r ApiDownloadFileRequest) (*Signed
 type ApiGeneratePresignedUploadRequest struct {
 	ctx context.Context
 	ApiService *FilesAPIService
-	generatePresignedUploadRequest *GeneratePresignedUploadRequest
+	generatePresignedUploadRequest *models.GeneratePresignedUploadRequest
 }
 
-func (r ApiGeneratePresignedUploadRequest) GeneratePresignedUploadRequest(generatePresignedUploadRequest GeneratePresignedUploadRequest) ApiGeneratePresignedUploadRequest {
+func (r ApiGeneratePresignedUploadRequest) GeneratePresignedUploadRequest(generatePresignedUploadRequest models.GeneratePresignedUploadRequest) ApiGeneratePresignedUploadRequest {
 	r.generatePresignedUploadRequest = &generatePresignedUploadRequest
 	return r
 }
 
-func (r ApiGeneratePresignedUploadRequest) Execute() (*PresignedPostResponse, *http.Response, error) {
+func (r ApiGeneratePresignedUploadRequest) Execute() (*models.PresignedPostResponse, *http.Response, error) {
 	return r.ApiService.GeneratePresignedUploadExecute(r)
 }
 
@@ -1069,13 +1071,13 @@ func (a *FilesAPIService) GeneratePresignedUpload(ctx context.Context) ApiGenera
 }
 
 // Execute executes the request
-//  @return PresignedPostResponse
-func (a *FilesAPIService) GeneratePresignedUploadExecute(r ApiGeneratePresignedUploadRequest) (*PresignedPostResponse, *http.Response, error) {
+//  @return models.PresignedPostResponse
+func (a *FilesAPIService) GeneratePresignedUploadExecute(r ApiGeneratePresignedUploadRequest) (*models.PresignedPostResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *PresignedPostResponse
+		localVarReturnValue  *models.PresignedPostResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FilesAPIService.GeneratePresignedUpload")
@@ -1148,7 +1150,7 @@ func (a *FilesAPIService) GeneratePresignedUploadExecute(r ApiGeneratePresignedU
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1159,7 +1161,7 @@ func (a *FilesAPIService) GeneratePresignedUploadExecute(r ApiGeneratePresignedU
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1170,7 +1172,7 @@ func (a *FilesAPIService) GeneratePresignedUploadExecute(r ApiGeneratePresignedU
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1181,7 +1183,7 @@ func (a *FilesAPIService) GeneratePresignedUploadExecute(r ApiGeneratePresignedU
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
-			var v RegisterUser429Response
+			var v models.RegisterUser429Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1192,7 +1194,7 @@ func (a *FilesAPIService) GeneratePresignedUploadExecute(r ApiGeneratePresignedU
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1222,15 +1224,15 @@ type ApiGenerateSignedUrlRequest struct {
 	projectId string
 	bucketId string
 	fileId string
-	generateSignedUrlRequest *GenerateSignedUrlRequest
+	generateSignedUrlRequest *models.GenerateSignedUrlRequest
 }
 
-func (r ApiGenerateSignedUrlRequest) GenerateSignedUrlRequest(generateSignedUrlRequest GenerateSignedUrlRequest) ApiGenerateSignedUrlRequest {
+func (r ApiGenerateSignedUrlRequest) GenerateSignedUrlRequest(generateSignedUrlRequest models.GenerateSignedUrlRequest) ApiGenerateSignedUrlRequest {
 	r.generateSignedUrlRequest = &generateSignedUrlRequest
 	return r
 }
 
-func (r ApiGenerateSignedUrlRequest) Execute() (*SignedUrlResponse, *http.Response, error) {
+func (r ApiGenerateSignedUrlRequest) Execute() (*models.SignedUrlResponse, *http.Response, error) {
 	return r.ApiService.GenerateSignedUrlExecute(r)
 }
 
@@ -1258,13 +1260,13 @@ func (a *FilesAPIService) GenerateSignedUrl(ctx context.Context, projectId strin
 }
 
 // Execute executes the request
-//  @return SignedUrlResponse
-func (a *FilesAPIService) GenerateSignedUrlExecute(r ApiGenerateSignedUrlRequest) (*SignedUrlResponse, *http.Response, error) {
+//  @return models.SignedUrlResponse
+func (a *FilesAPIService) GenerateSignedUrlExecute(r ApiGenerateSignedUrlRequest) (*models.SignedUrlResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *SignedUrlResponse
+		localVarReturnValue  *models.SignedUrlResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FilesAPIService.GenerateSignedUrl")
@@ -1337,7 +1339,7 @@ func (a *FilesAPIService) GenerateSignedUrlExecute(r ApiGenerateSignedUrlRequest
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1348,7 +1350,7 @@ func (a *FilesAPIService) GenerateSignedUrlExecute(r ApiGenerateSignedUrlRequest
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1359,7 +1361,7 @@ func (a *FilesAPIService) GenerateSignedUrlExecute(r ApiGenerateSignedUrlRequest
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1370,7 +1372,7 @@ func (a *FilesAPIService) GenerateSignedUrlExecute(r ApiGenerateSignedUrlRequest
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 409 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1381,7 +1383,7 @@ func (a *FilesAPIService) GenerateSignedUrlExecute(r ApiGenerateSignedUrlRequest
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
-			var v RegisterUser429Response
+			var v models.RegisterUser429Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1392,7 +1394,7 @@ func (a *FilesAPIService) GenerateSignedUrlExecute(r ApiGenerateSignedUrlRequest
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1424,7 +1426,7 @@ type ApiGetFileRequest struct {
 	fileId string
 }
 
-func (r ApiGetFileRequest) Execute() (*FileResponse, *http.Response, error) {
+func (r ApiGetFileRequest) Execute() (*models.FileResponse, *http.Response, error) {
 	return r.ApiService.GetFileExecute(r)
 }
 
@@ -1452,13 +1454,13 @@ func (a *FilesAPIService) GetFile(ctx context.Context, projectId string, bucketI
 }
 
 // Execute executes the request
-//  @return FileResponse
-func (a *FilesAPIService) GetFileExecute(r ApiGetFileRequest) (*FileResponse, *http.Response, error) {
+//  @return models.FileResponse
+func (a *FilesAPIService) GetFileExecute(r ApiGetFileRequest) (*models.FileResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *FileResponse
+		localVarReturnValue  *models.FileResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FilesAPIService.GetFile")
@@ -1529,7 +1531,7 @@ func (a *FilesAPIService) GetFileExecute(r ApiGetFileRequest) (*FileResponse, *h
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1540,7 +1542,7 @@ func (a *FilesAPIService) GetFileExecute(r ApiGetFileRequest) (*FileResponse, *h
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1551,7 +1553,7 @@ func (a *FilesAPIService) GetFileExecute(r ApiGetFileRequest) (*FileResponse, *h
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1562,7 +1564,7 @@ func (a *FilesAPIService) GetFileExecute(r ApiGetFileRequest) (*FileResponse, *h
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 409 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1573,7 +1575,7 @@ func (a *FilesAPIService) GetFileExecute(r ApiGetFileRequest) (*FileResponse, *h
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
-			var v RegisterUser429Response
+			var v models.RegisterUser429Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1584,7 +1586,7 @@ func (a *FilesAPIService) GetFileExecute(r ApiGetFileRequest) (*FileResponse, *h
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1639,7 +1641,7 @@ func (r ApiListFilesRequest) Type_(type_ string) ApiListFilesRequest {
 	return r
 }
 
-func (r ApiListFilesRequest) Execute() (*FileListResponse, *http.Response, error) {
+func (r ApiListFilesRequest) Execute() (*models.FileListResponse, *http.Response, error) {
 	return r.ApiService.ListFilesExecute(r)
 }
 
@@ -1661,13 +1663,13 @@ func (a *FilesAPIService) ListFiles(ctx context.Context, projectId string, bucke
 }
 
 // Execute executes the request
-//  @return FileListResponse
-func (a *FilesAPIService) ListFilesExecute(r ApiListFilesRequest) (*FileListResponse, *http.Response, error) {
+//  @return models.FileListResponse
+func (a *FilesAPIService) ListFilesExecute(r ApiListFilesRequest) (*models.FileListResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *FileListResponse
+		localVarReturnValue  *models.FileListResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FilesAPIService.ListFiles")
@@ -1743,7 +1745,7 @@ func (a *FilesAPIService) ListFilesExecute(r ApiListFilesRequest) (*FileListResp
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1754,7 +1756,7 @@ func (a *FilesAPIService) ListFilesExecute(r ApiListFilesRequest) (*FileListResp
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1765,7 +1767,7 @@ func (a *FilesAPIService) ListFilesExecute(r ApiListFilesRequest) (*FileListResp
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1776,7 +1778,7 @@ func (a *FilesAPIService) ListFilesExecute(r ApiListFilesRequest) (*FileListResp
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 409 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1787,7 +1789,7 @@ func (a *FilesAPIService) ListFilesExecute(r ApiListFilesRequest) (*FileListResp
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
-			var v RegisterUser429Response
+			var v models.RegisterUser429Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1798,7 +1800,7 @@ func (a *FilesAPIService) ListFilesExecute(r ApiListFilesRequest) (*FileListResp
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1835,7 +1837,7 @@ func (r ApiUploadFilesRequest) Files(files []*os.File) ApiUploadFilesRequest {
 	return r
 }
 
-func (r ApiUploadFilesRequest) Execute() (*FileUploadResponse, *http.Response, error) {
+func (r ApiUploadFilesRequest) Execute() (*models.FileUploadResponse, *http.Response, error) {
 	return r.ApiService.UploadFilesExecute(r)
 }
 
@@ -1862,13 +1864,13 @@ func (a *FilesAPIService) UploadFiles(ctx context.Context, projectId string, buc
 }
 
 // Execute executes the request
-//  @return FileUploadResponse
-func (a *FilesAPIService) UploadFilesExecute(r ApiUploadFilesRequest) (*FileUploadResponse, *http.Response, error) {
+//  @return models.FileUploadResponse
+func (a *FilesAPIService) UploadFilesExecute(r ApiUploadFilesRequest) (*models.FileUploadResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *FileUploadResponse
+		localVarReturnValue  *models.FileUploadResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FilesAPIService.UploadFiles")
@@ -1959,7 +1961,7 @@ func (a *FilesAPIService) UploadFilesExecute(r ApiUploadFilesRequest) (*FileUplo
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1970,7 +1972,7 @@ func (a *FilesAPIService) UploadFilesExecute(r ApiUploadFilesRequest) (*FileUplo
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1981,7 +1983,7 @@ func (a *FilesAPIService) UploadFilesExecute(r ApiUploadFilesRequest) (*FileUplo
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1992,7 +1994,7 @@ func (a *FilesAPIService) UploadFilesExecute(r ApiUploadFilesRequest) (*FileUplo
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 409 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2003,7 +2005,7 @@ func (a *FilesAPIService) UploadFilesExecute(r ApiUploadFilesRequest) (*FileUplo
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 413 {
-			var v UploadFiles413Response
+			var v models.UploadFiles413Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2014,7 +2016,7 @@ func (a *FilesAPIService) UploadFilesExecute(r ApiUploadFilesRequest) (*FileUplo
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
-			var v RegisterUser429Response
+			var v models.RegisterUser429Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2025,7 +2027,7 @@ func (a *FilesAPIService) UploadFilesExecute(r ApiUploadFilesRequest) (*FileUplo
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

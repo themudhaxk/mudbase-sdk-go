@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -18,6 +18,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -27,15 +29,15 @@ type APIKeysAPIService service
 type ApiCreateApiKeyRequest struct {
 	ctx context.Context
 	ApiService *APIKeysAPIService
-	createApiKeyRequest *CreateApiKeyRequest
+	createApiKeyRequest *models.CreateApiKeyRequest
 }
 
-func (r ApiCreateApiKeyRequest) CreateApiKeyRequest(createApiKeyRequest CreateApiKeyRequest) ApiCreateApiKeyRequest {
+func (r ApiCreateApiKeyRequest) CreateApiKeyRequest(createApiKeyRequest models.CreateApiKeyRequest) ApiCreateApiKeyRequest {
 	r.createApiKeyRequest = &createApiKeyRequest
 	return r
 }
 
-func (r ApiCreateApiKeyRequest) Execute() (*CreateApiKey201Response, *http.Response, error) {
+func (r ApiCreateApiKeyRequest) Execute() (*models.CreateApiKey201Response, *http.Response, error) {
 	return r.ApiService.CreateApiKeyExecute(r)
 }
 
@@ -56,13 +58,13 @@ func (a *APIKeysAPIService) CreateApiKey(ctx context.Context) ApiCreateApiKeyReq
 }
 
 // Execute executes the request
-//  @return CreateApiKey201Response
-func (a *APIKeysAPIService) CreateApiKeyExecute(r ApiCreateApiKeyRequest) (*CreateApiKey201Response, *http.Response, error) {
+//  @return models.CreateApiKey201Response
+func (a *APIKeysAPIService) CreateApiKeyExecute(r ApiCreateApiKeyRequest) (*models.CreateApiKey201Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CreateApiKey201Response
+		localVarReturnValue  *models.CreateApiKey201Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "APIKeysAPIService.CreateApiKey")
@@ -121,7 +123,7 @@ func (a *APIKeysAPIService) CreateApiKeyExecute(r ApiCreateApiKeyRequest) (*Crea
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v CreateApiKey400Response
+			var v models.CreateApiKey400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -151,7 +153,7 @@ type ApiDeleteApiKeyRequest struct {
 	id string
 }
 
-func (r ApiDeleteApiKeyRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiDeleteApiKeyRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.DeleteApiKeyExecute(r)
 }
 
@@ -174,13 +176,13 @@ func (a *APIKeysAPIService) DeleteApiKey(ctx context.Context, id string) ApiDele
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *APIKeysAPIService) DeleteApiKeyExecute(r ApiDeleteApiKeyRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *APIKeysAPIService) DeleteApiKeyExecute(r ApiDeleteApiKeyRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "APIKeysAPIService.DeleteApiKey")
@@ -255,7 +257,7 @@ type ApiGetApiKeyUsageRequest struct {
 	id string
 }
 
-func (r ApiGetApiKeyUsageRequest) Execute() (*ApiKeyUsageResponse, *http.Response, error) {
+func (r ApiGetApiKeyUsageRequest) Execute() (*models.ApiKeyUsageResponse, *http.Response, error) {
 	return r.ApiService.GetApiKeyUsageExecute(r)
 }
 
@@ -278,13 +280,13 @@ func (a *APIKeysAPIService) GetApiKeyUsage(ctx context.Context, id string) ApiGe
 }
 
 // Execute executes the request
-//  @return ApiKeyUsageResponse
-func (a *APIKeysAPIService) GetApiKeyUsageExecute(r ApiGetApiKeyUsageRequest) (*ApiKeyUsageResponse, *http.Response, error) {
+//  @return models.ApiKeyUsageResponse
+func (a *APIKeysAPIService) GetApiKeyUsageExecute(r ApiGetApiKeyUsageRequest) (*models.ApiKeyUsageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ApiKeyUsageResponse
+		localVarReturnValue  *models.ApiKeyUsageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "APIKeysAPIService.GetApiKeyUsage")
@@ -358,7 +360,7 @@ type ApiListApiKeysRequest struct {
 	ApiService *APIKeysAPIService
 }
 
-func (r ApiListApiKeysRequest) Execute() (*ListApiKeys200Response, *http.Response, error) {
+func (r ApiListApiKeysRequest) Execute() (*models.ListApiKeys200Response, *http.Response, error) {
 	return r.ApiService.ListApiKeysExecute(r)
 }
 
@@ -379,13 +381,13 @@ func (a *APIKeysAPIService) ListApiKeys(ctx context.Context) ApiListApiKeysReque
 }
 
 // Execute executes the request
-//  @return ListApiKeys200Response
-func (a *APIKeysAPIService) ListApiKeysExecute(r ApiListApiKeysRequest) (*ListApiKeys200Response, *http.Response, error) {
+//  @return models.ListApiKeys200Response
+func (a *APIKeysAPIService) ListApiKeysExecute(r ApiListApiKeysRequest) (*models.ListApiKeys200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ListApiKeys200Response
+		localVarReturnValue  *models.ListApiKeys200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "APIKeysAPIService.ListApiKeys")
@@ -459,7 +461,7 @@ type ApiRegenerateApiKeyRequest struct {
 	id string
 }
 
-func (r ApiRegenerateApiKeyRequest) Execute() (*RegenerateApiKey200Response, *http.Response, error) {
+func (r ApiRegenerateApiKeyRequest) Execute() (*models.RegenerateApiKey200Response, *http.Response, error) {
 	return r.ApiService.RegenerateApiKeyExecute(r)
 }
 
@@ -483,13 +485,13 @@ func (a *APIKeysAPIService) RegenerateApiKey(ctx context.Context, id string) Api
 }
 
 // Execute executes the request
-//  @return RegenerateApiKey200Response
-func (a *APIKeysAPIService) RegenerateApiKeyExecute(r ApiRegenerateApiKeyRequest) (*RegenerateApiKey200Response, *http.Response, error) {
+//  @return models.RegenerateApiKey200Response
+func (a *APIKeysAPIService) RegenerateApiKeyExecute(r ApiRegenerateApiKeyRequest) (*models.RegenerateApiKey200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *RegenerateApiKey200Response
+		localVarReturnValue  *models.RegenerateApiKey200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "APIKeysAPIService.RegenerateApiKey")
@@ -562,15 +564,15 @@ type ApiUpdateApiKeyRequest struct {
 	ctx context.Context
 	ApiService *APIKeysAPIService
 	id string
-	updateApiKeyRequest *UpdateApiKeyRequest
+	updateApiKeyRequest *models.UpdateApiKeyRequest
 }
 
-func (r ApiUpdateApiKeyRequest) UpdateApiKeyRequest(updateApiKeyRequest UpdateApiKeyRequest) ApiUpdateApiKeyRequest {
+func (r ApiUpdateApiKeyRequest) UpdateApiKeyRequest(updateApiKeyRequest models.UpdateApiKeyRequest) ApiUpdateApiKeyRequest {
 	r.updateApiKeyRequest = &updateApiKeyRequest
 	return r
 }
 
-func (r ApiUpdateApiKeyRequest) Execute() (*UpdateApiKey200Response, *http.Response, error) {
+func (r ApiUpdateApiKeyRequest) Execute() (*models.UpdateApiKey200Response, *http.Response, error) {
 	return r.ApiService.UpdateApiKeyExecute(r)
 }
 
@@ -593,13 +595,13 @@ func (a *APIKeysAPIService) UpdateApiKey(ctx context.Context, id string) ApiUpda
 }
 
 // Execute executes the request
-//  @return UpdateApiKey200Response
-func (a *APIKeysAPIService) UpdateApiKeyExecute(r ApiUpdateApiKeyRequest) (*UpdateApiKey200Response, *http.Response, error) {
+//  @return models.UpdateApiKey200Response
+func (a *APIKeysAPIService) UpdateApiKeyExecute(r ApiUpdateApiKeyRequest) (*models.UpdateApiKey200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *UpdateApiKey200Response
+		localVarReturnValue  *models.UpdateApiKey200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "APIKeysAPIService.UpdateApiKey")

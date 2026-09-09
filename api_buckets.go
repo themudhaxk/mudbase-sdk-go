@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -18,6 +18,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -28,15 +30,15 @@ type ApiCreateBucketRequest struct {
 	ctx context.Context
 	ApiService *BucketsAPIService
 	projectId string
-	createBucketRequest *CreateBucketRequest
+	createBucketRequest *models.CreateBucketRequest
 }
 
-func (r ApiCreateBucketRequest) CreateBucketRequest(createBucketRequest CreateBucketRequest) ApiCreateBucketRequest {
+func (r ApiCreateBucketRequest) CreateBucketRequest(createBucketRequest models.CreateBucketRequest) ApiCreateBucketRequest {
 	r.createBucketRequest = &createBucketRequest
 	return r
 }
 
-func (r ApiCreateBucketRequest) Execute() (*BucketResponse, *http.Response, error) {
+func (r ApiCreateBucketRequest) Execute() (*models.BucketResponse, *http.Response, error) {
 	return r.ApiService.CreateBucketExecute(r)
 }
 
@@ -60,13 +62,13 @@ func (a *BucketsAPIService) CreateBucket(ctx context.Context, projectId string) 
 }
 
 // Execute executes the request
-//  @return BucketResponse
-func (a *BucketsAPIService) CreateBucketExecute(r ApiCreateBucketRequest) (*BucketResponse, *http.Response, error) {
+//  @return models.BucketResponse
+func (a *BucketsAPIService) CreateBucketExecute(r ApiCreateBucketRequest) (*models.BucketResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *BucketResponse
+		localVarReturnValue  *models.BucketResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketsAPIService.CreateBucket")
@@ -140,7 +142,7 @@ func (a *BucketsAPIService) CreateBucketExecute(r ApiCreateBucketRequest) (*Buck
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -151,7 +153,7 @@ func (a *BucketsAPIService) CreateBucketExecute(r ApiCreateBucketRequest) (*Buck
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -162,7 +164,7 @@ func (a *BucketsAPIService) CreateBucketExecute(r ApiCreateBucketRequest) (*Buck
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -173,7 +175,7 @@ func (a *BucketsAPIService) CreateBucketExecute(r ApiCreateBucketRequest) (*Buck
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 409 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -184,7 +186,7 @@ func (a *BucketsAPIService) CreateBucketExecute(r ApiCreateBucketRequest) (*Buck
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
-			var v RegisterUser429Response
+			var v models.RegisterUser429Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -195,7 +197,7 @@ func (a *BucketsAPIService) CreateBucketExecute(r ApiCreateBucketRequest) (*Buck
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -226,7 +228,7 @@ type ApiDeleteBucketRequest struct {
 	bucketId string
 }
 
-func (r ApiDeleteBucketRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiDeleteBucketRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.DeleteBucketExecute(r)
 }
 
@@ -252,13 +254,13 @@ func (a *BucketsAPIService) DeleteBucket(ctx context.Context, projectId string, 
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *BucketsAPIService) DeleteBucketExecute(r ApiDeleteBucketRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *BucketsAPIService) DeleteBucketExecute(r ApiDeleteBucketRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketsAPIService.DeleteBucket")
@@ -314,7 +316,7 @@ func (a *BucketsAPIService) DeleteBucketExecute(r ApiDeleteBucketRequest) (*Mess
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -325,7 +327,7 @@ func (a *BucketsAPIService) DeleteBucketExecute(r ApiDeleteBucketRequest) (*Mess
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -336,7 +338,7 @@ func (a *BucketsAPIService) DeleteBucketExecute(r ApiDeleteBucketRequest) (*Mess
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -347,7 +349,7 @@ func (a *BucketsAPIService) DeleteBucketExecute(r ApiDeleteBucketRequest) (*Mess
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 409 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -358,7 +360,7 @@ func (a *BucketsAPIService) DeleteBucketExecute(r ApiDeleteBucketRequest) (*Mess
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
-			var v RegisterUser429Response
+			var v models.RegisterUser429Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -369,7 +371,7 @@ func (a *BucketsAPIService) DeleteBucketExecute(r ApiDeleteBucketRequest) (*Mess
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -400,7 +402,7 @@ type ApiGetBucketRequest struct {
 	bucketId string
 }
 
-func (r ApiGetBucketRequest) Execute() (*BucketResponse, *http.Response, error) {
+func (r ApiGetBucketRequest) Execute() (*models.BucketResponse, *http.Response, error) {
 	return r.ApiService.GetBucketExecute(r)
 }
 
@@ -422,13 +424,13 @@ func (a *BucketsAPIService) GetBucket(ctx context.Context, projectId string, buc
 }
 
 // Execute executes the request
-//  @return BucketResponse
-func (a *BucketsAPIService) GetBucketExecute(r ApiGetBucketRequest) (*BucketResponse, *http.Response, error) {
+//  @return models.BucketResponse
+func (a *BucketsAPIService) GetBucketExecute(r ApiGetBucketRequest) (*models.BucketResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *BucketResponse
+		localVarReturnValue  *models.BucketResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketsAPIService.GetBucket")
@@ -498,7 +500,7 @@ func (a *BucketsAPIService) GetBucketExecute(r ApiGetBucketRequest) (*BucketResp
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -509,7 +511,7 @@ func (a *BucketsAPIService) GetBucketExecute(r ApiGetBucketRequest) (*BucketResp
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -520,7 +522,7 @@ func (a *BucketsAPIService) GetBucketExecute(r ApiGetBucketRequest) (*BucketResp
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -531,7 +533,7 @@ func (a *BucketsAPIService) GetBucketExecute(r ApiGetBucketRequest) (*BucketResp
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 409 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -542,7 +544,7 @@ func (a *BucketsAPIService) GetBucketExecute(r ApiGetBucketRequest) (*BucketResp
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
-			var v RegisterUser429Response
+			var v models.RegisterUser429Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -553,7 +555,7 @@ func (a *BucketsAPIService) GetBucketExecute(r ApiGetBucketRequest) (*BucketResp
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -601,7 +603,7 @@ func (r ApiListBucketsRequest) Search(search string) ApiListBucketsRequest {
 	return r
 }
 
-func (r ApiListBucketsRequest) Execute() (*BucketListResponse, *http.Response, error) {
+func (r ApiListBucketsRequest) Execute() (*models.BucketListResponse, *http.Response, error) {
 	return r.ApiService.ListBucketsExecute(r)
 }
 
@@ -625,13 +627,13 @@ func (a *BucketsAPIService) ListBuckets(ctx context.Context, projectId string) A
 }
 
 // Execute executes the request
-//  @return BucketListResponse
-func (a *BucketsAPIService) ListBucketsExecute(r ApiListBucketsRequest) (*BucketListResponse, *http.Response, error) {
+//  @return models.BucketListResponse
+func (a *BucketsAPIService) ListBucketsExecute(r ApiListBucketsRequest) (*models.BucketListResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *BucketListResponse
+		localVarReturnValue  *models.BucketListResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketsAPIService.ListBuckets")
@@ -703,7 +705,7 @@ func (a *BucketsAPIService) ListBucketsExecute(r ApiListBucketsRequest) (*Bucket
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -714,7 +716,7 @@ func (a *BucketsAPIService) ListBucketsExecute(r ApiListBucketsRequest) (*Bucket
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -725,7 +727,7 @@ func (a *BucketsAPIService) ListBucketsExecute(r ApiListBucketsRequest) (*Bucket
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -736,7 +738,7 @@ func (a *BucketsAPIService) ListBucketsExecute(r ApiListBucketsRequest) (*Bucket
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 409 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -747,7 +749,7 @@ func (a *BucketsAPIService) ListBucketsExecute(r ApiListBucketsRequest) (*Bucket
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
-			var v RegisterUser429Response
+			var v models.RegisterUser429Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -758,7 +760,7 @@ func (a *BucketsAPIService) ListBucketsExecute(r ApiListBucketsRequest) (*Bucket
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -787,15 +789,15 @@ type ApiUpdateBucketRequest struct {
 	ApiService *BucketsAPIService
 	projectId string
 	bucketId string
-	updateBucketRequest *UpdateBucketRequest
+	updateBucketRequest *models.UpdateBucketRequest
 }
 
-func (r ApiUpdateBucketRequest) UpdateBucketRequest(updateBucketRequest UpdateBucketRequest) ApiUpdateBucketRequest {
+func (r ApiUpdateBucketRequest) UpdateBucketRequest(updateBucketRequest models.UpdateBucketRequest) ApiUpdateBucketRequest {
 	r.updateBucketRequest = &updateBucketRequest
 	return r
 }
 
-func (r ApiUpdateBucketRequest) Execute() (*BucketResponse, *http.Response, error) {
+func (r ApiUpdateBucketRequest) Execute() (*models.BucketResponse, *http.Response, error) {
 	return r.ApiService.UpdateBucketExecute(r)
 }
 
@@ -821,13 +823,13 @@ func (a *BucketsAPIService) UpdateBucket(ctx context.Context, projectId string, 
 }
 
 // Execute executes the request
-//  @return BucketResponse
-func (a *BucketsAPIService) UpdateBucketExecute(r ApiUpdateBucketRequest) (*BucketResponse, *http.Response, error) {
+//  @return models.BucketResponse
+func (a *BucketsAPIService) UpdateBucketExecute(r ApiUpdateBucketRequest) (*models.BucketResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *BucketResponse
+		localVarReturnValue  *models.BucketResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketsAPIService.UpdateBucket")
@@ -888,7 +890,7 @@ func (a *BucketsAPIService) UpdateBucketExecute(r ApiUpdateBucketRequest) (*Buck
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -899,7 +901,7 @@ func (a *BucketsAPIService) UpdateBucketExecute(r ApiUpdateBucketRequest) (*Buck
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -910,7 +912,7 @@ func (a *BucketsAPIService) UpdateBucketExecute(r ApiUpdateBucketRequest) (*Buck
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -921,7 +923,7 @@ func (a *BucketsAPIService) UpdateBucketExecute(r ApiUpdateBucketRequest) (*Buck
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 409 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -932,7 +934,7 @@ func (a *BucketsAPIService) UpdateBucketExecute(r ApiUpdateBucketRequest) (*Buck
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
-			var v RegisterUser429Response
+			var v models.RegisterUser429Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -943,7 +945,7 @@ func (a *BucketsAPIService) UpdateBucketExecute(r ApiUpdateBucketRequest) (*Buck
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

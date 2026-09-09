@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -19,6 +19,8 @@ import (
 	"net/url"
 	"strings"
 	"time"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -30,7 +32,7 @@ type ApiGetOverageRequest struct {
 	ApiService *UsageAPIService
 }
 
-func (r ApiGetOverageRequest) Execute() (*GetOverage200Response, *http.Response, error) {
+func (r ApiGetOverageRequest) Execute() (*models.GetOverage200Response, *http.Response, error) {
 	return r.ApiService.GetOverageExecute(r)
 }
 
@@ -52,13 +54,13 @@ func (a *UsageAPIService) GetOverage(ctx context.Context) ApiGetOverageRequest {
 }
 
 // Execute executes the request
-//  @return GetOverage200Response
-func (a *UsageAPIService) GetOverageExecute(r ApiGetOverageRequest) (*GetOverage200Response, *http.Response, error) {
+//  @return models.GetOverage200Response
+func (a *UsageAPIService) GetOverageExecute(r ApiGetOverageRequest) (*models.GetOverage200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetOverage200Response
+		localVarReturnValue  *models.GetOverage200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsageAPIService.GetOverage")
@@ -112,7 +114,7 @@ func (a *UsageAPIService) GetOverageExecute(r ApiGetOverageRequest) (*GetOverage
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -123,7 +125,7 @@ func (a *UsageAPIService) GetOverageExecute(r ApiGetOverageRequest) (*GetOverage
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -134,7 +136,7 @@ func (a *UsageAPIService) GetOverageExecute(r ApiGetOverageRequest) (*GetOverage
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 503 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -170,7 +172,7 @@ func (r ApiGetProjectUsageStatsRequest) Period(period string) ApiGetProjectUsage
 	return r
 }
 
-func (r ApiGetProjectUsageStatsRequest) Execute() (*ProjectUsageStatsResponse, *http.Response, error) {
+func (r ApiGetProjectUsageStatsRequest) Execute() (*models.ProjectUsageStatsResponse, *http.Response, error) {
 	return r.ApiService.GetProjectUsageStatsExecute(r)
 }
 
@@ -194,13 +196,13 @@ func (a *UsageAPIService) GetProjectUsageStats(ctx context.Context, projectId st
 }
 
 // Execute executes the request
-//  @return ProjectUsageStatsResponse
-func (a *UsageAPIService) GetProjectUsageStatsExecute(r ApiGetProjectUsageStatsRequest) (*ProjectUsageStatsResponse, *http.Response, error) {
+//  @return models.ProjectUsageStatsResponse
+func (a *UsageAPIService) GetProjectUsageStatsExecute(r ApiGetProjectUsageStatsRequest) (*models.ProjectUsageStatsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ProjectUsageStatsResponse
+		localVarReturnValue  *models.ProjectUsageStatsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsageAPIService.GetProjectUsageStats")
@@ -282,12 +284,12 @@ type ApiGetProjectUsageSummaryRequest struct {
 	projectId string
 }
 
-func (r ApiGetProjectUsageSummaryRequest) Execute() (*ProjectUsageSummaryResponse, *http.Response, error) {
+func (r ApiGetProjectUsageSummaryRequest) Execute() (*models.ProjectUsageSummaryResponse, *http.Response, error) {
 	return r.ApiService.GetProjectUsageSummaryExecute(r)
 }
 
 /*
-GetProjectUsageSummary Project dashboard usage summary
+GetProjectUsageSummary models.Project dashboard usage summary
 
 Lightweight dashboard metrics for a project: requests today vs yesterday with % change, active users (24h/7d/30d),
 7d active-user trend, 14-day request volume series, per-project openapi-docs latency (today/7d), and uptime (30d) from org HTTP non-5xx when enough samples else DB heartbeats.
@@ -307,13 +309,13 @@ func (a *UsageAPIService) GetProjectUsageSummary(ctx context.Context, projectId 
 }
 
 // Execute executes the request
-//  @return ProjectUsageSummaryResponse
-func (a *UsageAPIService) GetProjectUsageSummaryExecute(r ApiGetProjectUsageSummaryRequest) (*ProjectUsageSummaryResponse, *http.Response, error) {
+//  @return models.ProjectUsageSummaryResponse
+func (a *UsageAPIService) GetProjectUsageSummaryExecute(r ApiGetProjectUsageSummaryRequest) (*models.ProjectUsageSummaryResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ProjectUsageSummaryResponse
+		localVarReturnValue  *models.ProjectUsageSummaryResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsageAPIService.GetProjectUsageSummary")
@@ -382,7 +384,7 @@ func (a *UsageAPIService) GetProjectUsageSummaryExecute(r ApiGetProjectUsageSumm
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -393,7 +395,7 @@ func (a *UsageAPIService) GetProjectUsageSummaryExecute(r ApiGetProjectUsageSumm
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -440,7 +442,7 @@ func (r ApiGetUsageRequest) EndDate(endDate time.Time) ApiGetUsageRequest {
 	return r
 }
 
-func (r ApiGetUsageRequest) Execute() (*UsageStatsResponse, *http.Response, error) {
+func (r ApiGetUsageRequest) Execute() (*models.UsageStatsResponse, *http.Response, error) {
 	return r.ApiService.GetUsageExecute(r)
 }
 
@@ -458,13 +460,13 @@ func (a *UsageAPIService) GetUsage(ctx context.Context) ApiGetUsageRequest {
 }
 
 // Execute executes the request
-//  @return UsageStatsResponse
-func (a *UsageAPIService) GetUsageExecute(r ApiGetUsageRequest) (*UsageStatsResponse, *http.Response, error) {
+//  @return models.UsageStatsResponse
+func (a *UsageAPIService) GetUsageExecute(r ApiGetUsageRequest) (*models.UsageStatsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *UsageStatsResponse
+		localVarReturnValue  *models.UsageStatsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsageAPIService.GetUsage")
@@ -531,7 +533,7 @@ func (a *UsageAPIService) GetUsageExecute(r ApiGetUsageRequest) (*UsageStatsResp
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 503 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -566,7 +568,7 @@ func (r ApiGetUsageTrendsRequest) Days(days int32) ApiGetUsageTrendsRequest {
 	return r
 }
 
-func (r ApiGetUsageTrendsRequest) Execute() (*UsageTrendsResponse, *http.Response, error) {
+func (r ApiGetUsageTrendsRequest) Execute() (*models.UsageTrendsResponse, *http.Response, error) {
 	return r.ApiService.GetUsageTrendsExecute(r)
 }
 
@@ -588,13 +590,13 @@ func (a *UsageAPIService) GetUsageTrends(ctx context.Context) ApiGetUsageTrendsR
 }
 
 // Execute executes the request
-//  @return UsageTrendsResponse
-func (a *UsageAPIService) GetUsageTrendsExecute(r ApiGetUsageTrendsRequest) (*UsageTrendsResponse, *http.Response, error) {
+//  @return models.UsageTrendsResponse
+func (a *UsageAPIService) GetUsageTrendsExecute(r ApiGetUsageTrendsRequest) (*models.UsageTrendsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *UsageTrendsResponse
+		localVarReturnValue  *models.UsageTrendsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsageAPIService.GetUsageTrends")
@@ -674,7 +676,7 @@ type ApiGetUsageWarningsRequest struct {
 	ApiService *UsageAPIService
 }
 
-func (r ApiGetUsageWarningsRequest) Execute() (*GetUsageWarnings200Response, *http.Response, error) {
+func (r ApiGetUsageWarningsRequest) Execute() (*models.GetUsageWarnings200Response, *http.Response, error) {
 	return r.ApiService.GetUsageWarningsExecute(r)
 }
 
@@ -694,13 +696,13 @@ func (a *UsageAPIService) GetUsageWarnings(ctx context.Context) ApiGetUsageWarni
 }
 
 // Execute executes the request
-//  @return GetUsageWarnings200Response
-func (a *UsageAPIService) GetUsageWarningsExecute(r ApiGetUsageWarningsRequest) (*GetUsageWarnings200Response, *http.Response, error) {
+//  @return models.GetUsageWarnings200Response
+func (a *UsageAPIService) GetUsageWarningsExecute(r ApiGetUsageWarningsRequest) (*models.GetUsageWarnings200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetUsageWarnings200Response
+		localVarReturnValue  *models.GetUsageWarnings200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsageAPIService.GetUsageWarnings")
@@ -754,7 +756,7 @@ func (a *UsageAPIService) GetUsageWarningsExecute(r ApiGetUsageWarningsRequest) 
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

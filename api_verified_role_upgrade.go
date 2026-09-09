@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -18,6 +18,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -29,15 +31,15 @@ type ApiVerifiedRoleUpgradeRequest struct {
 	ApiService *VerifiedRoleUpgradeAPIService
 	orgId string
 	userId string
-	verifiedRoleUpgradeRequest *VerifiedRoleUpgradeRequest
+	verifiedRoleUpgradeRequest *models.VerifiedRoleUpgradeRequest
 }
 
-func (r ApiVerifiedRoleUpgradeRequest) VerifiedRoleUpgradeRequest(verifiedRoleUpgradeRequest VerifiedRoleUpgradeRequest) ApiVerifiedRoleUpgradeRequest {
+func (r ApiVerifiedRoleUpgradeRequest) VerifiedRoleUpgradeRequest(verifiedRoleUpgradeRequest models.VerifiedRoleUpgradeRequest) ApiVerifiedRoleUpgradeRequest {
 	r.verifiedRoleUpgradeRequest = &verifiedRoleUpgradeRequest
 	return r
 }
 
-func (r ApiVerifiedRoleUpgradeRequest) Execute() (*VerifiedRoleUpgrade200Response, *http.Response, error) {
+func (r ApiVerifiedRoleUpgradeRequest) Execute() (*models.VerifiedRoleUpgrade200Response, *http.Response, error) {
 	return r.ApiService.VerifiedRoleUpgradeExecute(r)
 }
 
@@ -61,13 +63,13 @@ func (a *VerifiedRoleUpgradeAPIService) VerifiedRoleUpgrade(ctx context.Context,
 }
 
 // Execute executes the request
-//  @return VerifiedRoleUpgrade200Response
-func (a *VerifiedRoleUpgradeAPIService) VerifiedRoleUpgradeExecute(r ApiVerifiedRoleUpgradeRequest) (*VerifiedRoleUpgrade200Response, *http.Response, error) {
+//  @return models.VerifiedRoleUpgrade200Response
+func (a *VerifiedRoleUpgradeAPIService) VerifiedRoleUpgradeExecute(r ApiVerifiedRoleUpgradeRequest) (*models.VerifiedRoleUpgrade200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *VerifiedRoleUpgrade200Response
+		localVarReturnValue  *models.VerifiedRoleUpgrade200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VerifiedRoleUpgradeAPIService.VerifiedRoleUpgrade")

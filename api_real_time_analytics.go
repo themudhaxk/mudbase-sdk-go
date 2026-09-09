@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -18,6 +18,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -28,15 +30,15 @@ type ApiCheckUserPresenceRequest struct {
 	ctx context.Context
 	ApiService *RealTimeAnalyticsAPIService
 	projectId string
-	checkUserPresenceRequest *CheckUserPresenceRequest
+	checkUserPresenceRequest *models.CheckUserPresenceRequest
 }
 
-func (r ApiCheckUserPresenceRequest) CheckUserPresenceRequest(checkUserPresenceRequest CheckUserPresenceRequest) ApiCheckUserPresenceRequest {
+func (r ApiCheckUserPresenceRequest) CheckUserPresenceRequest(checkUserPresenceRequest models.CheckUserPresenceRequest) ApiCheckUserPresenceRequest {
 	r.checkUserPresenceRequest = &checkUserPresenceRequest
 	return r
 }
 
-func (r ApiCheckUserPresenceRequest) Execute() (*CheckUserPresence200Response, *http.Response, error) {
+func (r ApiCheckUserPresenceRequest) Execute() (*models.CheckUserPresence200Response, *http.Response, error) {
 	return r.ApiService.CheckUserPresenceExecute(r)
 }
 
@@ -58,13 +60,13 @@ func (a *RealTimeAnalyticsAPIService) CheckUserPresence(ctx context.Context, pro
 }
 
 // Execute executes the request
-//  @return CheckUserPresence200Response
-func (a *RealTimeAnalyticsAPIService) CheckUserPresenceExecute(r ApiCheckUserPresenceRequest) (*CheckUserPresence200Response, *http.Response, error) {
+//  @return models.CheckUserPresence200Response
+func (a *RealTimeAnalyticsAPIService) CheckUserPresenceExecute(r ApiCheckUserPresenceRequest) (*models.CheckUserPresence200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CheckUserPresence200Response
+		localVarReturnValue  *models.CheckUserPresence200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RealTimeAnalyticsAPIService.CheckUserPresence")
@@ -124,7 +126,7 @@ func (a *RealTimeAnalyticsAPIService) CheckUserPresenceExecute(r ApiCheckUserPre
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -135,7 +137,7 @@ func (a *RealTimeAnalyticsAPIService) CheckUserPresenceExecute(r ApiCheckUserPre
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -146,7 +148,7 @@ func (a *RealTimeAnalyticsAPIService) CheckUserPresenceExecute(r ApiCheckUserPre
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -176,7 +178,7 @@ type ApiGetActiveUsersRequest struct {
 	projectId string
 }
 
-func (r ApiGetActiveUsersRequest) Execute() (*GetActiveUsers200Response, *http.Response, error) {
+func (r ApiGetActiveUsersRequest) Execute() (*models.GetActiveUsers200Response, *http.Response, error) {
 	return r.ApiService.GetActiveUsersExecute(r)
 }
 
@@ -198,13 +200,13 @@ func (a *RealTimeAnalyticsAPIService) GetActiveUsers(ctx context.Context, projec
 }
 
 // Execute executes the request
-//  @return GetActiveUsers200Response
-func (a *RealTimeAnalyticsAPIService) GetActiveUsersExecute(r ApiGetActiveUsersRequest) (*GetActiveUsers200Response, *http.Response, error) {
+//  @return models.GetActiveUsers200Response
+func (a *RealTimeAnalyticsAPIService) GetActiveUsersExecute(r ApiGetActiveUsersRequest) (*models.GetActiveUsers200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetActiveUsers200Response
+		localVarReturnValue  *models.GetActiveUsers200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RealTimeAnalyticsAPIService.GetActiveUsers")
@@ -259,7 +261,7 @@ func (a *RealTimeAnalyticsAPIService) GetActiveUsersExecute(r ApiGetActiveUsersR
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -270,7 +272,7 @@ func (a *RealTimeAnalyticsAPIService) GetActiveUsersExecute(r ApiGetActiveUsersR
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -307,7 +309,7 @@ func (r ApiGetEventThroughputRequest) Window(window int32) ApiGetEventThroughput
 	return r
 }
 
-func (r ApiGetEventThroughputRequest) Execute() (*GetEventThroughput200Response, *http.Response, error) {
+func (r ApiGetEventThroughputRequest) Execute() (*models.GetEventThroughput200Response, *http.Response, error) {
 	return r.ApiService.GetEventThroughputExecute(r)
 }
 
@@ -329,13 +331,13 @@ func (a *RealTimeAnalyticsAPIService) GetEventThroughput(ctx context.Context, pr
 }
 
 // Execute executes the request
-//  @return GetEventThroughput200Response
-func (a *RealTimeAnalyticsAPIService) GetEventThroughputExecute(r ApiGetEventThroughputRequest) (*GetEventThroughput200Response, *http.Response, error) {
+//  @return models.GetEventThroughput200Response
+func (a *RealTimeAnalyticsAPIService) GetEventThroughputExecute(r ApiGetEventThroughputRequest) (*models.GetEventThroughput200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetEventThroughput200Response
+		localVarReturnValue  *models.GetEventThroughput200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RealTimeAnalyticsAPIService.GetEventThroughput")
@@ -397,7 +399,7 @@ func (a *RealTimeAnalyticsAPIService) GetEventThroughputExecute(r ApiGetEventThr
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -408,7 +410,7 @@ func (a *RealTimeAnalyticsAPIService) GetEventThroughputExecute(r ApiGetEventThr
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -437,7 +439,7 @@ type ApiGetGlobalAnalyticsRequest struct {
 	ApiService *RealTimeAnalyticsAPIService
 }
 
-func (r ApiGetGlobalAnalyticsRequest) Execute() (*GetGlobalAnalytics200Response, *http.Response, error) {
+func (r ApiGetGlobalAnalyticsRequest) Execute() (*models.GetGlobalAnalytics200Response, *http.Response, error) {
 	return r.ApiService.GetGlobalAnalyticsExecute(r)
 }
 
@@ -457,13 +459,13 @@ func (a *RealTimeAnalyticsAPIService) GetGlobalAnalytics(ctx context.Context) Ap
 }
 
 // Execute executes the request
-//  @return GetGlobalAnalytics200Response
-func (a *RealTimeAnalyticsAPIService) GetGlobalAnalyticsExecute(r ApiGetGlobalAnalyticsRequest) (*GetGlobalAnalytics200Response, *http.Response, error) {
+//  @return models.GetGlobalAnalytics200Response
+func (a *RealTimeAnalyticsAPIService) GetGlobalAnalyticsExecute(r ApiGetGlobalAnalyticsRequest) (*models.GetGlobalAnalytics200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetGlobalAnalytics200Response
+		localVarReturnValue  *models.GetGlobalAnalytics200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RealTimeAnalyticsAPIService.GetGlobalAnalytics")
@@ -517,7 +519,7 @@ func (a *RealTimeAnalyticsAPIService) GetGlobalAnalyticsExecute(r ApiGetGlobalAn
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -528,7 +530,7 @@ func (a *RealTimeAnalyticsAPIService) GetGlobalAnalyticsExecute(r ApiGetGlobalAn
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -565,7 +567,7 @@ func (r ApiGetHistoricalAnalyticsRequest) Period(period string) ApiGetHistorical
 	return r
 }
 
-func (r ApiGetHistoricalAnalyticsRequest) Execute() (*GetHistoricalAnalytics200Response, *http.Response, error) {
+func (r ApiGetHistoricalAnalyticsRequest) Execute() (*models.GetHistoricalAnalytics200Response, *http.Response, error) {
 	return r.ApiService.GetHistoricalAnalyticsExecute(r)
 }
 
@@ -587,13 +589,13 @@ func (a *RealTimeAnalyticsAPIService) GetHistoricalAnalytics(ctx context.Context
 }
 
 // Execute executes the request
-//  @return GetHistoricalAnalytics200Response
-func (a *RealTimeAnalyticsAPIService) GetHistoricalAnalyticsExecute(r ApiGetHistoricalAnalyticsRequest) (*GetHistoricalAnalytics200Response, *http.Response, error) {
+//  @return models.GetHistoricalAnalytics200Response
+func (a *RealTimeAnalyticsAPIService) GetHistoricalAnalyticsExecute(r ApiGetHistoricalAnalyticsRequest) (*models.GetHistoricalAnalytics200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetHistoricalAnalytics200Response
+		localVarReturnValue  *models.GetHistoricalAnalytics200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RealTimeAnalyticsAPIService.GetHistoricalAnalytics")
@@ -655,7 +657,7 @@ func (a *RealTimeAnalyticsAPIService) GetHistoricalAnalyticsExecute(r ApiGetHist
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -666,7 +668,7 @@ func (a *RealTimeAnalyticsAPIService) GetHistoricalAnalyticsExecute(r ApiGetHist
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -677,7 +679,7 @@ func (a *RealTimeAnalyticsAPIService) GetHistoricalAnalyticsExecute(r ApiGetHist
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -707,7 +709,7 @@ type ApiGetProjectAnalyticsRequest struct {
 	projectId string
 }
 
-func (r ApiGetProjectAnalyticsRequest) Execute() (*GetProjectAnalytics200Response, *http.Response, error) {
+func (r ApiGetProjectAnalyticsRequest) Execute() (*models.GetProjectAnalytics200Response, *http.Response, error) {
 	return r.ApiService.GetProjectAnalyticsExecute(r)
 }
 
@@ -729,13 +731,13 @@ func (a *RealTimeAnalyticsAPIService) GetProjectAnalytics(ctx context.Context, p
 }
 
 // Execute executes the request
-//  @return GetProjectAnalytics200Response
-func (a *RealTimeAnalyticsAPIService) GetProjectAnalyticsExecute(r ApiGetProjectAnalyticsRequest) (*GetProjectAnalytics200Response, *http.Response, error) {
+//  @return models.GetProjectAnalytics200Response
+func (a *RealTimeAnalyticsAPIService) GetProjectAnalyticsExecute(r ApiGetProjectAnalyticsRequest) (*models.GetProjectAnalytics200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetProjectAnalytics200Response
+		localVarReturnValue  *models.GetProjectAnalytics200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RealTimeAnalyticsAPIService.GetProjectAnalytics")
@@ -790,7 +792,7 @@ func (a *RealTimeAnalyticsAPIService) GetProjectAnalyticsExecute(r ApiGetProject
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -801,7 +803,7 @@ func (a *RealTimeAnalyticsAPIService) GetProjectAnalyticsExecute(r ApiGetProject
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

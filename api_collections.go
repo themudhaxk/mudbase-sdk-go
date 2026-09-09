@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -18,6 +18,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -28,15 +30,15 @@ type ApiCreateCollectionRequest struct {
 	ctx context.Context
 	ApiService *CollectionsAPIService
 	projectId string
-	createCollectionRequest *CreateCollectionRequest
+	createCollectionRequest *models.CreateCollectionRequest
 }
 
-func (r ApiCreateCollectionRequest) CreateCollectionRequest(createCollectionRequest CreateCollectionRequest) ApiCreateCollectionRequest {
+func (r ApiCreateCollectionRequest) CreateCollectionRequest(createCollectionRequest models.CreateCollectionRequest) ApiCreateCollectionRequest {
 	r.createCollectionRequest = &createCollectionRequest
 	return r
 }
 
-func (r ApiCreateCollectionRequest) Execute() (*CreateCollection201Response, *http.Response, error) {
+func (r ApiCreateCollectionRequest) Execute() (*models.CreateCollection201Response, *http.Response, error) {
 	return r.ApiService.CreateCollectionExecute(r)
 }
 
@@ -60,13 +62,13 @@ func (a *CollectionsAPIService) CreateCollection(ctx context.Context, projectId 
 }
 
 // Execute executes the request
-//  @return CreateCollection201Response
-func (a *CollectionsAPIService) CreateCollectionExecute(r ApiCreateCollectionRequest) (*CreateCollection201Response, *http.Response, error) {
+//  @return models.CreateCollection201Response
+func (a *CollectionsAPIService) CreateCollectionExecute(r ApiCreateCollectionRequest) (*models.CreateCollection201Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CreateCollection201Response
+		localVarReturnValue  *models.CreateCollection201Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CollectionsAPIService.CreateCollection")
@@ -147,7 +149,7 @@ type ApiDeleteCollectionRequest struct {
 	collectionId string
 }
 
-func (r ApiDeleteCollectionRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiDeleteCollectionRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.DeleteCollectionExecute(r)
 }
 
@@ -173,13 +175,13 @@ func (a *CollectionsAPIService) DeleteCollection(ctx context.Context, projectId 
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *CollectionsAPIService) DeleteCollectionExecute(r ApiDeleteCollectionRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *CollectionsAPIService) DeleteCollectionExecute(r ApiDeleteCollectionRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CollectionsAPIService.DeleteCollection")
@@ -256,7 +258,7 @@ type ApiGetCollectionRequest struct {
 	collectionId string
 }
 
-func (r ApiGetCollectionRequest) Execute() (*Collection, *http.Response, error) {
+func (r ApiGetCollectionRequest) Execute() (*models.Collection, *http.Response, error) {
 	return r.ApiService.GetCollectionExecute(r)
 }
 
@@ -282,13 +284,13 @@ func (a *CollectionsAPIService) GetCollection(ctx context.Context, projectId str
 }
 
 // Execute executes the request
-//  @return Collection
-func (a *CollectionsAPIService) GetCollectionExecute(r ApiGetCollectionRequest) (*Collection, *http.Response, error) {
+//  @return models.Collection
+func (a *CollectionsAPIService) GetCollectionExecute(r ApiGetCollectionRequest) (*models.Collection, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *Collection
+		localVarReturnValue  *models.Collection
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CollectionsAPIService.GetCollection")
@@ -364,7 +366,7 @@ type ApiListCollectionsRequest struct {
 	projectId string
 }
 
-func (r ApiListCollectionsRequest) Execute() (*ListCollections200Response, *http.Response, error) {
+func (r ApiListCollectionsRequest) Execute() (*models.ListCollections200Response, *http.Response, error) {
 	return r.ApiService.ListCollectionsExecute(r)
 }
 
@@ -388,13 +390,13 @@ func (a *CollectionsAPIService) ListCollections(ctx context.Context, projectId s
 }
 
 // Execute executes the request
-//  @return ListCollections200Response
-func (a *CollectionsAPIService) ListCollectionsExecute(r ApiListCollectionsRequest) (*ListCollections200Response, *http.Response, error) {
+//  @return models.ListCollections200Response
+func (a *CollectionsAPIService) ListCollectionsExecute(r ApiListCollectionsRequest) (*models.ListCollections200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ListCollections200Response
+		localVarReturnValue  *models.ListCollections200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CollectionsAPIService.ListCollections")
@@ -468,15 +470,15 @@ type ApiUpdateCollectionRequest struct {
 	ApiService *CollectionsAPIService
 	projectId string
 	collectionId string
-	updateCollectionRequest *UpdateCollectionRequest
+	updateCollectionRequest *models.UpdateCollectionRequest
 }
 
-func (r ApiUpdateCollectionRequest) UpdateCollectionRequest(updateCollectionRequest UpdateCollectionRequest) ApiUpdateCollectionRequest {
+func (r ApiUpdateCollectionRequest) UpdateCollectionRequest(updateCollectionRequest models.UpdateCollectionRequest) ApiUpdateCollectionRequest {
 	r.updateCollectionRequest = &updateCollectionRequest
 	return r
 }
 
-func (r ApiUpdateCollectionRequest) Execute() (*CreateCollection201Response, *http.Response, error) {
+func (r ApiUpdateCollectionRequest) Execute() (*models.CreateCollection201Response, *http.Response, error) {
 	return r.ApiService.UpdateCollectionExecute(r)
 }
 
@@ -502,13 +504,13 @@ func (a *CollectionsAPIService) UpdateCollection(ctx context.Context, projectId 
 }
 
 // Execute executes the request
-//  @return CreateCollection201Response
-func (a *CollectionsAPIService) UpdateCollectionExecute(r ApiUpdateCollectionRequest) (*CreateCollection201Response, *http.Response, error) {
+//  @return models.CreateCollection201Response
+func (a *CollectionsAPIService) UpdateCollectionExecute(r ApiUpdateCollectionRequest) (*models.CreateCollection201Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CreateCollection201Response
+		localVarReturnValue  *models.CreateCollection201Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CollectionsAPIService.UpdateCollection")

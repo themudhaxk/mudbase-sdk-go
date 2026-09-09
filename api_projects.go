@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -19,6 +19,8 @@ import (
 	"net/url"
 	"strings"
 	"os"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -30,15 +32,15 @@ type ApiConfigureOAuthProviderRequest struct {
 	ApiService *ProjectsAPIService
 	projectId string
 	provider string
-	configureOAuthProviderRequest *ConfigureOAuthProviderRequest
+	configureOAuthProviderRequest *models.ConfigureOAuthProviderRequest
 }
 
-func (r ApiConfigureOAuthProviderRequest) ConfigureOAuthProviderRequest(configureOAuthProviderRequest ConfigureOAuthProviderRequest) ApiConfigureOAuthProviderRequest {
+func (r ApiConfigureOAuthProviderRequest) ConfigureOAuthProviderRequest(configureOAuthProviderRequest models.ConfigureOAuthProviderRequest) ApiConfigureOAuthProviderRequest {
 	r.configureOAuthProviderRequest = &configureOAuthProviderRequest
 	return r
 }
 
-func (r ApiConfigureOAuthProviderRequest) Execute() (*ConfigureOAuthProvider200Response, *http.Response, error) {
+func (r ApiConfigureOAuthProviderRequest) Execute() (*models.ConfigureOAuthProvider200Response, *http.Response, error) {
 	return r.ApiService.ConfigureOAuthProviderExecute(r)
 }
 
@@ -62,13 +64,13 @@ func (a *ProjectsAPIService) ConfigureOAuthProvider(ctx context.Context, project
 }
 
 // Execute executes the request
-//  @return ConfigureOAuthProvider200Response
-func (a *ProjectsAPIService) ConfigureOAuthProviderExecute(r ApiConfigureOAuthProviderRequest) (*ConfigureOAuthProvider200Response, *http.Response, error) {
+//  @return models.ConfigureOAuthProvider200Response
+func (a *ProjectsAPIService) ConfigureOAuthProviderExecute(r ApiConfigureOAuthProviderRequest) (*models.ConfigureOAuthProvider200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ConfigureOAuthProvider200Response
+		localVarReturnValue  *models.ConfigureOAuthProvider200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectsAPIService.ConfigureOAuthProvider")
@@ -129,7 +131,7 @@ func (a *ProjectsAPIService) ConfigureOAuthProviderExecute(r ApiConfigureOAuthPr
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -140,7 +142,7 @@ func (a *ProjectsAPIService) ConfigureOAuthProviderExecute(r ApiConfigureOAuthPr
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -151,7 +153,7 @@ func (a *ProjectsAPIService) ConfigureOAuthProviderExecute(r ApiConfigureOAuthPr
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -162,7 +164,7 @@ func (a *ProjectsAPIService) ConfigureOAuthProviderExecute(r ApiConfigureOAuthPr
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -190,15 +192,15 @@ type ApiCreateProjectRequest struct {
 	ctx context.Context
 	ApiService *ProjectsAPIService
 	orgId string
-	createProjectRequest *CreateProjectRequest
+	createProjectRequest *models.CreateProjectRequest
 }
 
-func (r ApiCreateProjectRequest) CreateProjectRequest(createProjectRequest CreateProjectRequest) ApiCreateProjectRequest {
+func (r ApiCreateProjectRequest) CreateProjectRequest(createProjectRequest models.CreateProjectRequest) ApiCreateProjectRequest {
 	r.createProjectRequest = &createProjectRequest
 	return r
 }
 
-func (r ApiCreateProjectRequest) Execute() (*CreateProject201Response, *http.Response, error) {
+func (r ApiCreateProjectRequest) Execute() (*models.CreateProject201Response, *http.Response, error) {
 	return r.ApiService.CreateProjectExecute(r)
 }
 
@@ -210,7 +212,7 @@ Requires: OrgBearerAuth (organization-level authentication only).
 
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param orgId Organization ID
+ @param orgId models.Organization ID
  @return ApiCreateProjectRequest
 */
 func (a *ProjectsAPIService) CreateProject(ctx context.Context, orgId string) ApiCreateProjectRequest {
@@ -222,13 +224,13 @@ func (a *ProjectsAPIService) CreateProject(ctx context.Context, orgId string) Ap
 }
 
 // Execute executes the request
-//  @return CreateProject201Response
-func (a *ProjectsAPIService) CreateProjectExecute(r ApiCreateProjectRequest) (*CreateProject201Response, *http.Response, error) {
+//  @return models.CreateProject201Response
+func (a *ProjectsAPIService) CreateProjectExecute(r ApiCreateProjectRequest) (*models.CreateProject201Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CreateProject201Response
+		localVarReturnValue  *models.CreateProject201Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectsAPIService.CreateProject")
@@ -309,7 +311,7 @@ type ApiDeleteProjectRequest struct {
 	id string
 }
 
-func (r ApiDeleteProjectRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiDeleteProjectRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.DeleteProjectExecute(r)
 }
 
@@ -321,8 +323,8 @@ Requires JWT Bearer token authentication. Both OrgBearerAuth and ProjectBearerAu
 
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param orgId Organization ID
- @param id Project ID
+ @param orgId models.Organization ID
+ @param id models.Project ID
  @return ApiDeleteProjectRequest
 */
 func (a *ProjectsAPIService) DeleteProject(ctx context.Context, orgId string, id string) ApiDeleteProjectRequest {
@@ -335,13 +337,13 @@ func (a *ProjectsAPIService) DeleteProject(ctx context.Context, orgId string, id
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *ProjectsAPIService) DeleteProjectExecute(r ApiDeleteProjectRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *ProjectsAPIService) DeleteProjectExecute(r ApiDeleteProjectRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectsAPIService.DeleteProject")
@@ -418,7 +420,7 @@ type ApiGetOAuthProviderConfigRequest struct {
 	provider string
 }
 
-func (r ApiGetOAuthProviderConfigRequest) Execute() (*GetOAuthProviderConfig200Response, *http.Response, error) {
+func (r ApiGetOAuthProviderConfigRequest) Execute() (*models.GetOAuthProviderConfig200Response, *http.Response, error) {
 	return r.ApiService.GetOAuthProviderConfigExecute(r)
 }
 
@@ -442,13 +444,13 @@ func (a *ProjectsAPIService) GetOAuthProviderConfig(ctx context.Context, project
 }
 
 // Execute executes the request
-//  @return GetOAuthProviderConfig200Response
-func (a *ProjectsAPIService) GetOAuthProviderConfigExecute(r ApiGetOAuthProviderConfigRequest) (*GetOAuthProviderConfig200Response, *http.Response, error) {
+//  @return models.GetOAuthProviderConfig200Response
+func (a *ProjectsAPIService) GetOAuthProviderConfigExecute(r ApiGetOAuthProviderConfigRequest) (*models.GetOAuthProviderConfig200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetOAuthProviderConfig200Response
+		localVarReturnValue  *models.GetOAuthProviderConfig200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectsAPIService.GetOAuthProviderConfig")
@@ -504,7 +506,7 @@ func (a *ProjectsAPIService) GetOAuthProviderConfigExecute(r ApiGetOAuthProvider
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -515,7 +517,7 @@ func (a *ProjectsAPIService) GetOAuthProviderConfigExecute(r ApiGetOAuthProvider
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -546,7 +548,7 @@ type ApiGetProjectRequest struct {
 	id string
 }
 
-func (r ApiGetProjectRequest) Execute() (*Project, *http.Response, error) {
+func (r ApiGetProjectRequest) Execute() (*models.Project, *http.Response, error) {
 	return r.ApiService.GetProjectExecute(r)
 }
 
@@ -558,8 +560,8 @@ Accepts: OrgBearerAuth (for admin users), ProjectBearerAuth (JWT for authenticat
 
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param orgId Organization ID
- @param id Project ID
+ @param orgId models.Organization ID
+ @param id models.Project ID
  @return ApiGetProjectRequest
 */
 func (a *ProjectsAPIService) GetProject(ctx context.Context, orgId string, id string) ApiGetProjectRequest {
@@ -572,13 +574,13 @@ func (a *ProjectsAPIService) GetProject(ctx context.Context, orgId string, id st
 }
 
 // Execute executes the request
-//  @return Project
-func (a *ProjectsAPIService) GetProjectExecute(r ApiGetProjectRequest) (*Project, *http.Response, error) {
+//  @return models.Project
+func (a *ProjectsAPIService) GetProjectExecute(r ApiGetProjectRequest) (*models.Project, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *Project
+		localVarReturnValue  *models.Project
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectsAPIService.GetProject")
@@ -634,7 +636,7 @@ func (a *ProjectsAPIService) GetProjectExecute(r ApiGetProjectRequest) (*Project
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -665,7 +667,7 @@ type ApiGetProjectCaptchaConfigRequest struct {
 	id string
 }
 
-func (r ApiGetProjectCaptchaConfigRequest) Execute() (*GetProjectCaptchaConfig200Response, *http.Response, error) {
+func (r ApiGetProjectCaptchaConfigRequest) Execute() (*models.GetProjectCaptchaConfig200Response, *http.Response, error) {
 	return r.ApiService.GetProjectCaptchaConfigExecute(r)
 }
 
@@ -677,8 +679,8 @@ and settings needed for frontend integration. Secret key is never returned.
 
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param orgId Organization ID
- @param id Project ID
+ @param orgId models.Organization ID
+ @param id models.Project ID
  @return ApiGetProjectCaptchaConfigRequest
 */
 func (a *ProjectsAPIService) GetProjectCaptchaConfig(ctx context.Context, orgId string, id string) ApiGetProjectCaptchaConfigRequest {
@@ -691,13 +693,13 @@ func (a *ProjectsAPIService) GetProjectCaptchaConfig(ctx context.Context, orgId 
 }
 
 // Execute executes the request
-//  @return GetProjectCaptchaConfig200Response
-func (a *ProjectsAPIService) GetProjectCaptchaConfigExecute(r ApiGetProjectCaptchaConfigRequest) (*GetProjectCaptchaConfig200Response, *http.Response, error) {
+//  @return models.GetProjectCaptchaConfig200Response
+func (a *ProjectsAPIService) GetProjectCaptchaConfigExecute(r ApiGetProjectCaptchaConfigRequest) (*models.GetProjectCaptchaConfig200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetProjectCaptchaConfig200Response
+		localVarReturnValue  *models.GetProjectCaptchaConfig200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectsAPIService.GetProjectCaptchaConfig")
@@ -753,7 +755,7 @@ func (a *ProjectsAPIService) GetProjectCaptchaConfigExecute(r ApiGetProjectCaptc
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -764,7 +766,7 @@ func (a *ProjectsAPIService) GetProjectCaptchaConfigExecute(r ApiGetProjectCaptc
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -794,12 +796,12 @@ type ApiGetProjectDashboardOverviewRequest struct {
 	projectId string
 }
 
-func (r ApiGetProjectDashboardOverviewRequest) Execute() (*ProjectDashboardOverviewResponse, *http.Response, error) {
+func (r ApiGetProjectDashboardOverviewRequest) Execute() (*models.ProjectDashboardOverviewResponse, *http.Response, error) {
 	return r.ApiService.GetProjectDashboardOverviewExecute(r)
 }
 
 /*
-GetProjectDashboardOverview Project dashboard overview
+GetProjectDashboardOverview models.Project dashboard overview
 
 Single response for the project overview UI: project info, request counts and day-over-day % change,
 active users (distinct JWT users with project activity; realtime socket count when available),
@@ -820,13 +822,13 @@ func (a *ProjectsAPIService) GetProjectDashboardOverview(ctx context.Context, pr
 }
 
 // Execute executes the request
-//  @return ProjectDashboardOverviewResponse
-func (a *ProjectsAPIService) GetProjectDashboardOverviewExecute(r ApiGetProjectDashboardOverviewRequest) (*ProjectDashboardOverviewResponse, *http.Response, error) {
+//  @return models.ProjectDashboardOverviewResponse
+func (a *ProjectsAPIService) GetProjectDashboardOverviewExecute(r ApiGetProjectDashboardOverviewRequest) (*models.ProjectDashboardOverviewResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ProjectDashboardOverviewResponse
+		localVarReturnValue  *models.ProjectDashboardOverviewResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectsAPIService.GetProjectDashboardOverview")
@@ -895,7 +897,7 @@ func (a *ProjectsAPIService) GetProjectDashboardOverviewExecute(r ApiGetProjectD
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -906,7 +908,7 @@ func (a *ProjectsAPIService) GetProjectDashboardOverviewExecute(r ApiGetProjectD
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -936,7 +938,7 @@ type ApiGetProjectOAuthProvidersRequest struct {
 	projectId string
 }
 
-func (r ApiGetProjectOAuthProvidersRequest) Execute() (*GetProjectOAuthProviders200Response, *http.Response, error) {
+func (r ApiGetProjectOAuthProvidersRequest) Execute() (*models.GetProjectOAuthProviders200Response, *http.Response, error) {
 	return r.ApiService.GetProjectOAuthProvidersExecute(r)
 }
 
@@ -958,13 +960,13 @@ func (a *ProjectsAPIService) GetProjectOAuthProviders(ctx context.Context, proje
 }
 
 // Execute executes the request
-//  @return GetProjectOAuthProviders200Response
-func (a *ProjectsAPIService) GetProjectOAuthProvidersExecute(r ApiGetProjectOAuthProvidersRequest) (*GetProjectOAuthProviders200Response, *http.Response, error) {
+//  @return models.GetProjectOAuthProviders200Response
+func (a *ProjectsAPIService) GetProjectOAuthProvidersExecute(r ApiGetProjectOAuthProvidersRequest) (*models.GetProjectOAuthProviders200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetProjectOAuthProviders200Response
+		localVarReturnValue  *models.GetProjectOAuthProviders200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectsAPIService.GetProjectOAuthProviders")
@@ -1019,7 +1021,7 @@ func (a *ProjectsAPIService) GetProjectOAuthProvidersExecute(r ApiGetProjectOAut
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1030,7 +1032,7 @@ func (a *ProjectsAPIService) GetProjectOAuthProvidersExecute(r ApiGetProjectOAut
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1061,7 +1063,7 @@ type ApiGetProjectUsageRequest struct {
 	id string
 }
 
-func (r ApiGetProjectUsageRequest) Execute() (*ProjectUsageResponse, *http.Response, error) {
+func (r ApiGetProjectUsageRequest) Execute() (*models.ProjectUsageResponse, *http.Response, error) {
 	return r.ApiService.GetProjectUsageExecute(r)
 }
 
@@ -1069,8 +1071,8 @@ func (r ApiGetProjectUsageRequest) Execute() (*ProjectUsageResponse, *http.Respo
 GetProjectUsage Get project usage statistics
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param orgId Organization ID
- @param id Project ID
+ @param orgId models.Organization ID
+ @param id models.Project ID
  @return ApiGetProjectUsageRequest
 */
 func (a *ProjectsAPIService) GetProjectUsage(ctx context.Context, orgId string, id string) ApiGetProjectUsageRequest {
@@ -1083,13 +1085,13 @@ func (a *ProjectsAPIService) GetProjectUsage(ctx context.Context, orgId string, 
 }
 
 // Execute executes the request
-//  @return ProjectUsageResponse
-func (a *ProjectsAPIService) GetProjectUsageExecute(r ApiGetProjectUsageRequest) (*ProjectUsageResponse, *http.Response, error) {
+//  @return models.ProjectUsageResponse
+func (a *ProjectsAPIService) GetProjectUsageExecute(r ApiGetProjectUsageRequest) (*models.ProjectUsageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ProjectUsageResponse
+		localVarReturnValue  *models.ProjectUsageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectsAPIService.GetProjectUsage")
@@ -1165,7 +1167,7 @@ type ApiListProjectsRequest struct {
 	orgId string
 }
 
-func (r ApiListProjectsRequest) Execute() (*ListProjects200Response, *http.Response, error) {
+func (r ApiListProjectsRequest) Execute() (*models.ListProjects200Response, *http.Response, error) {
 	return r.ApiService.ListProjectsExecute(r)
 }
 
@@ -1177,7 +1179,7 @@ Requires: OrgBearerAuth (organization-level authentication only).
 
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param orgId Organization ID
+ @param orgId models.Organization ID
  @return ApiListProjectsRequest
 */
 func (a *ProjectsAPIService) ListProjects(ctx context.Context, orgId string) ApiListProjectsRequest {
@@ -1189,13 +1191,13 @@ func (a *ProjectsAPIService) ListProjects(ctx context.Context, orgId string) Api
 }
 
 // Execute executes the request
-//  @return ListProjects200Response
-func (a *ProjectsAPIService) ListProjectsExecute(r ApiListProjectsRequest) (*ListProjects200Response, *http.Response, error) {
+//  @return models.ListProjects200Response
+func (a *ProjectsAPIService) ListProjectsExecute(r ApiListProjectsRequest) (*models.ListProjects200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ListProjects200Response
+		localVarReturnValue  *models.ListProjects200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectsAPIService.ListProjects")
@@ -1269,15 +1271,15 @@ type ApiUpdateOAuthProviderConfigRequest struct {
 	ApiService *ProjectsAPIService
 	projectId string
 	provider string
-	updateOAuthProviderConfigRequest *UpdateOAuthProviderConfigRequest
+	updateOAuthProviderConfigRequest *models.UpdateOAuthProviderConfigRequest
 }
 
-func (r ApiUpdateOAuthProviderConfigRequest) UpdateOAuthProviderConfigRequest(updateOAuthProviderConfigRequest UpdateOAuthProviderConfigRequest) ApiUpdateOAuthProviderConfigRequest {
+func (r ApiUpdateOAuthProviderConfigRequest) UpdateOAuthProviderConfigRequest(updateOAuthProviderConfigRequest models.UpdateOAuthProviderConfigRequest) ApiUpdateOAuthProviderConfigRequest {
 	r.updateOAuthProviderConfigRequest = &updateOAuthProviderConfigRequest
 	return r
 }
 
-func (r ApiUpdateOAuthProviderConfigRequest) Execute() (*ConfigureOAuthProvider200Response, *http.Response, error) {
+func (r ApiUpdateOAuthProviderConfigRequest) Execute() (*models.ConfigureOAuthProvider200Response, *http.Response, error) {
 	return r.ApiService.UpdateOAuthProviderConfigExecute(r)
 }
 
@@ -1301,13 +1303,13 @@ func (a *ProjectsAPIService) UpdateOAuthProviderConfig(ctx context.Context, proj
 }
 
 // Execute executes the request
-//  @return ConfigureOAuthProvider200Response
-func (a *ProjectsAPIService) UpdateOAuthProviderConfigExecute(r ApiUpdateOAuthProviderConfigRequest) (*ConfigureOAuthProvider200Response, *http.Response, error) {
+//  @return models.ConfigureOAuthProvider200Response
+func (a *ProjectsAPIService) UpdateOAuthProviderConfigExecute(r ApiUpdateOAuthProviderConfigRequest) (*models.ConfigureOAuthProvider200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ConfigureOAuthProvider200Response
+		localVarReturnValue  *models.ConfigureOAuthProvider200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectsAPIService.UpdateOAuthProviderConfig")
@@ -1368,7 +1370,7 @@ func (a *ProjectsAPIService) UpdateOAuthProviderConfigExecute(r ApiUpdateOAuthPr
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1379,7 +1381,7 @@ func (a *ProjectsAPIService) UpdateOAuthProviderConfigExecute(r ApiUpdateOAuthPr
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1390,7 +1392,7 @@ func (a *ProjectsAPIService) UpdateOAuthProviderConfigExecute(r ApiUpdateOAuthPr
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1401,7 +1403,7 @@ func (a *ProjectsAPIService) UpdateOAuthProviderConfigExecute(r ApiUpdateOAuthPr
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1430,15 +1432,15 @@ type ApiUpdateProjectRequest struct {
 	ApiService *ProjectsAPIService
 	orgId string
 	id string
-	updateProjectRequest *UpdateProjectRequest
+	updateProjectRequest *models.UpdateProjectRequest
 }
 
-func (r ApiUpdateProjectRequest) UpdateProjectRequest(updateProjectRequest UpdateProjectRequest) ApiUpdateProjectRequest {
+func (r ApiUpdateProjectRequest) UpdateProjectRequest(updateProjectRequest models.UpdateProjectRequest) ApiUpdateProjectRequest {
 	r.updateProjectRequest = &updateProjectRequest
 	return r
 }
 
-func (r ApiUpdateProjectRequest) Execute() (*CreateProject201Response, *http.Response, error) {
+func (r ApiUpdateProjectRequest) Execute() (*models.CreateProject201Response, *http.Response, error) {
 	return r.ApiService.UpdateProjectExecute(r)
 }
 
@@ -1451,8 +1453,8 @@ Requires JWT Bearer token authentication. Both OrgBearerAuth and ProjectBearerAu
 
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param orgId Organization ID
- @param id Project ID
+ @param orgId models.Organization ID
+ @param id models.Project ID
  @return ApiUpdateProjectRequest
 */
 func (a *ProjectsAPIService) UpdateProject(ctx context.Context, orgId string, id string) ApiUpdateProjectRequest {
@@ -1465,13 +1467,13 @@ func (a *ProjectsAPIService) UpdateProject(ctx context.Context, orgId string, id
 }
 
 // Execute executes the request
-//  @return CreateProject201Response
-func (a *ProjectsAPIService) UpdateProjectExecute(r ApiUpdateProjectRequest) (*CreateProject201Response, *http.Response, error) {
+//  @return models.CreateProject201Response
+func (a *ProjectsAPIService) UpdateProjectExecute(r ApiUpdateProjectRequest) (*models.CreateProject201Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CreateProject201Response
+		localVarReturnValue  *models.CreateProject201Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectsAPIService.UpdateProject")
@@ -1559,18 +1561,18 @@ func (r ApiUploadProjectLogoRequest) Logo(logo *os.File) ApiUploadProjectLogoReq
 	return r
 }
 
-func (r ApiUploadProjectLogoRequest) Execute() (*UploadProjectLogo200Response, *http.Response, error) {
+func (r ApiUploadProjectLogoRequest) Execute() (*models.UploadProjectLogo200Response, *http.Response, error) {
 	return r.ApiService.UploadProjectLogoExecute(r)
 }
 
 /*
 UploadProjectLogo Upload project logo (by project ID)
 
-Upload a logo image for a project. File is stored in the platform storage under **logo/project/{projectId}/**. The public URL is saved to the project's **logoUrl** field and used in project-related emails and UI. Project is resolved from the authenticated user's org. Use multipart/form-data with field name **logo**. Allowed types: PNG, JPEG, GIF, WebP. Max size 2MB.
+Upload a logo image for a project. File is stored in the platform storage under **logo/project/{projectId}/**. The public URL is saved to the project's **logoUrl** field and used in project-related emails and UI. models.Project is resolved from the authenticated user's org. Use multipart/form-data with field name **logo**. Allowed types: PNG, JPEG, GIF, WebP. Max size 2MB.
 
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id Project ID
+ @param id models.Project ID
  @return ApiUploadProjectLogoRequest
 */
 func (a *ProjectsAPIService) UploadProjectLogo(ctx context.Context, id string) ApiUploadProjectLogoRequest {
@@ -1582,13 +1584,13 @@ func (a *ProjectsAPIService) UploadProjectLogo(ctx context.Context, id string) A
 }
 
 // Execute executes the request
-//  @return UploadProjectLogo200Response
-func (a *ProjectsAPIService) UploadProjectLogoExecute(r ApiUploadProjectLogoRequest) (*UploadProjectLogo200Response, *http.Response, error) {
+//  @return models.UploadProjectLogo200Response
+func (a *ProjectsAPIService) UploadProjectLogoExecute(r ApiUploadProjectLogoRequest) (*models.UploadProjectLogo200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *UploadProjectLogo200Response
+		localVarReturnValue  *models.UploadProjectLogo200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectsAPIService.UploadProjectLogo")
@@ -1703,7 +1705,7 @@ func (r ApiUploadProjectLogoByOrgRequest) Logo(logo *os.File) ApiUploadProjectLo
 	return r
 }
 
-func (r ApiUploadProjectLogoByOrgRequest) Execute() (*UploadProjectLogo200Response, *http.Response, error) {
+func (r ApiUploadProjectLogoByOrgRequest) Execute() (*models.UploadProjectLogo200Response, *http.Response, error) {
 	return r.ApiService.UploadProjectLogoByOrgExecute(r)
 }
 
@@ -1714,8 +1716,8 @@ Upload a logo image for a project. File is stored in the platform storage under 
 
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param orgId Organization ID
- @param id Project ID
+ @param orgId models.Organization ID
+ @param id models.Project ID
  @return ApiUploadProjectLogoByOrgRequest
 */
 func (a *ProjectsAPIService) UploadProjectLogoByOrg(ctx context.Context, orgId string, id string) ApiUploadProjectLogoByOrgRequest {
@@ -1728,13 +1730,13 @@ func (a *ProjectsAPIService) UploadProjectLogoByOrg(ctx context.Context, orgId s
 }
 
 // Execute executes the request
-//  @return UploadProjectLogo200Response
-func (a *ProjectsAPIService) UploadProjectLogoByOrgExecute(r ApiUploadProjectLogoByOrgRequest) (*UploadProjectLogo200Response, *http.Response, error) {
+//  @return models.UploadProjectLogo200Response
+func (a *ProjectsAPIService) UploadProjectLogoByOrgExecute(r ApiUploadProjectLogoByOrgRequest) (*models.UploadProjectLogo200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *UploadProjectLogo200Response
+		localVarReturnValue  *models.UploadProjectLogo200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectsAPIService.UploadProjectLogoByOrg")

@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -18,6 +18,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -28,15 +30,15 @@ type ApiConfigureWebhookRequest struct {
 	ctx context.Context
 	ApiService *WebhooksAPIService
 	projectId string
-	configureWebhookRequest *ConfigureWebhookRequest
+	configureWebhookRequest *models.ConfigureWebhookRequest
 }
 
-func (r ApiConfigureWebhookRequest) ConfigureWebhookRequest(configureWebhookRequest ConfigureWebhookRequest) ApiConfigureWebhookRequest {
+func (r ApiConfigureWebhookRequest) ConfigureWebhookRequest(configureWebhookRequest models.ConfigureWebhookRequest) ApiConfigureWebhookRequest {
 	r.configureWebhookRequest = &configureWebhookRequest
 	return r
 }
 
-func (r ApiConfigureWebhookRequest) Execute() (*ConfigureWebhook200Response, *http.Response, error) {
+func (r ApiConfigureWebhookRequest) Execute() (*models.ConfigureWebhook200Response, *http.Response, error) {
 	return r.ApiService.ConfigureWebhookExecute(r)
 }
 
@@ -45,7 +47,7 @@ ConfigureWebhook Create or update project webhook
 
 Set or update the project webhook URL and options. This is how you **add** or **create** a webhook for a project:
 provide **webhookUrl** to enable delivery; omit or set to null to disable. Optionally set **webhookSecret**,
-**webhookEvents**, **webhookVersion**, and **transformations**. Plan limits (webhooks per project) apply when adding a new URL.
+**webhookEvents**, **webhookVersion**, and **transformations**. models.Plan limits (webhooks per project) apply when adding a new URL.
 Requires ProjectBearerAuth (JWT) or ApiKeyAuth (X-API-Key) with project update access.
 
 
@@ -62,13 +64,13 @@ func (a *WebhooksAPIService) ConfigureWebhook(ctx context.Context, projectId str
 }
 
 // Execute executes the request
-//  @return ConfigureWebhook200Response
-func (a *WebhooksAPIService) ConfigureWebhookExecute(r ApiConfigureWebhookRequest) (*ConfigureWebhook200Response, *http.Response, error) {
+//  @return models.ConfigureWebhook200Response
+func (a *WebhooksAPIService) ConfigureWebhookExecute(r ApiConfigureWebhookRequest) (*models.ConfigureWebhook200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPut
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ConfigureWebhook200Response
+		localVarReturnValue  *models.ConfigureWebhook200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WebhooksAPIService.ConfigureWebhook")
@@ -139,7 +141,7 @@ func (a *WebhooksAPIService) ConfigureWebhookExecute(r ApiConfigureWebhookReques
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v ConfigureWebhook403Response
+			var v models.ConfigureWebhook403Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -150,7 +152,7 @@ func (a *WebhooksAPIService) ConfigureWebhookExecute(r ApiConfigureWebhookReques
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v GetWebhookConfig404Response
+			var v models.GetWebhookConfig404Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -161,7 +163,7 @@ func (a *WebhooksAPIService) ConfigureWebhookExecute(r ApiConfigureWebhookReques
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -191,7 +193,7 @@ type ApiGetWebhookConfigRequest struct {
 	projectId string
 }
 
-func (r ApiGetWebhookConfigRequest) Execute() (*GetWebhookConfig200Response, *http.Response, error) {
+func (r ApiGetWebhookConfigRequest) Execute() (*models.GetWebhookConfig200Response, *http.Response, error) {
 	return r.ApiService.GetWebhookConfigExecute(r)
 }
 
@@ -199,7 +201,7 @@ func (r ApiGetWebhookConfigRequest) Execute() (*GetWebhookConfig200Response, *ht
 GetWebhookConfig Get project webhook configuration
 
 Get the current webhook URL, events, version, and transformations for a project.
-This is **where Mudbase POSTs event payloads**; it does **not** return a `webhookId`. Delivery ids (`WebhookLog._id`) come from **`POST /api/webhooks/trigger`** or automatic deliveries, and from **list logs** endpoints.
+This is **where Mudbase POSTs event payloads**; it does **not** return a `webhookId`. Delivery ids (`models.WebhookLog._id`) come from **`POST /api/webhooks/trigger`** or automatic deliveries, and from **list logs** endpoints.
 
 Requires ProjectBearerAuth (JWT) or ApiKeyAuth (X-API-Key) with project read access.
 
@@ -217,13 +219,13 @@ func (a *WebhooksAPIService) GetWebhookConfig(ctx context.Context, projectId str
 }
 
 // Execute executes the request
-//  @return GetWebhookConfig200Response
-func (a *WebhooksAPIService) GetWebhookConfigExecute(r ApiGetWebhookConfigRequest) (*GetWebhookConfig200Response, *http.Response, error) {
+//  @return models.GetWebhookConfig200Response
+func (a *WebhooksAPIService) GetWebhookConfigExecute(r ApiGetWebhookConfigRequest) (*models.GetWebhookConfig200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetWebhookConfig200Response
+		localVarReturnValue  *models.GetWebhookConfig200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WebhooksAPIService.GetWebhookConfig")
@@ -292,7 +294,7 @@ func (a *WebhooksAPIService) GetWebhookConfigExecute(r ApiGetWebhookConfigReques
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v GetWebhookConfig404Response
+			var v models.GetWebhookConfig404Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -303,7 +305,7 @@ func (a *WebhooksAPIService) GetWebhookConfigExecute(r ApiGetWebhookConfigReques
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -345,19 +347,19 @@ func (r ApiGetWebhookStatsRequest) Days(days int32) ApiGetWebhookStatsRequest {
 	return r
 }
 
-func (r ApiGetWebhookStatsRequest) Execute() (*WebhookStatsResponse, *http.Response, error) {
+func (r ApiGetWebhookStatsRequest) Execute() (*models.WebhookStatsResponse, *http.Response, error) {
 	return r.ApiService.GetWebhookStatsExecute(r)
 }
 
 /*
 GetWebhookStats Get webhook delivery statistics
 
-Aggregates **`WebhookLog`** rows for your organization over the last **`days`** (default 7).
+Aggregates **`models.WebhookLog`** rows for your organization over the last **`days`** (default 7).
 Optional **`projectId`** filters to a project in your org.
 
 Returns **`statusStats`** (counts and average duration per delivery **status**) and **`eventStats`** (counts and success rate per **event** name).
 
-**Auth:** Organization JWT only (`authRequired`).
+**Auth:** models.Organization JWT only (`authRequired`).
 
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -371,13 +373,13 @@ func (a *WebhooksAPIService) GetWebhookStats(ctx context.Context) ApiGetWebhookS
 }
 
 // Execute executes the request
-//  @return WebhookStatsResponse
-func (a *WebhooksAPIService) GetWebhookStatsExecute(r ApiGetWebhookStatsRequest) (*WebhookStatsResponse, *http.Response, error) {
+//  @return models.WebhookStatsResponse
+func (a *WebhooksAPIService) GetWebhookStatsExecute(r ApiGetWebhookStatsRequest) (*models.WebhookStatsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *WebhookStatsResponse
+		localVarReturnValue  *models.WebhookStatsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WebhooksAPIService.GetWebhookStats")
@@ -441,7 +443,7 @@ func (a *WebhooksAPIService) GetWebhookStatsExecute(r ApiGetWebhookStatsRequest)
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -452,7 +454,7 @@ func (a *WebhooksAPIService) GetWebhookStatsExecute(r ApiGetWebhookStatsRequest)
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -506,14 +508,14 @@ func (r ApiListProjectWebhookLogsRequest) Event(event string) ApiListProjectWebh
 	return r
 }
 
-func (r ApiListProjectWebhookLogsRequest) Execute() (*WebhookListResponse, *http.Response, error) {
+func (r ApiListProjectWebhookLogsRequest) Execute() (*models.WebhookListResponse, *http.Response, error) {
 	return r.ApiService.ListProjectWebhookLogsExecute(r)
 }
 
 /*
 ListProjectWebhookLogs List webhook delivery logs (project)
 
-Same **`WebhookLog`** documents as **`GET /api/webhooks`**, scoped to **`projectId`** in the path.
+Same **`models.WebhookLog`** documents as **`GET /api/webhooks`**, scoped to **`projectId`** in the path.
 Accepts **org JWT**, **project JWT**, or **project API key** with project read access.
 
 Each item’s **`_id`** is the id returned as **`webhookId`** from **`POST /api/webhooks/trigger`** and used in **`POST /api/webhooks/retry/{webhookId}`**.
@@ -532,13 +534,13 @@ func (a *WebhooksAPIService) ListProjectWebhookLogs(ctx context.Context, project
 }
 
 // Execute executes the request
-//  @return WebhookListResponse
-func (a *WebhooksAPIService) ListProjectWebhookLogsExecute(r ApiListProjectWebhookLogsRequest) (*WebhookListResponse, *http.Response, error) {
+//  @return models.WebhookListResponse
+func (a *WebhooksAPIService) ListProjectWebhookLogsExecute(r ApiListProjectWebhookLogsRequest) (*models.WebhookListResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *WebhookListResponse
+		localVarReturnValue  *models.WebhookListResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WebhooksAPIService.ListProjectWebhookLogs")
@@ -627,7 +629,7 @@ func (a *WebhooksAPIService) ListProjectWebhookLogsExecute(r ApiListProjectWebho
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -638,7 +640,7 @@ func (a *WebhooksAPIService) ListProjectWebhookLogsExecute(r ApiListProjectWebho
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -649,7 +651,7 @@ func (a *WebhooksAPIService) ListProjectWebhookLogsExecute(r ApiListProjectWebho
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -709,7 +711,7 @@ func (r ApiListWebhooksRequest) ProjectId(projectId string) ApiListWebhooksReque
 	return r
 }
 
-func (r ApiListWebhooksRequest) Execute() (*WebhookListResponse, *http.Response, error) {
+func (r ApiListWebhooksRequest) Execute() (*models.WebhookListResponse, *http.Response, error) {
 	return r.ApiService.ListWebhooksExecute(r)
 }
 
@@ -720,7 +722,7 @@ Paginated **webhook delivery logs** for your organization (each row is one outbo
 Optional **`projectId`** query filters to a project that belongs to your org.
 
 Use each log document’s **`_id`** (MongoDB ObjectId) as **`webhookId`** when calling **`POST /api/webhooks/retry/{webhookId}`** after a failed delivery.
-Organization **JWT only** (`OrgBearerAuth`); project API keys are not accepted on this route.
+models.Organization **JWT only** (`OrgBearerAuth`); project API keys are not accepted on this route.
 
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -734,13 +736,13 @@ func (a *WebhooksAPIService) ListWebhooks(ctx context.Context) ApiListWebhooksRe
 }
 
 // Execute executes the request
-//  @return WebhookListResponse
-func (a *WebhooksAPIService) ListWebhooksExecute(r ApiListWebhooksRequest) (*WebhookListResponse, *http.Response, error) {
+//  @return models.WebhookListResponse
+func (a *WebhooksAPIService) ListWebhooksExecute(r ApiListWebhooksRequest) (*models.WebhookListResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *WebhookListResponse
+		localVarReturnValue  *models.WebhookListResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WebhooksAPIService.ListWebhooks")
@@ -817,7 +819,7 @@ func (a *WebhooksAPIService) ListWebhooksExecute(r ApiListWebhooksRequest) (*Web
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -828,7 +830,7 @@ func (a *WebhooksAPIService) ListWebhooksExecute(r ApiListWebhooksRequest) (*Web
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -839,7 +841,7 @@ func (a *WebhooksAPIService) ListWebhooksExecute(r ApiListWebhooksRequest) (*Web
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -869,24 +871,24 @@ type ApiRetryWebhookRequest struct {
 	webhookId string
 }
 
-func (r ApiRetryWebhookRequest) Execute() (*RetryWebhookResponse, *http.Response, error) {
+func (r ApiRetryWebhookRequest) Execute() (*models.RetryWebhookResponse, *http.Response, error) {
 	return r.ApiService.RetryWebhookExecute(r)
 }
 
 /*
 RetryWebhook Retry a failed webhook delivery
 
-**`webhookId`** (path) = **`WebhookLog._id`** (MongoDB ObjectId)—the same value returned as **`webhookId`** from **`POST /api/webhooks/trigger`** and as **`_id`** on **`GET /api/webhooks`** / **`GET /api/webhooks/projects/{projectId}`**.
+**`webhookId`** (path) = **`models.WebhookLog._id`** (MongoDB ObjectId)—the same value returned as **`webhookId`** from **`POST /api/webhooks/trigger`** and as **`_id`** on **`GET /api/webhooks`** / **`GET /api/webhooks/projects/{projectId}`**.
 
 **Not** the string **`webhookId`** field stored on the log document (e.g. `manual-173…`); use the document **`_id`** for this path.
 
 Resets a non-success log to **pending** and re-delivers. **400** if status is already **`success`**.
 
-**Auth:** Organization JWT only; project API keys are not accepted.
+**Auth:** models.Organization JWT only; project API keys are not accepted.
 
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param webhookId WebhookLog document `_id` (delivery log id).
+ @param webhookId models.WebhookLog document `_id` (delivery log id).
  @return ApiRetryWebhookRequest
 */
 func (a *WebhooksAPIService) RetryWebhook(ctx context.Context, webhookId string) ApiRetryWebhookRequest {
@@ -898,13 +900,13 @@ func (a *WebhooksAPIService) RetryWebhook(ctx context.Context, webhookId string)
 }
 
 // Execute executes the request
-//  @return RetryWebhookResponse
-func (a *WebhooksAPIService) RetryWebhookExecute(r ApiRetryWebhookRequest) (*RetryWebhookResponse, *http.Response, error) {
+//  @return models.RetryWebhookResponse
+func (a *WebhooksAPIService) RetryWebhookExecute(r ApiRetryWebhookRequest) (*models.RetryWebhookResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *RetryWebhookResponse
+		localVarReturnValue  *models.RetryWebhookResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WebhooksAPIService.RetryWebhook")
@@ -959,7 +961,7 @@ func (a *WebhooksAPIService) RetryWebhookExecute(r ApiRetryWebhookRequest) (*Ret
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v RetryWebhook400Response
+			var v models.RetryWebhook400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -970,7 +972,7 @@ func (a *WebhooksAPIService) RetryWebhookExecute(r ApiRetryWebhookRequest) (*Ret
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -981,7 +983,7 @@ func (a *WebhooksAPIService) RetryWebhookExecute(r ApiRetryWebhookRequest) (*Ret
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -992,7 +994,7 @@ func (a *WebhooksAPIService) RetryWebhookExecute(r ApiRetryWebhookRequest) (*Ret
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1020,15 +1022,15 @@ type ApiTestWebhookTransformationRequest struct {
 	ctx context.Context
 	ApiService *WebhooksAPIService
 	projectId string
-	testWebhookTransformationRequest *TestWebhookTransformationRequest
+	testWebhookTransformationRequest *models.TestWebhookTransformationRequest
 }
 
-func (r ApiTestWebhookTransformationRequest) TestWebhookTransformationRequest(testWebhookTransformationRequest TestWebhookTransformationRequest) ApiTestWebhookTransformationRequest {
+func (r ApiTestWebhookTransformationRequest) TestWebhookTransformationRequest(testWebhookTransformationRequest models.TestWebhookTransformationRequest) ApiTestWebhookTransformationRequest {
 	r.testWebhookTransformationRequest = &testWebhookTransformationRequest
 	return r
 }
 
-func (r ApiTestWebhookTransformationRequest) Execute() (*TestWebhookTransformation200Response, *http.Response, error) {
+func (r ApiTestWebhookTransformationRequest) Execute() (*models.TestWebhookTransformation200Response, *http.Response, error) {
 	return r.ApiService.TestWebhookTransformationExecute(r)
 }
 
@@ -1052,13 +1054,13 @@ func (a *WebhooksAPIService) TestWebhookTransformation(ctx context.Context, proj
 }
 
 // Execute executes the request
-//  @return TestWebhookTransformation200Response
-func (a *WebhooksAPIService) TestWebhookTransformationExecute(r ApiTestWebhookTransformationRequest) (*TestWebhookTransformation200Response, *http.Response, error) {
+//  @return models.TestWebhookTransformation200Response
+func (a *WebhooksAPIService) TestWebhookTransformationExecute(r ApiTestWebhookTransformationRequest) (*models.TestWebhookTransformation200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *TestWebhookTransformation200Response
+		localVarReturnValue  *models.TestWebhookTransformation200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WebhooksAPIService.TestWebhookTransformation")
@@ -1132,7 +1134,7 @@ func (a *WebhooksAPIService) TestWebhookTransformationExecute(r ApiTestWebhookTr
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v GetWebhookConfig404Response
+			var v models.GetWebhookConfig404Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1143,7 +1145,7 @@ func (a *WebhooksAPIService) TestWebhookTransformationExecute(r ApiTestWebhookTr
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1170,22 +1172,22 @@ func (a *WebhooksAPIService) TestWebhookTransformationExecute(r ApiTestWebhookTr
 type ApiTriggerWebhookRequest struct {
 	ctx context.Context
 	ApiService *WebhooksAPIService
-	triggerWebhookRequest *TriggerWebhookRequest
+	triggerWebhookRequest *models.TriggerWebhookRequest
 }
 
-func (r ApiTriggerWebhookRequest) TriggerWebhookRequest(triggerWebhookRequest TriggerWebhookRequest) ApiTriggerWebhookRequest {
+func (r ApiTriggerWebhookRequest) TriggerWebhookRequest(triggerWebhookRequest models.TriggerWebhookRequest) ApiTriggerWebhookRequest {
 	r.triggerWebhookRequest = &triggerWebhookRequest
 	return r
 }
 
-func (r ApiTriggerWebhookRequest) Execute() (*TriggerWebhookResponse, *http.Response, error) {
+func (r ApiTriggerWebhookRequest) Execute() (*models.TriggerWebhookResponse, *http.Response, error) {
 	return r.ApiService.TriggerWebhookExecute(r)
 }
 
 /*
 TriggerWebhook Manually trigger an outbound webhook
 
-Queues an HTTP delivery to **`url`** for **`projectId`** (must belong to your org). Creates a **`WebhookLog`** row, runs delivery, and returns the new log’s **`_id`**.
+Queues an HTTP delivery to **`url`** for **`projectId`** (must belong to your org). Creates a **`models.WebhookLog`** row, runs delivery, and returns the new log’s **`_id`**.
 
 **Response field `webhookId`:** This is the **MongoDB `_id` of the delivery log** (same as the log’s **`_id`** in list endpoints). It is **not** part of the request body and is **not** the project `webhookSecret` from **`PUT .../config`**.
 
@@ -1203,13 +1205,13 @@ func (a *WebhooksAPIService) TriggerWebhook(ctx context.Context) ApiTriggerWebho
 }
 
 // Execute executes the request
-//  @return TriggerWebhookResponse
-func (a *WebhooksAPIService) TriggerWebhookExecute(r ApiTriggerWebhookRequest) (*TriggerWebhookResponse, *http.Response, error) {
+//  @return models.TriggerWebhookResponse
+func (a *WebhooksAPIService) TriggerWebhookExecute(r ApiTriggerWebhookRequest) (*models.TriggerWebhookResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *TriggerWebhookResponse
+		localVarReturnValue  *models.TriggerWebhookResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WebhooksAPIService.TriggerWebhook")
@@ -1282,7 +1284,7 @@ func (a *WebhooksAPIService) TriggerWebhookExecute(r ApiTriggerWebhookRequest) (
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v RefreshToken400Response
+			var v models.RefreshToken400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1293,7 +1295,7 @@ func (a *WebhooksAPIService) TriggerWebhookExecute(r ApiTriggerWebhookRequest) (
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -18,6 +18,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -31,7 +33,7 @@ type ApiActivateFunctionRequest struct {
 	functionId string
 }
 
-func (r ApiActivateFunctionRequest) Execute() (*FunctionResponse, *http.Response, error) {
+func (r ApiActivateFunctionRequest) Execute() (*models.FunctionResponse, *http.Response, error) {
 	return r.ApiService.ActivateFunctionExecute(r)
 }
 
@@ -55,13 +57,13 @@ func (a *FunctionsAPIService) ActivateFunction(ctx context.Context, projectId st
 }
 
 // Execute executes the request
-//  @return FunctionResponse
-func (a *FunctionsAPIService) ActivateFunctionExecute(r ApiActivateFunctionRequest) (*FunctionResponse, *http.Response, error) {
+//  @return models.FunctionResponse
+func (a *FunctionsAPIService) ActivateFunctionExecute(r ApiActivateFunctionRequest) (*models.FunctionResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *FunctionResponse
+		localVarReturnValue  *models.FunctionResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FunctionsAPIService.ActivateFunction")
@@ -149,15 +151,15 @@ type ApiCreateFunctionRequest struct {
 	ctx context.Context
 	ApiService *FunctionsAPIService
 	projectId string
-	createFunctionRequest *CreateFunctionRequest
+	createFunctionRequest *models.CreateFunctionRequest
 }
 
-func (r ApiCreateFunctionRequest) CreateFunctionRequest(createFunctionRequest CreateFunctionRequest) ApiCreateFunctionRequest {
+func (r ApiCreateFunctionRequest) CreateFunctionRequest(createFunctionRequest models.CreateFunctionRequest) ApiCreateFunctionRequest {
 	r.createFunctionRequest = &createFunctionRequest
 	return r
 }
 
-func (r ApiCreateFunctionRequest) Execute() (*FunctionResponse, *http.Response, error) {
+func (r ApiCreateFunctionRequest) Execute() (*models.FunctionResponse, *http.Response, error) {
 	return r.ApiService.CreateFunctionExecute(r)
 }
 
@@ -165,7 +167,7 @@ func (r ApiCreateFunctionRequest) Execute() (*FunctionResponse, *http.Response, 
 CreateFunction Create function
 
 Create a new serverless function. Trigger types: http, document, file, webhook, cron, messaging.
-Sandbox globals available today: `payload`, `context`, `env`, `console`. Function code runs in an
+Sandbox globals available today: `payload`, `context`, `env`, `console`. models.Function code runs in an
 isolated worker with no ambient network or database access — it can only read its trigger payload,
 the `env` vars you configure, and return a JSON-serializable result; it cannot yet call back into
 your project's database, storage, or messaging APIs from inside the function body. If you
@@ -187,13 +189,13 @@ func (a *FunctionsAPIService) CreateFunction(ctx context.Context, projectId stri
 }
 
 // Execute executes the request
-//  @return FunctionResponse
-func (a *FunctionsAPIService) CreateFunctionExecute(r ApiCreateFunctionRequest) (*FunctionResponse, *http.Response, error) {
+//  @return models.FunctionResponse
+func (a *FunctionsAPIService) CreateFunctionExecute(r ApiCreateFunctionRequest) (*models.FunctionResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *FunctionResponse
+		localVarReturnValue  *models.FunctionResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FunctionsAPIService.CreateFunction")
@@ -288,7 +290,7 @@ type ApiDeactivateFunctionRequest struct {
 	functionId string
 }
 
-func (r ApiDeactivateFunctionRequest) Execute() (*FunctionResponse, *http.Response, error) {
+func (r ApiDeactivateFunctionRequest) Execute() (*models.FunctionResponse, *http.Response, error) {
 	return r.ApiService.DeactivateFunctionExecute(r)
 }
 
@@ -312,13 +314,13 @@ func (a *FunctionsAPIService) DeactivateFunction(ctx context.Context, projectId 
 }
 
 // Execute executes the request
-//  @return FunctionResponse
-func (a *FunctionsAPIService) DeactivateFunctionExecute(r ApiDeactivateFunctionRequest) (*FunctionResponse, *http.Response, error) {
+//  @return models.FunctionResponse
+func (a *FunctionsAPIService) DeactivateFunctionExecute(r ApiDeactivateFunctionRequest) (*models.FunctionResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *FunctionResponse
+		localVarReturnValue  *models.FunctionResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FunctionsAPIService.DeactivateFunction")
@@ -409,7 +411,7 @@ type ApiDeleteFunctionRequest struct {
 	functionId string
 }
 
-func (r ApiDeleteFunctionRequest) Execute() (*DeleteFunction200Response, *http.Response, error) {
+func (r ApiDeleteFunctionRequest) Execute() (*models.DeleteFunction200Response, *http.Response, error) {
 	return r.ApiService.DeleteFunctionExecute(r)
 }
 
@@ -433,13 +435,13 @@ func (a *FunctionsAPIService) DeleteFunction(ctx context.Context, projectId stri
 }
 
 // Execute executes the request
-//  @return DeleteFunction200Response
-func (a *FunctionsAPIService) DeleteFunctionExecute(r ApiDeleteFunctionRequest) (*DeleteFunction200Response, *http.Response, error) {
+//  @return models.DeleteFunction200Response
+func (a *FunctionsAPIService) DeleteFunctionExecute(r ApiDeleteFunctionRequest) (*models.DeleteFunction200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *DeleteFunction200Response
+		localVarReturnValue  *models.DeleteFunction200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FunctionsAPIService.DeleteFunction")
@@ -528,15 +530,15 @@ type ApiExecuteFunctionRequest struct {
 	ApiService *FunctionsAPIService
 	projectId string
 	functionId string
-	executeFunctionRequest *ExecuteFunctionRequest
+	executeFunctionRequest *models.ExecuteFunctionRequest
 }
 
-func (r ApiExecuteFunctionRequest) ExecuteFunctionRequest(executeFunctionRequest ExecuteFunctionRequest) ApiExecuteFunctionRequest {
+func (r ApiExecuteFunctionRequest) ExecuteFunctionRequest(executeFunctionRequest models.ExecuteFunctionRequest) ApiExecuteFunctionRequest {
 	r.executeFunctionRequest = &executeFunctionRequest
 	return r
 }
 
-func (r ApiExecuteFunctionRequest) Execute() (*FunctionExecutionResponse, *http.Response, error) {
+func (r ApiExecuteFunctionRequest) Execute() (*models.FunctionExecutionResponse, *http.Response, error) {
 	return r.ApiService.ExecuteFunctionExecute(r)
 }
 
@@ -567,13 +569,13 @@ func (a *FunctionsAPIService) ExecuteFunction(ctx context.Context, projectId str
 }
 
 // Execute executes the request
-//  @return FunctionExecutionResponse
-func (a *FunctionsAPIService) ExecuteFunctionExecute(r ApiExecuteFunctionRequest) (*FunctionExecutionResponse, *http.Response, error) {
+//  @return models.FunctionExecutionResponse
+func (a *FunctionsAPIService) ExecuteFunctionExecute(r ApiExecuteFunctionRequest) (*models.FunctionExecutionResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *FunctionExecutionResponse
+		localVarReturnValue  *models.FunctionExecutionResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FunctionsAPIService.ExecuteFunction")
@@ -666,7 +668,7 @@ type ApiGetFunctionRequest struct {
 	functionId string
 }
 
-func (r ApiGetFunctionRequest) Execute() (*FunctionResponse, *http.Response, error) {
+func (r ApiGetFunctionRequest) Execute() (*models.FunctionResponse, *http.Response, error) {
 	return r.ApiService.GetFunctionExecute(r)
 }
 
@@ -690,13 +692,13 @@ func (a *FunctionsAPIService) GetFunction(ctx context.Context, projectId string,
 }
 
 // Execute executes the request
-//  @return FunctionResponse
-func (a *FunctionsAPIService) GetFunctionExecute(r ApiGetFunctionRequest) (*FunctionResponse, *http.Response, error) {
+//  @return models.FunctionResponse
+func (a *FunctionsAPIService) GetFunctionExecute(r ApiGetFunctionRequest) (*models.FunctionResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *FunctionResponse
+		localVarReturnValue  *models.FunctionResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FunctionsAPIService.GetFunction")
@@ -788,7 +790,7 @@ type ApiGetFunctionExecutionRequest struct {
 	executionId string
 }
 
-func (r ApiGetFunctionExecutionRequest) Execute() (*FunctionExecutionStatusResponse, *http.Response, error) {
+func (r ApiGetFunctionExecutionRequest) Execute() (*models.FunctionExecutionStatusResponse, *http.Response, error) {
 	return r.ApiService.GetFunctionExecutionExecute(r)
 }
 
@@ -819,13 +821,13 @@ func (a *FunctionsAPIService) GetFunctionExecution(ctx context.Context, projectI
 }
 
 // Execute executes the request
-//  @return FunctionExecutionStatusResponse
-func (a *FunctionsAPIService) GetFunctionExecutionExecute(r ApiGetFunctionExecutionRequest) (*FunctionExecutionStatusResponse, *http.Response, error) {
+//  @return models.FunctionExecutionStatusResponse
+func (a *FunctionsAPIService) GetFunctionExecutionExecute(r ApiGetFunctionExecutionRequest) (*models.FunctionExecutionStatusResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *FunctionExecutionStatusResponse
+		localVarReturnValue  *models.FunctionExecutionStatusResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FunctionsAPIService.GetFunctionExecution")
@@ -929,7 +931,7 @@ func (r ApiGetFunctionLogsRequest) Offset(offset int32) ApiGetFunctionLogsReques
 	return r
 }
 
-func (r ApiGetFunctionLogsRequest) Execute() (*FunctionLogsResponse, *http.Response, error) {
+func (r ApiGetFunctionLogsRequest) Execute() (*models.FunctionLogsResponse, *http.Response, error) {
 	return r.ApiService.GetFunctionLogsExecute(r)
 }
 
@@ -953,13 +955,13 @@ func (a *FunctionsAPIService) GetFunctionLogs(ctx context.Context, projectId str
 }
 
 // Execute executes the request
-//  @return FunctionLogsResponse
-func (a *FunctionsAPIService) GetFunctionLogsExecute(r ApiGetFunctionLogsRequest) (*FunctionLogsResponse, *http.Response, error) {
+//  @return models.FunctionLogsResponse
+func (a *FunctionsAPIService) GetFunctionLogsExecute(r ApiGetFunctionLogsRequest) (*models.FunctionLogsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *FunctionLogsResponse
+		localVarReturnValue  *models.FunctionLogsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FunctionsAPIService.GetFunctionLogs")
@@ -1050,7 +1052,7 @@ type ApiGetFunctionVersionsRequest struct {
 	functionId string
 }
 
-func (r ApiGetFunctionVersionsRequest) Execute() (*GetFunctionVersions200Response, *http.Response, error) {
+func (r ApiGetFunctionVersionsRequest) Execute() (*models.GetFunctionVersions200Response, *http.Response, error) {
 	return r.ApiService.GetFunctionVersionsExecute(r)
 }
 
@@ -1074,13 +1076,13 @@ func (a *FunctionsAPIService) GetFunctionVersions(ctx context.Context, projectId
 }
 
 // Execute executes the request
-//  @return GetFunctionVersions200Response
-func (a *FunctionsAPIService) GetFunctionVersionsExecute(r ApiGetFunctionVersionsRequest) (*GetFunctionVersions200Response, *http.Response, error) {
+//  @return models.GetFunctionVersions200Response
+func (a *FunctionsAPIService) GetFunctionVersionsExecute(r ApiGetFunctionVersionsRequest) (*models.GetFunctionVersions200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetFunctionVersions200Response
+		localVarReturnValue  *models.GetFunctionVersions200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FunctionsAPIService.GetFunctionVersions")
@@ -1203,7 +1205,7 @@ func (r ApiListFunctionsRequest) IsActive(isActive bool) ApiListFunctionsRequest
 	return r
 }
 
-func (r ApiListFunctionsRequest) Execute() (*FunctionListResponse, *http.Response, error) {
+func (r ApiListFunctionsRequest) Execute() (*models.FunctionListResponse, *http.Response, error) {
 	return r.ApiService.ListFunctionsExecute(r)
 }
 
@@ -1227,13 +1229,13 @@ func (a *FunctionsAPIService) ListFunctions(ctx context.Context, projectId strin
 }
 
 // Execute executes the request
-//  @return FunctionListResponse
-func (a *FunctionsAPIService) ListFunctionsExecute(r ApiListFunctionsRequest) (*FunctionListResponse, *http.Response, error) {
+//  @return models.FunctionListResponse
+func (a *FunctionsAPIService) ListFunctionsExecute(r ApiListFunctionsRequest) (*models.FunctionListResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *FunctionListResponse
+		localVarReturnValue  *models.FunctionListResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FunctionsAPIService.ListFunctions")
@@ -1347,7 +1349,7 @@ type ApiRetryFunctionExecutionRequest struct {
 	executionIndex int32
 }
 
-func (r ApiRetryFunctionExecutionRequest) Execute() (*FunctionExecutionResponse, *http.Response, error) {
+func (r ApiRetryFunctionExecutionRequest) Execute() (*models.FunctionExecutionResponse, *http.Response, error) {
 	return r.ApiService.RetryFunctionExecutionExecute(r)
 }
 
@@ -1373,13 +1375,13 @@ func (a *FunctionsAPIService) RetryFunctionExecution(ctx context.Context, projec
 }
 
 // Execute executes the request
-//  @return FunctionExecutionResponse
-func (a *FunctionsAPIService) RetryFunctionExecutionExecute(r ApiRetryFunctionExecutionRequest) (*FunctionExecutionResponse, *http.Response, error) {
+//  @return models.FunctionExecutionResponse
+func (a *FunctionsAPIService) RetryFunctionExecutionExecute(r ApiRetryFunctionExecutionRequest) (*models.FunctionExecutionResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *FunctionExecutionResponse
+		localVarReturnValue  *models.FunctionExecutionResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FunctionsAPIService.RetryFunctionExecution")
@@ -1469,15 +1471,15 @@ type ApiRollbackFunctionRequest struct {
 	ApiService *FunctionsAPIService
 	projectId string
 	functionId string
-	rollbackFunctionRequest *RollbackFunctionRequest
+	rollbackFunctionRequest *models.RollbackFunctionRequest
 }
 
-func (r ApiRollbackFunctionRequest) RollbackFunctionRequest(rollbackFunctionRequest RollbackFunctionRequest) ApiRollbackFunctionRequest {
+func (r ApiRollbackFunctionRequest) RollbackFunctionRequest(rollbackFunctionRequest models.RollbackFunctionRequest) ApiRollbackFunctionRequest {
 	r.rollbackFunctionRequest = &rollbackFunctionRequest
 	return r
 }
 
-func (r ApiRollbackFunctionRequest) Execute() (*FunctionResponse, *http.Response, error) {
+func (r ApiRollbackFunctionRequest) Execute() (*models.FunctionResponse, *http.Response, error) {
 	return r.ApiService.RollbackFunctionExecute(r)
 }
 
@@ -1501,13 +1503,13 @@ func (a *FunctionsAPIService) RollbackFunction(ctx context.Context, projectId st
 }
 
 // Execute executes the request
-//  @return FunctionResponse
-func (a *FunctionsAPIService) RollbackFunctionExecute(r ApiRollbackFunctionRequest) (*FunctionResponse, *http.Response, error) {
+//  @return models.FunctionResponse
+func (a *FunctionsAPIService) RollbackFunctionExecute(r ApiRollbackFunctionRequest) (*models.FunctionResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *FunctionResponse
+		localVarReturnValue  *models.FunctionResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FunctionsAPIService.RollbackFunction")
@@ -1601,15 +1603,15 @@ type ApiSimulateFunctionTriggerRequest struct {
 	ApiService *FunctionsAPIService
 	projectId string
 	functionId string
-	simulateFunctionTriggerRequest *SimulateFunctionTriggerRequest
+	simulateFunctionTriggerRequest *models.SimulateFunctionTriggerRequest
 }
 
-func (r ApiSimulateFunctionTriggerRequest) SimulateFunctionTriggerRequest(simulateFunctionTriggerRequest SimulateFunctionTriggerRequest) ApiSimulateFunctionTriggerRequest {
+func (r ApiSimulateFunctionTriggerRequest) SimulateFunctionTriggerRequest(simulateFunctionTriggerRequest models.SimulateFunctionTriggerRequest) ApiSimulateFunctionTriggerRequest {
 	r.simulateFunctionTriggerRequest = &simulateFunctionTriggerRequest
 	return r
 }
 
-func (r ApiSimulateFunctionTriggerRequest) Execute() (*FunctionExecutionResponse, *http.Response, error) {
+func (r ApiSimulateFunctionTriggerRequest) Execute() (*models.FunctionExecutionResponse, *http.Response, error) {
 	return r.ApiService.SimulateFunctionTriggerExecute(r)
 }
 
@@ -1639,13 +1641,13 @@ func (a *FunctionsAPIService) SimulateFunctionTrigger(ctx context.Context, proje
 }
 
 // Execute executes the request
-//  @return FunctionExecutionResponse
-func (a *FunctionsAPIService) SimulateFunctionTriggerExecute(r ApiSimulateFunctionTriggerRequest) (*FunctionExecutionResponse, *http.Response, error) {
+//  @return models.FunctionExecutionResponse
+func (a *FunctionsAPIService) SimulateFunctionTriggerExecute(r ApiSimulateFunctionTriggerRequest) (*models.FunctionExecutionResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *FunctionExecutionResponse
+		localVarReturnValue  *models.FunctionExecutionResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FunctionsAPIService.SimulateFunctionTrigger")
@@ -1750,7 +1752,7 @@ func (r ApiTriggerFunctionWebhookRequest) Body(body map[string]interface{}) ApiT
 	return r
 }
 
-func (r ApiTriggerFunctionWebhookRequest) Execute() (*TriggerFunctionWebhook200Response, *http.Response, error) {
+func (r ApiTriggerFunctionWebhookRequest) Execute() (*models.TriggerFunctionWebhook200Response, *http.Response, error) {
 	return r.ApiService.TriggerFunctionWebhookExecute(r)
 }
 
@@ -1775,13 +1777,13 @@ func (a *FunctionsAPIService) TriggerFunctionWebhook(ctx context.Context, projec
 }
 
 // Execute executes the request
-//  @return TriggerFunctionWebhook200Response
-func (a *FunctionsAPIService) TriggerFunctionWebhookExecute(r ApiTriggerFunctionWebhookRequest) (*TriggerFunctionWebhook200Response, *http.Response, error) {
+//  @return models.TriggerFunctionWebhook200Response
+func (a *FunctionsAPIService) TriggerFunctionWebhookExecute(r ApiTriggerFunctionWebhookRequest) (*models.TriggerFunctionWebhook200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *TriggerFunctionWebhook200Response
+		localVarReturnValue  *models.TriggerFunctionWebhook200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FunctionsAPIService.TriggerFunctionWebhook")
@@ -1841,7 +1843,7 @@ func (a *FunctionsAPIService) TriggerFunctionWebhookExecute(r ApiTriggerFunction
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v TriggerFunctionWebhook400Response
+			var v models.TriggerFunctionWebhook400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1852,7 +1854,7 @@ func (a *FunctionsAPIService) TriggerFunctionWebhookExecute(r ApiTriggerFunction
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v TriggerFunctionWebhook401Response
+			var v models.TriggerFunctionWebhook401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1882,15 +1884,15 @@ type ApiUpdateFunctionRequest struct {
 	ApiService *FunctionsAPIService
 	projectId string
 	functionId string
-	updateFunctionRequest *UpdateFunctionRequest
+	updateFunctionRequest *models.UpdateFunctionRequest
 }
 
-func (r ApiUpdateFunctionRequest) UpdateFunctionRequest(updateFunctionRequest UpdateFunctionRequest) ApiUpdateFunctionRequest {
+func (r ApiUpdateFunctionRequest) UpdateFunctionRequest(updateFunctionRequest models.UpdateFunctionRequest) ApiUpdateFunctionRequest {
 	r.updateFunctionRequest = &updateFunctionRequest
 	return r
 }
 
-func (r ApiUpdateFunctionRequest) Execute() (*FunctionResponse, *http.Response, error) {
+func (r ApiUpdateFunctionRequest) Execute() (*models.FunctionResponse, *http.Response, error) {
 	return r.ApiService.UpdateFunctionExecute(r)
 }
 
@@ -1914,13 +1916,13 @@ func (a *FunctionsAPIService) UpdateFunction(ctx context.Context, projectId stri
 }
 
 // Execute executes the request
-//  @return FunctionResponse
-func (a *FunctionsAPIService) UpdateFunctionExecute(r ApiUpdateFunctionRequest) (*FunctionResponse, *http.Response, error) {
+//  @return models.FunctionResponse
+func (a *FunctionsAPIService) UpdateFunctionExecute(r ApiUpdateFunctionRequest) (*models.FunctionResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPut
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *FunctionResponse
+		localVarReturnValue  *models.FunctionResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FunctionsAPIService.UpdateFunction")

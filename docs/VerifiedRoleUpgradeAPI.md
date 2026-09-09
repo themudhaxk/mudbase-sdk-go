@@ -25,13 +25,14 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	orgId := "orgId_example" // string | 
 	userId := "userId_example" // string | 
-	verifiedRoleUpgradeRequest := *openapiclient.NewVerifiedRoleUpgradeRequest("seller") // VerifiedRoleUpgradeRequest | 
+	verifiedRoleUpgradeRequest := *models.NewVerifiedRoleUpgradeRequest("seller") // VerifiedRoleUpgradeRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

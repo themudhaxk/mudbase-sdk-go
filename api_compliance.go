@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -17,6 +17,8 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -26,15 +28,15 @@ type ComplianceAPIService service
 type ApiApiGdprErasePostRequest struct {
 	ctx context.Context
 	ApiService *ComplianceAPIService
-	apiGdprErasePostRequest *ApiGdprErasePostRequest
+	apiGdprErasePostRequest *models.ApiGdprErasePostRequest
 }
 
-func (r ApiApiGdprErasePostRequest) ApiGdprErasePostRequest(apiGdprErasePostRequest ApiGdprErasePostRequest) ApiApiGdprErasePostRequest {
+func (r ApiApiGdprErasePostRequest) ApiGdprErasePostRequest(apiGdprErasePostRequest models.ApiGdprErasePostRequest) ApiApiGdprErasePostRequest {
 	r.apiGdprErasePostRequest = &apiGdprErasePostRequest
 	return r
 }
 
-func (r ApiApiGdprErasePostRequest) Execute() (*ApplyRoleFeaturePreset200Response, *http.Response, error) {
+func (r ApiApiGdprErasePostRequest) Execute() (*models.ApplyRoleFeaturePreset200Response, *http.Response, error) {
 	return r.ApiService.ApiGdprErasePostExecute(r)
 }
 
@@ -61,13 +63,13 @@ func (a *ComplianceAPIService) ApiGdprErasePost(ctx context.Context) ApiApiGdprE
 }
 
 // Execute executes the request
-//  @return ApplyRoleFeaturePreset200Response
-func (a *ComplianceAPIService) ApiGdprErasePostExecute(r ApiApiGdprErasePostRequest) (*ApplyRoleFeaturePreset200Response, *http.Response, error) {
+//  @return models.ApplyRoleFeaturePreset200Response
+func (a *ComplianceAPIService) ApiGdprErasePostExecute(r ApiApiGdprErasePostRequest) (*models.ApplyRoleFeaturePreset200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ApplyRoleFeaturePreset200Response
+		localVarReturnValue  *models.ApplyRoleFeaturePreset200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ComplianceAPIService.ApiGdprErasePost")
@@ -126,7 +128,7 @@ func (a *ComplianceAPIService) ApiGdprErasePostExecute(r ApiApiGdprErasePostRequ
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 409 {
-			var v EraseUserData409Response
+			var v models.EraseUserData409Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -253,15 +255,15 @@ func (a *ComplianceAPIService) ApiGdprExportGetExecute(r ApiApiGdprExportGetRequ
 type ApiGenerateAccessReviewRequest struct {
 	ctx context.Context
 	ApiService *ComplianceAPIService
-	generateAccessReviewRequest *GenerateAccessReviewRequest
+	generateAccessReviewRequest *models.GenerateAccessReviewRequest
 }
 
-func (r ApiGenerateAccessReviewRequest) GenerateAccessReviewRequest(generateAccessReviewRequest GenerateAccessReviewRequest) ApiGenerateAccessReviewRequest {
+func (r ApiGenerateAccessReviewRequest) GenerateAccessReviewRequest(generateAccessReviewRequest models.GenerateAccessReviewRequest) ApiGenerateAccessReviewRequest {
 	r.generateAccessReviewRequest = &generateAccessReviewRequest
 	return r
 }
 
-func (r ApiGenerateAccessReviewRequest) Execute() (*GenerateAccessReview200Response, *http.Response, error) {
+func (r ApiGenerateAccessReviewRequest) Execute() (*models.GenerateAccessReview200Response, *http.Response, error) {
 	return r.ApiService.GenerateAccessReviewExecute(r)
 }
 
@@ -283,13 +285,13 @@ func (a *ComplianceAPIService) GenerateAccessReview(ctx context.Context) ApiGene
 }
 
 // Execute executes the request
-//  @return GenerateAccessReview200Response
-func (a *ComplianceAPIService) GenerateAccessReviewExecute(r ApiGenerateAccessReviewRequest) (*GenerateAccessReview200Response, *http.Response, error) {
+//  @return models.GenerateAccessReview200Response
+func (a *ComplianceAPIService) GenerateAccessReviewExecute(r ApiGenerateAccessReviewRequest) (*models.GenerateAccessReview200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GenerateAccessReview200Response
+		localVarReturnValue  *models.GenerateAccessReview200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ComplianceAPIService.GenerateAccessReview")
@@ -348,7 +350,7 @@ func (a *ComplianceAPIService) GenerateAccessReviewExecute(r ApiGenerateAccessRe
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -359,7 +361,7 @@ func (a *ComplianceAPIService) GenerateAccessReviewExecute(r ApiGenerateAccessRe
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -386,15 +388,15 @@ func (a *ComplianceAPIService) GenerateAccessReviewExecute(r ApiGenerateAccessRe
 type ApiGenerateDataProcessingRecordRequest struct {
 	ctx context.Context
 	ApiService *ComplianceAPIService
-	generateDataProcessingRecordRequest *GenerateDataProcessingRecordRequest
+	generateDataProcessingRecordRequest *models.GenerateDataProcessingRecordRequest
 }
 
-func (r ApiGenerateDataProcessingRecordRequest) GenerateDataProcessingRecordRequest(generateDataProcessingRecordRequest GenerateDataProcessingRecordRequest) ApiGenerateDataProcessingRecordRequest {
+func (r ApiGenerateDataProcessingRecordRequest) GenerateDataProcessingRecordRequest(generateDataProcessingRecordRequest models.GenerateDataProcessingRecordRequest) ApiGenerateDataProcessingRecordRequest {
 	r.generateDataProcessingRecordRequest = &generateDataProcessingRecordRequest
 	return r
 }
 
-func (r ApiGenerateDataProcessingRecordRequest) Execute() (*GenerateDataProcessingRecord200Response, *http.Response, error) {
+func (r ApiGenerateDataProcessingRecordRequest) Execute() (*models.GenerateDataProcessingRecord200Response, *http.Response, error) {
 	return r.ApiService.GenerateDataProcessingRecordExecute(r)
 }
 
@@ -414,13 +416,13 @@ func (a *ComplianceAPIService) GenerateDataProcessingRecord(ctx context.Context)
 }
 
 // Execute executes the request
-//  @return GenerateDataProcessingRecord200Response
-func (a *ComplianceAPIService) GenerateDataProcessingRecordExecute(r ApiGenerateDataProcessingRecordRequest) (*GenerateDataProcessingRecord200Response, *http.Response, error) {
+//  @return models.GenerateDataProcessingRecord200Response
+func (a *ComplianceAPIService) GenerateDataProcessingRecordExecute(r ApiGenerateDataProcessingRecordRequest) (*models.GenerateDataProcessingRecord200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GenerateDataProcessingRecord200Response
+		localVarReturnValue  *models.GenerateDataProcessingRecord200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ComplianceAPIService.GenerateDataProcessingRecord")
@@ -479,7 +481,7 @@ func (a *ComplianceAPIService) GenerateDataProcessingRecordExecute(r ApiGenerate
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -490,7 +492,7 @@ func (a *ComplianceAPIService) GenerateDataProcessingRecordExecute(r ApiGenerate
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -519,7 +521,7 @@ type ApiGetComplianceSummaryRequest struct {
 	ApiService *ComplianceAPIService
 }
 
-func (r ApiGetComplianceSummaryRequest) Execute() (*GetComplianceSummary200Response, *http.Response, error) {
+func (r ApiGetComplianceSummaryRequest) Execute() (*models.GetComplianceSummary200Response, *http.Response, error) {
 	return r.ApiService.GetComplianceSummaryExecute(r)
 }
 
@@ -539,13 +541,13 @@ func (a *ComplianceAPIService) GetComplianceSummary(ctx context.Context) ApiGetC
 }
 
 // Execute executes the request
-//  @return GetComplianceSummary200Response
-func (a *ComplianceAPIService) GetComplianceSummaryExecute(r ApiGetComplianceSummaryRequest) (*GetComplianceSummary200Response, *http.Response, error) {
+//  @return models.GetComplianceSummary200Response
+func (a *ComplianceAPIService) GetComplianceSummaryExecute(r ApiGetComplianceSummaryRequest) (*models.GetComplianceSummary200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetComplianceSummary200Response
+		localVarReturnValue  *models.GetComplianceSummary200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ComplianceAPIService.GetComplianceSummary")
@@ -599,7 +601,7 @@ func (a *ComplianceAPIService) GetComplianceSummaryExecute(r ApiGetComplianceSum
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -626,15 +628,15 @@ func (a *ComplianceAPIService) GetComplianceSummaryExecute(r ApiGetComplianceSum
 type ApiLogSecurityEventRequest struct {
 	ctx context.Context
 	ApiService *ComplianceAPIService
-	logSecurityEventRequest *LogSecurityEventRequest
+	logSecurityEventRequest *models.LogSecurityEventRequest
 }
 
-func (r ApiLogSecurityEventRequest) LogSecurityEventRequest(logSecurityEventRequest LogSecurityEventRequest) ApiLogSecurityEventRequest {
+func (r ApiLogSecurityEventRequest) LogSecurityEventRequest(logSecurityEventRequest models.LogSecurityEventRequest) ApiLogSecurityEventRequest {
 	r.logSecurityEventRequest = &logSecurityEventRequest
 	return r
 }
 
-func (r ApiLogSecurityEventRequest) Execute() (*LogSecurityEvent200Response, *http.Response, error) {
+func (r ApiLogSecurityEventRequest) Execute() (*models.LogSecurityEvent200Response, *http.Response, error) {
 	return r.ApiService.LogSecurityEventExecute(r)
 }
 
@@ -654,13 +656,13 @@ func (a *ComplianceAPIService) LogSecurityEvent(ctx context.Context) ApiLogSecur
 }
 
 // Execute executes the request
-//  @return LogSecurityEvent200Response
-func (a *ComplianceAPIService) LogSecurityEventExecute(r ApiLogSecurityEventRequest) (*LogSecurityEvent200Response, *http.Response, error) {
+//  @return models.LogSecurityEvent200Response
+func (a *ComplianceAPIService) LogSecurityEventExecute(r ApiLogSecurityEventRequest) (*models.LogSecurityEvent200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *LogSecurityEvent200Response
+		localVarReturnValue  *models.LogSecurityEvent200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ComplianceAPIService.LogSecurityEvent")
@@ -719,7 +721,7 @@ func (a *ComplianceAPIService) LogSecurityEventExecute(r ApiLogSecurityEventRequ
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -730,7 +732,7 @@ func (a *ComplianceAPIService) LogSecurityEventExecute(r ApiLogSecurityEventRequ
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

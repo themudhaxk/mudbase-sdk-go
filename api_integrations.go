@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -18,6 +18,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -28,15 +30,15 @@ type ApiCreateFromTemplateRequest struct {
 	ctx context.Context
 	ApiService *IntegrationsAPIService
 	projectId string
-	createFromTemplateRequest *CreateFromTemplateRequest
+	createFromTemplateRequest *models.CreateFromTemplateRequest
 }
 
-func (r ApiCreateFromTemplateRequest) CreateFromTemplateRequest(createFromTemplateRequest CreateFromTemplateRequest) ApiCreateFromTemplateRequest {
+func (r ApiCreateFromTemplateRequest) CreateFromTemplateRequest(createFromTemplateRequest models.CreateFromTemplateRequest) ApiCreateFromTemplateRequest {
 	r.createFromTemplateRequest = &createFromTemplateRequest
 	return r
 }
 
-func (r ApiCreateFromTemplateRequest) Execute() (*CreateIntegration201Response, *http.Response, error) {
+func (r ApiCreateFromTemplateRequest) Execute() (*models.CreateIntegration201Response, *http.Response, error) {
 	return r.ApiService.CreateFromTemplateExecute(r)
 }
 
@@ -60,13 +62,13 @@ func (a *IntegrationsAPIService) CreateFromTemplate(ctx context.Context, project
 }
 
 // Execute executes the request
-//  @return CreateIntegration201Response
-func (a *IntegrationsAPIService) CreateFromTemplateExecute(r ApiCreateFromTemplateRequest) (*CreateIntegration201Response, *http.Response, error) {
+//  @return models.CreateIntegration201Response
+func (a *IntegrationsAPIService) CreateFromTemplateExecute(r ApiCreateFromTemplateRequest) (*models.CreateIntegration201Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CreateIntegration201Response
+		localVarReturnValue  *models.CreateIntegration201Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationsAPIService.CreateFromTemplate")
@@ -126,7 +128,7 @@ func (a *IntegrationsAPIService) CreateFromTemplateExecute(r ApiCreateFromTempla
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -137,7 +139,7 @@ func (a *IntegrationsAPIService) CreateFromTemplateExecute(r ApiCreateFromTempla
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -165,15 +167,15 @@ type ApiCreateIntegrationRequest struct {
 	ctx context.Context
 	ApiService *IntegrationsAPIService
 	projectId string
-	createIntegrationRequest *CreateIntegrationRequest
+	createIntegrationRequest *models.CreateIntegrationRequest
 }
 
-func (r ApiCreateIntegrationRequest) CreateIntegrationRequest(createIntegrationRequest CreateIntegrationRequest) ApiCreateIntegrationRequest {
+func (r ApiCreateIntegrationRequest) CreateIntegrationRequest(createIntegrationRequest models.CreateIntegrationRequest) ApiCreateIntegrationRequest {
 	r.createIntegrationRequest = &createIntegrationRequest
 	return r
 }
 
-func (r ApiCreateIntegrationRequest) Execute() (*CreateIntegration201Response, *http.Response, error) {
+func (r ApiCreateIntegrationRequest) Execute() (*models.CreateIntegration201Response, *http.Response, error) {
 	return r.ApiService.CreateIntegrationExecute(r)
 }
 
@@ -197,13 +199,13 @@ func (a *IntegrationsAPIService) CreateIntegration(ctx context.Context, projectI
 }
 
 // Execute executes the request
-//  @return CreateIntegration201Response
-func (a *IntegrationsAPIService) CreateIntegrationExecute(r ApiCreateIntegrationRequest) (*CreateIntegration201Response, *http.Response, error) {
+//  @return models.CreateIntegration201Response
+func (a *IntegrationsAPIService) CreateIntegrationExecute(r ApiCreateIntegrationRequest) (*models.CreateIntegration201Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CreateIntegration201Response
+		localVarReturnValue  *models.CreateIntegration201Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationsAPIService.CreateIntegration")
@@ -263,7 +265,7 @@ func (a *IntegrationsAPIService) CreateIntegrationExecute(r ApiCreateIntegration
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -274,7 +276,7 @@ func (a *IntegrationsAPIService) CreateIntegrationExecute(r ApiCreateIntegration
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -305,7 +307,7 @@ type ApiDeleteIntegrationRequest struct {
 	integrationId string
 }
 
-func (r ApiDeleteIntegrationRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiDeleteIntegrationRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.DeleteIntegrationExecute(r)
 }
 
@@ -331,13 +333,13 @@ func (a *IntegrationsAPIService) DeleteIntegration(ctx context.Context, projectI
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *IntegrationsAPIService) DeleteIntegrationExecute(r ApiDeleteIntegrationRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *IntegrationsAPIService) DeleteIntegrationExecute(r ApiDeleteIntegrationRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationsAPIService.DeleteIntegration")
@@ -393,7 +395,7 @@ func (a *IntegrationsAPIService) DeleteIntegrationExecute(r ApiDeleteIntegration
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -404,7 +406,7 @@ func (a *IntegrationsAPIService) DeleteIntegrationExecute(r ApiDeleteIntegration
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -433,15 +435,15 @@ type ApiExecuteIntegrationRequest struct {
 	ApiService *IntegrationsAPIService
 	projectId string
 	integrationId string
-	executeIntegrationRequest *ExecuteIntegrationRequest
+	executeIntegrationRequest *models.ExecuteIntegrationRequest
 }
 
-func (r ApiExecuteIntegrationRequest) ExecuteIntegrationRequest(executeIntegrationRequest ExecuteIntegrationRequest) ApiExecuteIntegrationRequest {
+func (r ApiExecuteIntegrationRequest) ExecuteIntegrationRequest(executeIntegrationRequest models.ExecuteIntegrationRequest) ApiExecuteIntegrationRequest {
 	r.executeIntegrationRequest = &executeIntegrationRequest
 	return r
 }
 
-func (r ApiExecuteIntegrationRequest) Execute() (*TestIntegration200Response, *http.Response, error) {
+func (r ApiExecuteIntegrationRequest) Execute() (*models.TestIntegration200Response, *http.Response, error) {
 	return r.ApiService.ExecuteIntegrationExecute(r)
 }
 
@@ -467,13 +469,13 @@ func (a *IntegrationsAPIService) ExecuteIntegration(ctx context.Context, project
 }
 
 // Execute executes the request
-//  @return TestIntegration200Response
-func (a *IntegrationsAPIService) ExecuteIntegrationExecute(r ApiExecuteIntegrationRequest) (*TestIntegration200Response, *http.Response, error) {
+//  @return models.TestIntegration200Response
+func (a *IntegrationsAPIService) ExecuteIntegrationExecute(r ApiExecuteIntegrationRequest) (*models.TestIntegration200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *TestIntegration200Response
+		localVarReturnValue  *models.TestIntegration200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationsAPIService.ExecuteIntegration")
@@ -534,7 +536,7 @@ func (a *IntegrationsAPIService) ExecuteIntegrationExecute(r ApiExecuteIntegrati
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -545,7 +547,7 @@ func (a *IntegrationsAPIService) ExecuteIntegrationExecute(r ApiExecuteIntegrati
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -576,7 +578,7 @@ type ApiExportIntegrationRequest struct {
 	integrationId string
 }
 
-func (r ApiExportIntegrationRequest) Execute() (*CreateIntegration201Response, *http.Response, error) {
+func (r ApiExportIntegrationRequest) Execute() (*models.CreateIntegration201Response, *http.Response, error) {
 	return r.ApiService.ExportIntegrationExecute(r)
 }
 
@@ -602,13 +604,13 @@ func (a *IntegrationsAPIService) ExportIntegration(ctx context.Context, projectI
 }
 
 // Execute executes the request
-//  @return CreateIntegration201Response
-func (a *IntegrationsAPIService) ExportIntegrationExecute(r ApiExportIntegrationRequest) (*CreateIntegration201Response, *http.Response, error) {
+//  @return models.CreateIntegration201Response
+func (a *IntegrationsAPIService) ExportIntegrationExecute(r ApiExportIntegrationRequest) (*models.CreateIntegration201Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CreateIntegration201Response
+		localVarReturnValue  *models.CreateIntegration201Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationsAPIService.ExportIntegration")
@@ -664,7 +666,7 @@ func (a *IntegrationsAPIService) ExportIntegrationExecute(r ApiExportIntegration
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -675,7 +677,7 @@ func (a *IntegrationsAPIService) ExportIntegrationExecute(r ApiExportIntegration
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -706,7 +708,7 @@ type ApiGetIntegrationRequest struct {
 	integrationId string
 }
 
-func (r ApiGetIntegrationRequest) Execute() (*GetIntegration200Response, *http.Response, error) {
+func (r ApiGetIntegrationRequest) Execute() (*models.GetIntegration200Response, *http.Response, error) {
 	return r.ApiService.GetIntegrationExecute(r)
 }
 
@@ -732,13 +734,13 @@ func (a *IntegrationsAPIService) GetIntegration(ctx context.Context, projectId s
 }
 
 // Execute executes the request
-//  @return GetIntegration200Response
-func (a *IntegrationsAPIService) GetIntegrationExecute(r ApiGetIntegrationRequest) (*GetIntegration200Response, *http.Response, error) {
+//  @return models.GetIntegration200Response
+func (a *IntegrationsAPIService) GetIntegrationExecute(r ApiGetIntegrationRequest) (*models.GetIntegration200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetIntegration200Response
+		localVarReturnValue  *models.GetIntegration200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationsAPIService.GetIntegration")
@@ -794,7 +796,7 @@ func (a *IntegrationsAPIService) GetIntegrationExecute(r ApiGetIntegrationReques
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -805,7 +807,7 @@ func (a *IntegrationsAPIService) GetIntegrationExecute(r ApiGetIntegrationReques
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -835,7 +837,7 @@ type ApiGetIntegrationsRequest struct {
 	projectId string
 }
 
-func (r ApiGetIntegrationsRequest) Execute() (*GetIntegrations200Response, *http.Response, error) {
+func (r ApiGetIntegrationsRequest) Execute() (*models.GetIntegrations200Response, *http.Response, error) {
 	return r.ApiService.GetIntegrationsExecute(r)
 }
 
@@ -859,13 +861,13 @@ func (a *IntegrationsAPIService) GetIntegrations(ctx context.Context, projectId 
 }
 
 // Execute executes the request
-//  @return GetIntegrations200Response
-func (a *IntegrationsAPIService) GetIntegrationsExecute(r ApiGetIntegrationsRequest) (*GetIntegrations200Response, *http.Response, error) {
+//  @return models.GetIntegrations200Response
+func (a *IntegrationsAPIService) GetIntegrationsExecute(r ApiGetIntegrationsRequest) (*models.GetIntegrations200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetIntegrations200Response
+		localVarReturnValue  *models.GetIntegrations200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationsAPIService.GetIntegrations")
@@ -920,7 +922,7 @@ func (a *IntegrationsAPIService) GetIntegrationsExecute(r ApiGetIntegrationsRequ
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -949,7 +951,7 @@ type ApiGetTemplatesRequest struct {
 	ApiService *IntegrationsAPIService
 }
 
-func (r ApiGetTemplatesRequest) Execute() (*GetTemplates200Response, *http.Response, error) {
+func (r ApiGetTemplatesRequest) Execute() (*models.GetTemplates200Response, *http.Response, error) {
 	return r.ApiService.GetTemplatesExecute(r)
 }
 
@@ -971,13 +973,13 @@ func (a *IntegrationsAPIService) GetTemplates(ctx context.Context) ApiGetTemplat
 }
 
 // Execute executes the request
-//  @return GetTemplates200Response
-func (a *IntegrationsAPIService) GetTemplatesExecute(r ApiGetTemplatesRequest) (*GetTemplates200Response, *http.Response, error) {
+//  @return models.GetTemplates200Response
+func (a *IntegrationsAPIService) GetTemplatesExecute(r ApiGetTemplatesRequest) (*models.GetTemplates200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetTemplates200Response
+		localVarReturnValue  *models.GetTemplates200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationsAPIService.GetTemplates")
@@ -1031,7 +1033,7 @@ func (a *IntegrationsAPIService) GetTemplatesExecute(r ApiGetTemplatesRequest) (
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1068,7 +1070,7 @@ func (r ApiGetUsageStatsRequest) Period(period string) ApiGetUsageStatsRequest {
 	return r
 }
 
-func (r ApiGetUsageStatsRequest) Execute() (*GetUsageStats200Response, *http.Response, error) {
+func (r ApiGetUsageStatsRequest) Execute() (*models.GetUsageStats200Response, *http.Response, error) {
 	return r.ApiService.GetUsageStatsExecute(r)
 }
 
@@ -1094,13 +1096,13 @@ func (a *IntegrationsAPIService) GetUsageStats(ctx context.Context, projectId st
 }
 
 // Execute executes the request
-//  @return GetUsageStats200Response
-func (a *IntegrationsAPIService) GetUsageStatsExecute(r ApiGetUsageStatsRequest) (*GetUsageStats200Response, *http.Response, error) {
+//  @return models.GetUsageStats200Response
+func (a *IntegrationsAPIService) GetUsageStatsExecute(r ApiGetUsageStatsRequest) (*models.GetUsageStats200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetUsageStats200Response
+		localVarReturnValue  *models.GetUsageStats200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationsAPIService.GetUsageStats")
@@ -1163,7 +1165,7 @@ func (a *IntegrationsAPIService) GetUsageStatsExecute(r ApiGetUsageStatsRequest)
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1174,7 +1176,7 @@ func (a *IntegrationsAPIService) GetUsageStatsExecute(r ApiGetUsageStatsRequest)
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1202,15 +1204,15 @@ type ApiImportIntegrationRequest struct {
 	ctx context.Context
 	ApiService *IntegrationsAPIService
 	projectId string
-	importIntegrationRequest *ImportIntegrationRequest
+	importIntegrationRequest *models.ImportIntegrationRequest
 }
 
-func (r ApiImportIntegrationRequest) ImportIntegrationRequest(importIntegrationRequest ImportIntegrationRequest) ApiImportIntegrationRequest {
+func (r ApiImportIntegrationRequest) ImportIntegrationRequest(importIntegrationRequest models.ImportIntegrationRequest) ApiImportIntegrationRequest {
 	r.importIntegrationRequest = &importIntegrationRequest
 	return r
 }
 
-func (r ApiImportIntegrationRequest) Execute() (*CreateIntegration201Response, *http.Response, error) {
+func (r ApiImportIntegrationRequest) Execute() (*models.CreateIntegration201Response, *http.Response, error) {
 	return r.ApiService.ImportIntegrationExecute(r)
 }
 
@@ -1234,13 +1236,13 @@ func (a *IntegrationsAPIService) ImportIntegration(ctx context.Context, projectI
 }
 
 // Execute executes the request
-//  @return CreateIntegration201Response
-func (a *IntegrationsAPIService) ImportIntegrationExecute(r ApiImportIntegrationRequest) (*CreateIntegration201Response, *http.Response, error) {
+//  @return models.CreateIntegration201Response
+func (a *IntegrationsAPIService) ImportIntegrationExecute(r ApiImportIntegrationRequest) (*models.CreateIntegration201Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CreateIntegration201Response
+		localVarReturnValue  *models.CreateIntegration201Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationsAPIService.ImportIntegration")
@@ -1300,7 +1302,7 @@ func (a *IntegrationsAPIService) ImportIntegrationExecute(r ApiImportIntegration
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1311,7 +1313,7 @@ func (a *IntegrationsAPIService) ImportIntegrationExecute(r ApiImportIntegration
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1340,15 +1342,15 @@ type ApiTestIntegrationRequest struct {
 	ApiService *IntegrationsAPIService
 	projectId string
 	integrationId string
-	testIntegrationRequest *TestIntegrationRequest
+	testIntegrationRequest *models.TestIntegrationRequest
 }
 
-func (r ApiTestIntegrationRequest) TestIntegrationRequest(testIntegrationRequest TestIntegrationRequest) ApiTestIntegrationRequest {
+func (r ApiTestIntegrationRequest) TestIntegrationRequest(testIntegrationRequest models.TestIntegrationRequest) ApiTestIntegrationRequest {
 	r.testIntegrationRequest = &testIntegrationRequest
 	return r
 }
 
-func (r ApiTestIntegrationRequest) Execute() (*TestIntegration200Response, *http.Response, error) {
+func (r ApiTestIntegrationRequest) Execute() (*models.TestIntegration200Response, *http.Response, error) {
 	return r.ApiService.TestIntegrationExecute(r)
 }
 
@@ -1374,13 +1376,13 @@ func (a *IntegrationsAPIService) TestIntegration(ctx context.Context, projectId 
 }
 
 // Execute executes the request
-//  @return TestIntegration200Response
-func (a *IntegrationsAPIService) TestIntegrationExecute(r ApiTestIntegrationRequest) (*TestIntegration200Response, *http.Response, error) {
+//  @return models.TestIntegration200Response
+func (a *IntegrationsAPIService) TestIntegrationExecute(r ApiTestIntegrationRequest) (*models.TestIntegration200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *TestIntegration200Response
+		localVarReturnValue  *models.TestIntegration200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationsAPIService.TestIntegration")
@@ -1441,7 +1443,7 @@ func (a *IntegrationsAPIService) TestIntegrationExecute(r ApiTestIntegrationRequ
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1452,7 +1454,7 @@ func (a *IntegrationsAPIService) TestIntegrationExecute(r ApiTestIntegrationRequ
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1481,15 +1483,15 @@ type ApiUpdateIntegrationRequest struct {
 	ApiService *IntegrationsAPIService
 	projectId string
 	integrationId string
-	updateIntegrationRequest *UpdateIntegrationRequest
+	updateIntegrationRequest *models.UpdateIntegrationRequest
 }
 
-func (r ApiUpdateIntegrationRequest) UpdateIntegrationRequest(updateIntegrationRequest UpdateIntegrationRequest) ApiUpdateIntegrationRequest {
+func (r ApiUpdateIntegrationRequest) UpdateIntegrationRequest(updateIntegrationRequest models.UpdateIntegrationRequest) ApiUpdateIntegrationRequest {
 	r.updateIntegrationRequest = &updateIntegrationRequest
 	return r
 }
 
-func (r ApiUpdateIntegrationRequest) Execute() (*CreateIntegration201Response, *http.Response, error) {
+func (r ApiUpdateIntegrationRequest) Execute() (*models.CreateIntegration201Response, *http.Response, error) {
 	return r.ApiService.UpdateIntegrationExecute(r)
 }
 
@@ -1515,13 +1517,13 @@ func (a *IntegrationsAPIService) UpdateIntegration(ctx context.Context, projectI
 }
 
 // Execute executes the request
-//  @return CreateIntegration201Response
-func (a *IntegrationsAPIService) UpdateIntegrationExecute(r ApiUpdateIntegrationRequest) (*CreateIntegration201Response, *http.Response, error) {
+//  @return models.CreateIntegration201Response
+func (a *IntegrationsAPIService) UpdateIntegrationExecute(r ApiUpdateIntegrationRequest) (*models.CreateIntegration201Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CreateIntegration201Response
+		localVarReturnValue  *models.CreateIntegration201Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationsAPIService.UpdateIntegration")
@@ -1582,7 +1584,7 @@ func (a *IntegrationsAPIService) UpdateIntegrationExecute(r ApiUpdateIntegration
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1593,7 +1595,7 @@ func (a *IntegrationsAPIService) UpdateIntegrationExecute(r ApiUpdateIntegration
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1604,7 +1606,7 @@ func (a *IntegrationsAPIService) UpdateIntegrationExecute(r ApiUpdateIntegration
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

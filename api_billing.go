@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -19,6 +19,8 @@ import (
 	"net/url"
 	"strings"
 	"os"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -29,15 +31,15 @@ type ApiCancelSubscriptionRequest struct {
 	ctx context.Context
 	ApiService *BillingAPIService
 	subscriptionId string
-	cancelSubscriptionRequest *CancelSubscriptionRequest
+	cancelSubscriptionRequest *models.CancelSubscriptionRequest
 }
 
-func (r ApiCancelSubscriptionRequest) CancelSubscriptionRequest(cancelSubscriptionRequest CancelSubscriptionRequest) ApiCancelSubscriptionRequest {
+func (r ApiCancelSubscriptionRequest) CancelSubscriptionRequest(cancelSubscriptionRequest models.CancelSubscriptionRequest) ApiCancelSubscriptionRequest {
 	r.cancelSubscriptionRequest = &cancelSubscriptionRequest
 	return r
 }
 
-func (r ApiCancelSubscriptionRequest) Execute() (*DeleteRole200Response, *http.Response, error) {
+func (r ApiCancelSubscriptionRequest) Execute() (*models.DeleteRole200Response, *http.Response, error) {
 	return r.ApiService.CancelSubscriptionExecute(r)
 }
 
@@ -57,13 +59,13 @@ func (a *BillingAPIService) CancelSubscription(ctx context.Context, subscription
 }
 
 // Execute executes the request
-//  @return DeleteRole200Response
-func (a *BillingAPIService) CancelSubscriptionExecute(r ApiCancelSubscriptionRequest) (*DeleteRole200Response, *http.Response, error) {
+//  @return models.DeleteRole200Response
+func (a *BillingAPIService) CancelSubscriptionExecute(r ApiCancelSubscriptionRequest) (*models.DeleteRole200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *DeleteRole200Response
+		localVarReturnValue  *models.DeleteRole200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.CancelSubscription")
@@ -120,7 +122,7 @@ func (a *BillingAPIService) CancelSubscriptionExecute(r ApiCancelSubscriptionReq
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -131,7 +133,7 @@ func (a *BillingAPIService) CancelSubscriptionExecute(r ApiCancelSubscriptionReq
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -142,7 +144,7 @@ func (a *BillingAPIService) CancelSubscriptionExecute(r ApiCancelSubscriptionReq
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -186,7 +188,7 @@ func (r ApiCheckFeatureAccessRequest) Feature(feature string) ApiCheckFeatureAcc
 	return r
 }
 
-func (r ApiCheckFeatureAccessRequest) Execute() (*CheckFeatureAccess200Response, *http.Response, error) {
+func (r ApiCheckFeatureAccessRequest) Execute() (*models.CheckFeatureAccess200Response, *http.Response, error) {
 	return r.ApiService.CheckFeatureAccessExecute(r)
 }
 
@@ -206,13 +208,13 @@ func (a *BillingAPIService) CheckFeatureAccess(ctx context.Context, projectId st
 }
 
 // Execute executes the request
-//  @return CheckFeatureAccess200Response
-func (a *BillingAPIService) CheckFeatureAccessExecute(r ApiCheckFeatureAccessRequest) (*CheckFeatureAccess200Response, *http.Response, error) {
+//  @return models.CheckFeatureAccess200Response
+func (a *BillingAPIService) CheckFeatureAccessExecute(r ApiCheckFeatureAccessRequest) (*models.CheckFeatureAccess200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CheckFeatureAccess200Response
+		localVarReturnValue  *models.CheckFeatureAccess200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.CheckFeatureAccess")
@@ -302,7 +304,7 @@ func (r ApiCheckSubscriptionRequest) Email(email string) ApiCheckSubscriptionReq
 	return r
 }
 
-func (r ApiCheckSubscriptionRequest) Execute() (*CheckSubscription200Response, *http.Response, error) {
+func (r ApiCheckSubscriptionRequest) Execute() (*models.CheckSubscription200Response, *http.Response, error) {
 	return r.ApiService.CheckSubscriptionExecute(r)
 }
 
@@ -322,13 +324,13 @@ func (a *BillingAPIService) CheckSubscription(ctx context.Context, projectId str
 }
 
 // Execute executes the request
-//  @return CheckSubscription200Response
-func (a *BillingAPIService) CheckSubscriptionExecute(r ApiCheckSubscriptionRequest) (*CheckSubscription200Response, *http.Response, error) {
+//  @return models.CheckSubscription200Response
+func (a *BillingAPIService) CheckSubscriptionExecute(r ApiCheckSubscriptionRequest) (*models.CheckSubscription200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CheckSubscription200Response
+		localVarReturnValue  *models.CheckSubscription200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.CheckSubscription")
@@ -405,15 +407,15 @@ type ApiCreateCheckoutSessionRequest struct {
 	ctx context.Context
 	ApiService *BillingAPIService
 	projectId string
-	createCheckoutSessionRequest *CreateCheckoutSessionRequest
+	createCheckoutSessionRequest *models.CreateCheckoutSessionRequest
 }
 
-func (r ApiCreateCheckoutSessionRequest) CreateCheckoutSessionRequest(createCheckoutSessionRequest CreateCheckoutSessionRequest) ApiCreateCheckoutSessionRequest {
+func (r ApiCreateCheckoutSessionRequest) CreateCheckoutSessionRequest(createCheckoutSessionRequest models.CreateCheckoutSessionRequest) ApiCreateCheckoutSessionRequest {
 	r.createCheckoutSessionRequest = &createCheckoutSessionRequest
 	return r
 }
 
-func (r ApiCreateCheckoutSessionRequest) Execute() (*CreateCheckoutSession200Response, *http.Response, error) {
+func (r ApiCreateCheckoutSessionRequest) Execute() (*models.CreateCheckoutSession200Response, *http.Response, error) {
 	return r.ApiService.CreateCheckoutSessionExecute(r)
 }
 
@@ -425,7 +427,7 @@ Response includes only fiat fields (no paymentAddress, paymentOptions, network, 
 
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param projectId Project ID
+ @param projectId models.Project ID
  @return ApiCreateCheckoutSessionRequest
 */
 func (a *BillingAPIService) CreateCheckoutSession(ctx context.Context, projectId string) ApiCreateCheckoutSessionRequest {
@@ -437,13 +439,13 @@ func (a *BillingAPIService) CreateCheckoutSession(ctx context.Context, projectId
 }
 
 // Execute executes the request
-//  @return CreateCheckoutSession200Response
-func (a *BillingAPIService) CreateCheckoutSessionExecute(r ApiCreateCheckoutSessionRequest) (*CreateCheckoutSession200Response, *http.Response, error) {
+//  @return models.CreateCheckoutSession200Response
+func (a *BillingAPIService) CreateCheckoutSessionExecute(r ApiCreateCheckoutSessionRequest) (*models.CreateCheckoutSession200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CreateCheckoutSession200Response
+		localVarReturnValue  *models.CreateCheckoutSession200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.CreateCheckoutSession")
@@ -503,7 +505,7 @@ func (a *BillingAPIService) CreateCheckoutSessionExecute(r ApiCreateCheckoutSess
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v RefreshToken400Response
+			var v models.RefreshToken400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -514,7 +516,7 @@ func (a *BillingAPIService) CreateCheckoutSessionExecute(r ApiCreateCheckoutSess
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -542,15 +544,15 @@ type ApiCreatePlanRequest struct {
 	ctx context.Context
 	ApiService *BillingAPIService
 	projectId string
-	createPlanRequest *CreatePlanRequest
+	createPlanRequest *models.CreatePlanRequest
 }
 
-func (r ApiCreatePlanRequest) CreatePlanRequest(createPlanRequest CreatePlanRequest) ApiCreatePlanRequest {
+func (r ApiCreatePlanRequest) CreatePlanRequest(createPlanRequest models.CreatePlanRequest) ApiCreatePlanRequest {
 	r.createPlanRequest = &createPlanRequest
 	return r
 }
 
-func (r ApiCreatePlanRequest) Execute() (*CreatePlan201Response, *http.Response, error) {
+func (r ApiCreatePlanRequest) Execute() (*models.CreatePlan201Response, *http.Response, error) {
 	return r.ApiService.CreatePlanExecute(r)
 }
 
@@ -570,13 +572,13 @@ func (a *BillingAPIService) CreatePlan(ctx context.Context, projectId string) Ap
 }
 
 // Execute executes the request
-//  @return CreatePlan201Response
-func (a *BillingAPIService) CreatePlanExecute(r ApiCreatePlanRequest) (*CreatePlan201Response, *http.Response, error) {
+//  @return models.CreatePlan201Response
+func (a *BillingAPIService) CreatePlanExecute(r ApiCreatePlanRequest) (*models.CreatePlan201Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CreatePlan201Response
+		localVarReturnValue  *models.CreatePlan201Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.CreatePlan")
@@ -636,7 +638,7 @@ func (a *BillingAPIService) CreatePlanExecute(r ApiCreatePlanRequest) (*CreatePl
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -647,7 +649,7 @@ func (a *BillingAPIService) CreatePlanExecute(r ApiCreatePlanRequest) (*CreatePl
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -678,7 +680,7 @@ type ApiDeletePlanRequest struct {
 	planId string
 }
 
-func (r ApiDeletePlanRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiDeletePlanRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.DeletePlanExecute(r)
 }
 
@@ -700,13 +702,13 @@ func (a *BillingAPIService) DeletePlan(ctx context.Context, projectId string, pl
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *BillingAPIService) DeletePlanExecute(r ApiDeletePlanRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *BillingAPIService) DeletePlanExecute(r ApiDeletePlanRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.DeletePlan")
@@ -762,7 +764,7 @@ func (a *BillingAPIService) DeletePlanExecute(r ApiDeletePlanRequest) (*MessageR
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -773,7 +775,7 @@ func (a *BillingAPIService) DeletePlanExecute(r ApiDeletePlanRequest) (*MessageR
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -888,7 +890,7 @@ func (a *BillingAPIService) DownloadInvoiceExecute(r ApiDownloadInvoiceRequest) 
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -899,7 +901,7 @@ func (a *BillingAPIService) DownloadInvoiceExecute(r ApiDownloadInvoiceRequest) 
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -927,15 +929,15 @@ type ApiEnablePaymentProcessingRequest struct {
 	ctx context.Context
 	ApiService *BillingAPIService
 	orgId string
-	enablePaymentProcessingRequest *EnablePaymentProcessingRequest
+	enablePaymentProcessingRequest *models.EnablePaymentProcessingRequest
 }
 
-func (r ApiEnablePaymentProcessingRequest) EnablePaymentProcessingRequest(enablePaymentProcessingRequest EnablePaymentProcessingRequest) ApiEnablePaymentProcessingRequest {
+func (r ApiEnablePaymentProcessingRequest) EnablePaymentProcessingRequest(enablePaymentProcessingRequest models.EnablePaymentProcessingRequest) ApiEnablePaymentProcessingRequest {
 	r.enablePaymentProcessingRequest = &enablePaymentProcessingRequest
 	return r
 }
 
-func (r ApiEnablePaymentProcessingRequest) Execute() (*EnablePaymentProcessing200Response, *http.Response, error) {
+func (r ApiEnablePaymentProcessingRequest) Execute() (*models.EnablePaymentProcessing200Response, *http.Response, error) {
 	return r.ApiService.EnablePaymentProcessingExecute(r)
 }
 
@@ -957,13 +959,13 @@ func (a *BillingAPIService) EnablePaymentProcessing(ctx context.Context, orgId s
 }
 
 // Execute executes the request
-//  @return EnablePaymentProcessing200Response
-func (a *BillingAPIService) EnablePaymentProcessingExecute(r ApiEnablePaymentProcessingRequest) (*EnablePaymentProcessing200Response, *http.Response, error) {
+//  @return models.EnablePaymentProcessing200Response
+func (a *BillingAPIService) EnablePaymentProcessingExecute(r ApiEnablePaymentProcessingRequest) (*models.EnablePaymentProcessing200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *EnablePaymentProcessing200Response
+		localVarReturnValue  *models.EnablePaymentProcessing200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.EnablePaymentProcessing")
@@ -1023,7 +1025,7 @@ func (a *BillingAPIService) EnablePaymentProcessingExecute(r ApiEnablePaymentPro
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1034,7 +1036,7 @@ func (a *BillingAPIService) EnablePaymentProcessingExecute(r ApiEnablePaymentPro
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1045,7 +1047,7 @@ func (a *BillingAPIService) EnablePaymentProcessingExecute(r ApiEnablePaymentPro
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1056,7 +1058,7 @@ func (a *BillingAPIService) EnablePaymentProcessingExecute(r ApiEnablePaymentPro
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1087,7 +1089,7 @@ type ApiExportInvoiceRequest struct {
 	invoiceId string
 }
 
-func (r ApiExportInvoiceRequest) Execute() (*DownloadInvoice200Response, *http.Response, error) {
+func (r ApiExportInvoiceRequest) Execute() (*models.DownloadInvoice200Response, *http.Response, error) {
 	return r.ApiService.ExportInvoiceExecute(r)
 }
 
@@ -1109,13 +1111,13 @@ func (a *BillingAPIService) ExportInvoice(ctx context.Context, projectId string,
 }
 
 // Execute executes the request
-//  @return DownloadInvoice200Response
-func (a *BillingAPIService) ExportInvoiceExecute(r ApiExportInvoiceRequest) (*DownloadInvoice200Response, *http.Response, error) {
+//  @return models.DownloadInvoice200Response
+func (a *BillingAPIService) ExportInvoiceExecute(r ApiExportInvoiceRequest) (*models.DownloadInvoice200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *DownloadInvoice200Response
+		localVarReturnValue  *models.DownloadInvoice200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.ExportInvoice")
@@ -1171,7 +1173,7 @@ func (a *BillingAPIService) ExportInvoiceExecute(r ApiExportInvoiceRequest) (*Do
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1182,7 +1184,7 @@ func (a *BillingAPIService) ExportInvoiceExecute(r ApiExportInvoiceRequest) (*Do
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1211,7 +1213,7 @@ type ApiGetBillingEstimateRequest struct {
 	ApiService *BillingAPIService
 }
 
-func (r ApiGetBillingEstimateRequest) Execute() (*GetBillingEstimate200Response, *http.Response, error) {
+func (r ApiGetBillingEstimateRequest) Execute() (*models.GetBillingEstimate200Response, *http.Response, error) {
 	return r.ApiService.GetBillingEstimateExecute(r)
 }
 
@@ -1233,13 +1235,13 @@ func (a *BillingAPIService) GetBillingEstimate(ctx context.Context) ApiGetBillin
 }
 
 // Execute executes the request
-//  @return GetBillingEstimate200Response
-func (a *BillingAPIService) GetBillingEstimateExecute(r ApiGetBillingEstimateRequest) (*GetBillingEstimate200Response, *http.Response, error) {
+//  @return models.GetBillingEstimate200Response
+func (a *BillingAPIService) GetBillingEstimateExecute(r ApiGetBillingEstimateRequest) (*models.GetBillingEstimate200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetBillingEstimate200Response
+		localVarReturnValue  *models.GetBillingEstimate200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetBillingEstimate")
@@ -1293,7 +1295,7 @@ func (a *BillingAPIService) GetBillingEstimateExecute(r ApiGetBillingEstimateReq
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1304,7 +1306,7 @@ func (a *BillingAPIService) GetBillingEstimateExecute(r ApiGetBillingEstimateReq
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 503 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1421,7 +1423,7 @@ func (a *BillingAPIService) GetCheckoutPaymentExecute(r ApiGetCheckoutPaymentReq
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v RefreshToken400Response
+			var v models.RefreshToken400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1432,7 +1434,7 @@ func (a *BillingAPIService) GetCheckoutPaymentExecute(r ApiGetCheckoutPaymentReq
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1453,7 +1455,7 @@ type ApiGetDashboardRequest struct {
 	projectId string
 }
 
-func (r ApiGetDashboardRequest) Execute() (*GetDashboard200Response, *http.Response, error) {
+func (r ApiGetDashboardRequest) Execute() (*models.GetDashboard200Response, *http.Response, error) {
 	return r.ApiService.GetDashboardExecute(r)
 }
 
@@ -1473,13 +1475,13 @@ func (a *BillingAPIService) GetDashboard(ctx context.Context, projectId string) 
 }
 
 // Execute executes the request
-//  @return GetDashboard200Response
-func (a *BillingAPIService) GetDashboardExecute(r ApiGetDashboardRequest) (*GetDashboard200Response, *http.Response, error) {
+//  @return models.GetDashboard200Response
+func (a *BillingAPIService) GetDashboardExecute(r ApiGetDashboardRequest) (*models.GetDashboard200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetDashboard200Response
+		localVarReturnValue  *models.GetDashboard200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetDashboard")
@@ -1534,7 +1536,7 @@ func (a *BillingAPIService) GetDashboardExecute(r ApiGetDashboardRequest) (*GetD
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1545,7 +1547,7 @@ func (a *BillingAPIService) GetDashboardExecute(r ApiGetDashboardRequest) (*GetD
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v RefreshToken400Response
+			var v models.RefreshToken400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1587,7 +1589,7 @@ func (r ApiGetFeeBreakdownRequest) Currency(currency string) ApiGetFeeBreakdownR
 	return r
 }
 
-func (r ApiGetFeeBreakdownRequest) Execute() (*GetFeeBreakdown200Response, *http.Response, error) {
+func (r ApiGetFeeBreakdownRequest) Execute() (*models.GetFeeBreakdown200Response, *http.Response, error) {
 	return r.ApiService.GetFeeBreakdownExecute(r)
 }
 
@@ -1609,13 +1611,13 @@ func (a *BillingAPIService) GetFeeBreakdown(ctx context.Context, orgId string) A
 }
 
 // Execute executes the request
-//  @return GetFeeBreakdown200Response
-func (a *BillingAPIService) GetFeeBreakdownExecute(r ApiGetFeeBreakdownRequest) (*GetFeeBreakdown200Response, *http.Response, error) {
+//  @return models.GetFeeBreakdown200Response
+func (a *BillingAPIService) GetFeeBreakdownExecute(r ApiGetFeeBreakdownRequest) (*models.GetFeeBreakdown200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetFeeBreakdown200Response
+		localVarReturnValue  *models.GetFeeBreakdown200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetFeeBreakdown")
@@ -1684,7 +1686,7 @@ func (a *BillingAPIService) GetFeeBreakdownExecute(r ApiGetFeeBreakdownRequest) 
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1695,7 +1697,7 @@ func (a *BillingAPIService) GetFeeBreakdownExecute(r ApiGetFeeBreakdownRequest) 
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1726,7 +1728,7 @@ type ApiGetInvoiceRequest struct {
 	invoiceId string
 }
 
-func (r ApiGetInvoiceRequest) Execute() (*GetInvoice200Response, *http.Response, error) {
+func (r ApiGetInvoiceRequest) Execute() (*models.GetInvoice200Response, *http.Response, error) {
 	return r.ApiService.GetInvoiceExecute(r)
 }
 
@@ -1748,13 +1750,13 @@ func (a *BillingAPIService) GetInvoice(ctx context.Context, projectId string, in
 }
 
 // Execute executes the request
-//  @return GetInvoice200Response
-func (a *BillingAPIService) GetInvoiceExecute(r ApiGetInvoiceRequest) (*GetInvoice200Response, *http.Response, error) {
+//  @return models.GetInvoice200Response
+func (a *BillingAPIService) GetInvoiceExecute(r ApiGetInvoiceRequest) (*models.GetInvoice200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetInvoice200Response
+		localVarReturnValue  *models.GetInvoice200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetInvoice")
@@ -1810,7 +1812,7 @@ func (a *BillingAPIService) GetInvoiceExecute(r ApiGetInvoiceRequest) (*GetInvoi
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1821,7 +1823,7 @@ func (a *BillingAPIService) GetInvoiceExecute(r ApiGetInvoiceRequest) (*GetInvoi
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v RefreshToken400Response
+			var v models.RefreshToken400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1832,7 +1834,7 @@ func (a *BillingAPIService) GetInvoiceExecute(r ApiGetInvoiceRequest) (*GetInvoi
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1862,7 +1864,7 @@ type ApiGetInvoicesRequest struct {
 	projectId string
 }
 
-func (r ApiGetInvoicesRequest) Execute() (*GetInvoices200Response, *http.Response, error) {
+func (r ApiGetInvoicesRequest) Execute() (*models.GetInvoices200Response, *http.Response, error) {
 	return r.ApiService.GetInvoicesExecute(r)
 }
 
@@ -1882,13 +1884,13 @@ func (a *BillingAPIService) GetInvoices(ctx context.Context, projectId string) A
 }
 
 // Execute executes the request
-//  @return GetInvoices200Response
-func (a *BillingAPIService) GetInvoicesExecute(r ApiGetInvoicesRequest) (*GetInvoices200Response, *http.Response, error) {
+//  @return models.GetInvoices200Response
+func (a *BillingAPIService) GetInvoicesExecute(r ApiGetInvoicesRequest) (*models.GetInvoices200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetInvoices200Response
+		localVarReturnValue  *models.GetInvoices200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetInvoices")
@@ -1943,7 +1945,7 @@ func (a *BillingAPIService) GetInvoicesExecute(r ApiGetInvoicesRequest) (*GetInv
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1954,7 +1956,7 @@ func (a *BillingAPIService) GetInvoicesExecute(r ApiGetInvoicesRequest) (*GetInv
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2002,7 +2004,7 @@ func (r ApiGetPaymentRecordsRequest) Status(status string) ApiGetPaymentRecordsR
 	return r
 }
 
-func (r ApiGetPaymentRecordsRequest) Execute() (*GetPaymentRecords200Response, *http.Response, error) {
+func (r ApiGetPaymentRecordsRequest) Execute() (*models.GetPaymentRecords200Response, *http.Response, error) {
 	return r.ApiService.GetPaymentRecordsExecute(r)
 }
 
@@ -2024,13 +2026,13 @@ func (a *BillingAPIService) GetPaymentRecords(ctx context.Context, orgId string)
 }
 
 // Execute executes the request
-//  @return GetPaymentRecords200Response
-func (a *BillingAPIService) GetPaymentRecordsExecute(r ApiGetPaymentRecordsRequest) (*GetPaymentRecords200Response, *http.Response, error) {
+//  @return models.GetPaymentRecords200Response
+func (a *BillingAPIService) GetPaymentRecordsExecute(r ApiGetPaymentRecordsRequest) (*models.GetPaymentRecords200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetPaymentRecords200Response
+		localVarReturnValue  *models.GetPaymentRecords200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetPaymentRecords")
@@ -2102,7 +2104,7 @@ func (a *BillingAPIService) GetPaymentRecordsExecute(r ApiGetPaymentRecordsReque
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2132,7 +2134,7 @@ type ApiGetPlansRequest struct {
 	projectId string
 }
 
-func (r ApiGetPlansRequest) Execute() (*GetPlans200Response, *http.Response, error) {
+func (r ApiGetPlansRequest) Execute() (*models.GetPlans200Response, *http.Response, error) {
 	return r.ApiService.GetPlansExecute(r)
 }
 
@@ -2152,13 +2154,13 @@ func (a *BillingAPIService) GetPlans(ctx context.Context, projectId string) ApiG
 }
 
 // Execute executes the request
-//  @return GetPlans200Response
-func (a *BillingAPIService) GetPlansExecute(r ApiGetPlansRequest) (*GetPlans200Response, *http.Response, error) {
+//  @return models.GetPlans200Response
+func (a *BillingAPIService) GetPlansExecute(r ApiGetPlansRequest) (*models.GetPlans200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetPlans200Response
+		localVarReturnValue  *models.GetPlans200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetPlans")
@@ -2213,7 +2215,7 @@ func (a *BillingAPIService) GetPlansExecute(r ApiGetPlansRequest) (*GetPlans200R
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2243,7 +2245,7 @@ type ApiGetPublicPlansRequest struct {
 	projectId string
 }
 
-func (r ApiGetPublicPlansRequest) Execute() (*GetPublicPlans200Response, *http.Response, error) {
+func (r ApiGetPublicPlansRequest) Execute() (*models.GetPublicPlans200Response, *http.Response, error) {
 	return r.ApiService.GetPublicPlansExecute(r)
 }
 
@@ -2266,13 +2268,13 @@ func (a *BillingAPIService) GetPublicPlans(ctx context.Context, projectId string
 }
 
 // Execute executes the request
-//  @return GetPublicPlans200Response
-func (a *BillingAPIService) GetPublicPlansExecute(r ApiGetPublicPlansRequest) (*GetPublicPlans200Response, *http.Response, error) {
+//  @return models.GetPublicPlans200Response
+func (a *BillingAPIService) GetPublicPlansExecute(r ApiGetPublicPlansRequest) (*models.GetPublicPlans200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetPublicPlans200Response
+		localVarReturnValue  *models.GetPublicPlans200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetPublicPlans")
@@ -2347,7 +2349,7 @@ type ApiGetSubscriptionTierByIdRequest struct {
 	planId string
 }
 
-func (r ApiGetSubscriptionTierByIdRequest) Execute() (*GetSubscriptionTierById200Response, *http.Response, error) {
+func (r ApiGetSubscriptionTierByIdRequest) Execute() (*models.GetSubscriptionTierById200Response, *http.Response, error) {
 	return r.ApiService.GetSubscriptionTierByIdExecute(r)
 }
 
@@ -2357,7 +2359,7 @@ GetSubscriptionTierById Get one subscription tier by id
 Returns a single org-level BaaS plan (free, starter, growth, scale, enterprise). Public; no auth required.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param planId Plan id (free, starter, growth, scale, enterprise)
+ @param planId models.Plan id (free, starter, growth, scale, enterprise)
  @return ApiGetSubscriptionTierByIdRequest
 */
 func (a *BillingAPIService) GetSubscriptionTierById(ctx context.Context, planId string) ApiGetSubscriptionTierByIdRequest {
@@ -2369,13 +2371,13 @@ func (a *BillingAPIService) GetSubscriptionTierById(ctx context.Context, planId 
 }
 
 // Execute executes the request
-//  @return GetSubscriptionTierById200Response
-func (a *BillingAPIService) GetSubscriptionTierByIdExecute(r ApiGetSubscriptionTierByIdRequest) (*GetSubscriptionTierById200Response, *http.Response, error) {
+//  @return models.GetSubscriptionTierById200Response
+func (a *BillingAPIService) GetSubscriptionTierByIdExecute(r ApiGetSubscriptionTierByIdRequest) (*models.GetSubscriptionTierById200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetSubscriptionTierById200Response
+		localVarReturnValue  *models.GetSubscriptionTierById200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetSubscriptionTierById")
@@ -2449,7 +2451,7 @@ type ApiGetSubscriptionTiersRequest struct {
 	ApiService *BillingAPIService
 }
 
-func (r ApiGetSubscriptionTiersRequest) Execute() (*GetSubscriptionTiers200Response, *http.Response, error) {
+func (r ApiGetSubscriptionTiersRequest) Execute() (*models.GetSubscriptionTiers200Response, *http.Response, error) {
 	return r.ApiService.GetSubscriptionTiersExecute(r)
 }
 
@@ -2471,13 +2473,13 @@ func (a *BillingAPIService) GetSubscriptionTiers(ctx context.Context) ApiGetSubs
 }
 
 // Execute executes the request
-//  @return GetSubscriptionTiers200Response
-func (a *BillingAPIService) GetSubscriptionTiersExecute(r ApiGetSubscriptionTiersRequest) (*GetSubscriptionTiers200Response, *http.Response, error) {
+//  @return models.GetSubscriptionTiers200Response
+func (a *BillingAPIService) GetSubscriptionTiersExecute(r ApiGetSubscriptionTiersRequest) (*models.GetSubscriptionTiers200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetSubscriptionTiers200Response
+		localVarReturnValue  *models.GetSubscriptionTiers200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetSubscriptionTiers")
@@ -2551,7 +2553,7 @@ type ApiGetSubscriptionsRequest struct {
 	projectId string
 }
 
-func (r ApiGetSubscriptionsRequest) Execute() (*GetSubscriptions200Response, *http.Response, error) {
+func (r ApiGetSubscriptionsRequest) Execute() (*models.GetSubscriptions200Response, *http.Response, error) {
 	return r.ApiService.GetSubscriptionsExecute(r)
 }
 
@@ -2571,13 +2573,13 @@ func (a *BillingAPIService) GetSubscriptions(ctx context.Context, projectId stri
 }
 
 // Execute executes the request
-//  @return GetSubscriptions200Response
-func (a *BillingAPIService) GetSubscriptionsExecute(r ApiGetSubscriptionsRequest) (*GetSubscriptions200Response, *http.Response, error) {
+//  @return models.GetSubscriptions200Response
+func (a *BillingAPIService) GetSubscriptionsExecute(r ApiGetSubscriptionsRequest) (*models.GetSubscriptions200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetSubscriptions200Response
+		localVarReturnValue  *models.GetSubscriptions200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.GetSubscriptions")
@@ -2632,7 +2634,7 @@ func (a *BillingAPIService) GetSubscriptionsExecute(r ApiGetSubscriptionsRequest
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2659,15 +2661,15 @@ func (a *BillingAPIService) GetSubscriptionsExecute(r ApiGetSubscriptionsRequest
 type ApiInitializeOrgPlanCheckoutRequest struct {
 	ctx context.Context
 	ApiService *BillingAPIService
-	initializeOrgPlanCheckoutRequest *InitializeOrgPlanCheckoutRequest
+	initializeOrgPlanCheckoutRequest *models.InitializeOrgPlanCheckoutRequest
 }
 
-func (r ApiInitializeOrgPlanCheckoutRequest) InitializeOrgPlanCheckoutRequest(initializeOrgPlanCheckoutRequest InitializeOrgPlanCheckoutRequest) ApiInitializeOrgPlanCheckoutRequest {
+func (r ApiInitializeOrgPlanCheckoutRequest) InitializeOrgPlanCheckoutRequest(initializeOrgPlanCheckoutRequest models.InitializeOrgPlanCheckoutRequest) ApiInitializeOrgPlanCheckoutRequest {
 	r.initializeOrgPlanCheckoutRequest = &initializeOrgPlanCheckoutRequest
 	return r
 }
 
-func (r ApiInitializeOrgPlanCheckoutRequest) Execute() (*InitializeOrgPlanCheckout200Response, *http.Response, error) {
+func (r ApiInitializeOrgPlanCheckoutRequest) Execute() (*models.InitializeOrgPlanCheckout200Response, *http.Response, error) {
 	return r.ApiService.InitializeOrgPlanCheckoutExecute(r)
 }
 
@@ -2688,13 +2690,13 @@ func (a *BillingAPIService) InitializeOrgPlanCheckout(ctx context.Context) ApiIn
 }
 
 // Execute executes the request
-//  @return InitializeOrgPlanCheckout200Response
-func (a *BillingAPIService) InitializeOrgPlanCheckoutExecute(r ApiInitializeOrgPlanCheckoutRequest) (*InitializeOrgPlanCheckout200Response, *http.Response, error) {
+//  @return models.InitializeOrgPlanCheckout200Response
+func (a *BillingAPIService) InitializeOrgPlanCheckoutExecute(r ApiInitializeOrgPlanCheckoutRequest) (*models.InitializeOrgPlanCheckout200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *InitializeOrgPlanCheckout200Response
+		localVarReturnValue  *models.InitializeOrgPlanCheckout200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.InitializeOrgPlanCheckout")
@@ -2771,15 +2773,15 @@ type ApiInitializePaymentRequest struct {
 	ctx context.Context
 	ApiService *BillingAPIService
 	orgId string
-	initializePaymentRequest *InitializePaymentRequest
+	initializePaymentRequest *models.InitializePaymentRequest
 }
 
-func (r ApiInitializePaymentRequest) InitializePaymentRequest(initializePaymentRequest InitializePaymentRequest) ApiInitializePaymentRequest {
+func (r ApiInitializePaymentRequest) InitializePaymentRequest(initializePaymentRequest models.InitializePaymentRequest) ApiInitializePaymentRequest {
 	r.initializePaymentRequest = &initializePaymentRequest
 	return r
 }
 
-func (r ApiInitializePaymentRequest) Execute() (*InitializePayment200Response, *http.Response, error) {
+func (r ApiInitializePaymentRequest) Execute() (*models.InitializePayment200Response, *http.Response, error) {
 	return r.ApiService.InitializePaymentExecute(r)
 }
 
@@ -2801,13 +2803,13 @@ func (a *BillingAPIService) InitializePayment(ctx context.Context, orgId string)
 }
 
 // Execute executes the request
-//  @return InitializePayment200Response
-func (a *BillingAPIService) InitializePaymentExecute(r ApiInitializePaymentRequest) (*InitializePayment200Response, *http.Response, error) {
+//  @return models.InitializePayment200Response
+func (a *BillingAPIService) InitializePaymentExecute(r ApiInitializePaymentRequest) (*models.InitializePayment200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *InitializePayment200Response
+		localVarReturnValue  *models.InitializePayment200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.InitializePayment")
@@ -2867,7 +2869,7 @@ func (a *BillingAPIService) InitializePaymentExecute(r ApiInitializePaymentReque
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2878,7 +2880,7 @@ func (a *BillingAPIService) InitializePaymentExecute(r ApiInitializePaymentReque
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2889,7 +2891,7 @@ func (a *BillingAPIService) InitializePaymentExecute(r ApiInitializePaymentReque
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2917,10 +2919,10 @@ type ApiInitializePaymentForProjectRequest struct {
 	ctx context.Context
 	ApiService *BillingAPIService
 	projectId string
-	initializePaymentForProjectRequest *InitializePaymentForProjectRequest
+	initializePaymentForProjectRequest *models.InitializePaymentForProjectRequest
 }
 
-func (r ApiInitializePaymentForProjectRequest) InitializePaymentForProjectRequest(initializePaymentForProjectRequest InitializePaymentForProjectRequest) ApiInitializePaymentForProjectRequest {
+func (r ApiInitializePaymentForProjectRequest) InitializePaymentForProjectRequest(initializePaymentForProjectRequest models.InitializePaymentForProjectRequest) ApiInitializePaymentForProjectRequest {
 	r.initializePaymentForProjectRequest = &initializePaymentForProjectRequest
 	return r
 }
@@ -3011,7 +3013,7 @@ func (a *BillingAPIService) InitializePaymentForProjectExecute(r ApiInitializePa
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -3022,7 +3024,7 @@ func (a *BillingAPIService) InitializePaymentForProjectExecute(r ApiInitializePa
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -3033,7 +3035,7 @@ func (a *BillingAPIService) InitializePaymentForProjectExecute(r ApiInitializePa
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -3052,15 +3054,15 @@ type ApiRecordUsageRequest struct {
 	ctx context.Context
 	ApiService *BillingAPIService
 	projectId string
-	recordUsageRequest *RecordUsageRequest
+	recordUsageRequest *models.RecordUsageRequest
 }
 
-func (r ApiRecordUsageRequest) RecordUsageRequest(recordUsageRequest RecordUsageRequest) ApiRecordUsageRequest {
+func (r ApiRecordUsageRequest) RecordUsageRequest(recordUsageRequest models.RecordUsageRequest) ApiRecordUsageRequest {
 	r.recordUsageRequest = &recordUsageRequest
 	return r
 }
 
-func (r ApiRecordUsageRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiRecordUsageRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.RecordUsageExecute(r)
 }
 
@@ -3080,13 +3082,13 @@ func (a *BillingAPIService) RecordUsage(ctx context.Context, projectId string) A
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *BillingAPIService) RecordUsageExecute(r ApiRecordUsageRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *BillingAPIService) RecordUsageExecute(r ApiRecordUsageRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.RecordUsage")
@@ -3146,7 +3148,7 @@ func (a *BillingAPIService) RecordUsageExecute(r ApiRecordUsageRequest) (*Messag
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -3175,15 +3177,15 @@ type ApiUpdatePlanRequest struct {
 	ApiService *BillingAPIService
 	projectId string
 	planId string
-	updatePlanRequest *UpdatePlanRequest
+	updatePlanRequest *models.UpdatePlanRequest
 }
 
-func (r ApiUpdatePlanRequest) UpdatePlanRequest(updatePlanRequest UpdatePlanRequest) ApiUpdatePlanRequest {
+func (r ApiUpdatePlanRequest) UpdatePlanRequest(updatePlanRequest models.UpdatePlanRequest) ApiUpdatePlanRequest {
 	r.updatePlanRequest = &updatePlanRequest
 	return r
 }
 
-func (r ApiUpdatePlanRequest) Execute() (*CreatePlan201Response, *http.Response, error) {
+func (r ApiUpdatePlanRequest) Execute() (*models.CreatePlan201Response, *http.Response, error) {
 	return r.ApiService.UpdatePlanExecute(r)
 }
 
@@ -3205,13 +3207,13 @@ func (a *BillingAPIService) UpdatePlan(ctx context.Context, projectId string, pl
 }
 
 // Execute executes the request
-//  @return CreatePlan201Response
-func (a *BillingAPIService) UpdatePlanExecute(r ApiUpdatePlanRequest) (*CreatePlan201Response, *http.Response, error) {
+//  @return models.CreatePlan201Response
+func (a *BillingAPIService) UpdatePlanExecute(r ApiUpdatePlanRequest) (*models.CreatePlan201Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CreatePlan201Response
+		localVarReturnValue  *models.CreatePlan201Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.UpdatePlan")
@@ -3272,7 +3274,7 @@ func (a *BillingAPIService) UpdatePlanExecute(r ApiUpdatePlanRequest) (*CreatePl
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -3283,7 +3285,7 @@ func (a *BillingAPIService) UpdatePlanExecute(r ApiUpdatePlanRequest) (*CreatePl
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -3294,7 +3296,7 @@ func (a *BillingAPIService) UpdatePlanExecute(r ApiUpdatePlanRequest) (*CreatePl
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -3337,7 +3339,7 @@ func (r ApiVerifyOrgPlanPaymentRequest) Reference(reference string) ApiVerifyOrg
 	return r
 }
 
-func (r ApiVerifyOrgPlanPaymentRequest) Execute() (*VerifyOrgPlanPayment200Response, *http.Response, error) {
+func (r ApiVerifyOrgPlanPaymentRequest) Execute() (*models.VerifyOrgPlanPayment200Response, *http.Response, error) {
 	return r.ApiService.VerifyOrgPlanPaymentExecute(r)
 }
 
@@ -3358,13 +3360,13 @@ func (a *BillingAPIService) VerifyOrgPlanPayment(ctx context.Context) ApiVerifyO
 }
 
 // Execute executes the request
-//  @return VerifyOrgPlanPayment200Response
-func (a *BillingAPIService) VerifyOrgPlanPaymentExecute(r ApiVerifyOrgPlanPaymentRequest) (*VerifyOrgPlanPayment200Response, *http.Response, error) {
+//  @return models.VerifyOrgPlanPayment200Response
+func (a *BillingAPIService) VerifyOrgPlanPaymentExecute(r ApiVerifyOrgPlanPaymentRequest) (*models.VerifyOrgPlanPayment200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *VerifyOrgPlanPayment200Response
+		localVarReturnValue  *models.VerifyOrgPlanPayment200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.VerifyOrgPlanPayment")
@@ -3451,7 +3453,7 @@ func (r ApiVerifyPaymentRequest) Reference(reference string) ApiVerifyPaymentReq
 	return r
 }
 
-func (r ApiVerifyPaymentRequest) Execute() (*VerifyPayment200Response, *http.Response, error) {
+func (r ApiVerifyPaymentRequest) Execute() (*models.VerifyPayment200Response, *http.Response, error) {
 	return r.ApiService.VerifyPaymentExecute(r)
 }
 
@@ -3474,13 +3476,13 @@ func (a *BillingAPIService) VerifyPayment(ctx context.Context, projectId string)
 }
 
 // Execute executes the request
-//  @return VerifyPayment200Response
-func (a *BillingAPIService) VerifyPaymentExecute(r ApiVerifyPaymentRequest) (*VerifyPayment200Response, *http.Response, error) {
+//  @return models.VerifyPayment200Response
+func (a *BillingAPIService) VerifyPaymentExecute(r ApiVerifyPaymentRequest) (*models.VerifyPayment200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *VerifyPayment200Response
+		localVarReturnValue  *models.VerifyPayment200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BillingAPIService.VerifyPayment")
@@ -3539,7 +3541,7 @@ func (a *BillingAPIService) VerifyPaymentExecute(r ApiVerifyPaymentRequest) (*Ve
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v RefreshToken400Response
+			var v models.RefreshToken400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -3550,7 +3552,7 @@ func (a *BillingAPIService) VerifyPaymentExecute(r ApiVerifyPaymentRequest) (*Ve
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v RefreshToken400Response
+			var v models.RefreshToken400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -3561,7 +3563,7 @@ func (a *BillingAPIService) VerifyPaymentExecute(r ApiVerifyPaymentRequest) (*Ve
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

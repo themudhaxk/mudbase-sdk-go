@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -18,6 +18,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -36,7 +38,7 @@ func (r ApiGetSearchAnalyticsRequest) Timeframe(timeframe string) ApiGetSearchAn
 	return r
 }
 
-func (r ApiGetSearchAnalyticsRequest) Execute() (*GetSearchAnalytics200Response, *http.Response, error) {
+func (r ApiGetSearchAnalyticsRequest) Execute() (*models.GetSearchAnalytics200Response, *http.Response, error) {
 	return r.ApiService.GetSearchAnalyticsExecute(r)
 }
 
@@ -60,13 +62,13 @@ func (a *SearchAPIService) GetSearchAnalytics(ctx context.Context, projectId str
 }
 
 // Execute executes the request
-//  @return GetSearchAnalytics200Response
-func (a *SearchAPIService) GetSearchAnalyticsExecute(r ApiGetSearchAnalyticsRequest) (*GetSearchAnalytics200Response, *http.Response, error) {
+//  @return models.GetSearchAnalytics200Response
+func (a *SearchAPIService) GetSearchAnalyticsExecute(r ApiGetSearchAnalyticsRequest) (*models.GetSearchAnalytics200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetSearchAnalytics200Response
+		localVarReturnValue  *models.GetSearchAnalytics200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SearchAPIService.GetSearchAnalytics")
@@ -160,7 +162,7 @@ func (r ApiGetSearchSuggestionsRequest) Limit(limit int32) ApiGetSearchSuggestio
 	return r
 }
 
-func (r ApiGetSearchSuggestionsRequest) Execute() (*GetSearchSuggestions200Response, *http.Response, error) {
+func (r ApiGetSearchSuggestionsRequest) Execute() (*models.GetSearchSuggestions200Response, *http.Response, error) {
 	return r.ApiService.GetSearchSuggestionsExecute(r)
 }
 
@@ -184,13 +186,13 @@ func (a *SearchAPIService) GetSearchSuggestions(ctx context.Context, projectId s
 }
 
 // Execute executes the request
-//  @return GetSearchSuggestions200Response
-func (a *SearchAPIService) GetSearchSuggestionsExecute(r ApiGetSearchSuggestionsRequest) (*GetSearchSuggestions200Response, *http.Response, error) {
+//  @return models.GetSearchSuggestions200Response
+func (a *SearchAPIService) GetSearchSuggestionsExecute(r ApiGetSearchSuggestionsRequest) (*models.GetSearchSuggestions200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetSearchSuggestions200Response
+		localVarReturnValue  *models.GetSearchSuggestions200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SearchAPIService.GetSearchSuggestions")
@@ -312,7 +314,7 @@ func (r ApiSearchDataRequest) Page(page int32) ApiSearchDataRequest {
 	return r
 }
 
-func (r ApiSearchDataRequest) Execute() (*SearchResponse, *http.Response, error) {
+func (r ApiSearchDataRequest) Execute() (*models.SearchResponse, *http.Response, error) {
 	return r.ApiService.SearchDataExecute(r)
 }
 
@@ -336,13 +338,13 @@ func (a *SearchAPIService) SearchData(ctx context.Context, projectId string) Api
 }
 
 // Execute executes the request
-//  @return SearchResponse
-func (a *SearchAPIService) SearchDataExecute(r ApiSearchDataRequest) (*SearchResponse, *http.Response, error) {
+//  @return models.SearchResponse
+func (a *SearchAPIService) SearchDataExecute(r ApiSearchDataRequest) (*models.SearchResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *SearchResponse
+		localVarReturnValue  *models.SearchResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SearchAPIService.SearchData")

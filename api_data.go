@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -18,6 +18,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -37,7 +39,7 @@ func (r ApiCreateDataRequest) Body(body map[string]interface{}) ApiCreateDataReq
 	return r
 }
 
-func (r ApiCreateDataRequest) Execute() (*DataResponse, *http.Response, error) {
+func (r ApiCreateDataRequest) Execute() (*models.DataResponse, *http.Response, error) {
 	return r.ApiService.CreateDataExecute(r)
 }
 
@@ -59,13 +61,13 @@ func (a *DataAPIService) CreateData(ctx context.Context, projectId string, colle
 }
 
 // Execute executes the request
-//  @return DataResponse
-func (a *DataAPIService) CreateDataExecute(r ApiCreateDataRequest) (*DataResponse, *http.Response, error) {
+//  @return models.DataResponse
+func (a *DataAPIService) CreateDataExecute(r ApiCreateDataRequest) (*models.DataResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *DataResponse
+		localVarReturnValue  *models.DataResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DataAPIService.CreateData")
@@ -148,7 +150,7 @@ type ApiDeleteDataRequest struct {
 	documentId string
 }
 
-func (r ApiDeleteDataRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiDeleteDataRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.DeleteDataExecute(r)
 }
 
@@ -176,13 +178,13 @@ func (a *DataAPIService) DeleteData(ctx context.Context, projectId string, colle
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *DataAPIService) DeleteDataExecute(r ApiDeleteDataRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *DataAPIService) DeleteDataExecute(r ApiDeleteDataRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DataAPIService.DeleteData")
@@ -261,7 +263,7 @@ type ApiGetDataRequest struct {
 	documentId string
 }
 
-func (r ApiGetDataRequest) Execute() (*DataResponse, *http.Response, error) {
+func (r ApiGetDataRequest) Execute() (*models.DataResponse, *http.Response, error) {
 	return r.ApiService.GetDataExecute(r)
 }
 
@@ -285,13 +287,13 @@ func (a *DataAPIService) GetData(ctx context.Context, projectId string, collecti
 }
 
 // Execute executes the request
-//  @return DataResponse
-func (a *DataAPIService) GetDataExecute(r ApiGetDataRequest) (*DataResponse, *http.Response, error) {
+//  @return models.DataResponse
+func (a *DataAPIService) GetDataExecute(r ApiGetDataRequest) (*models.DataResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *DataResponse
+		localVarReturnValue  *models.DataResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DataAPIService.GetData")
@@ -393,7 +395,7 @@ func (r ApiListDataRequest) Filter(filter string) ApiListDataRequest {
 	return r
 }
 
-func (r ApiListDataRequest) Execute() (*DataListResponse, *http.Response, error) {
+func (r ApiListDataRequest) Execute() (*models.DataListResponse, *http.Response, error) {
 	return r.ApiService.ListDataExecute(r)
 }
 
@@ -419,13 +421,13 @@ func (a *DataAPIService) ListData(ctx context.Context, projectId string, collect
 }
 
 // Execute executes the request
-//  @return DataListResponse
-func (a *DataAPIService) ListDataExecute(r ApiListDataRequest) (*DataListResponse, *http.Response, error) {
+//  @return models.DataListResponse
+func (a *DataAPIService) ListDataExecute(r ApiListDataRequest) (*models.DataListResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *DataListResponse
+		localVarReturnValue  *models.DataListResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DataAPIService.ListData")
@@ -533,7 +535,7 @@ func (r ApiUpdateDataRequest) Body(body map[string]interface{}) ApiUpdateDataReq
 	return r
 }
 
-func (r ApiUpdateDataRequest) Execute() (*DataResponse, *http.Response, error) {
+func (r ApiUpdateDataRequest) Execute() (*models.DataResponse, *http.Response, error) {
 	return r.ApiService.UpdateDataExecute(r)
 }
 
@@ -561,13 +563,13 @@ func (a *DataAPIService) UpdateData(ctx context.Context, projectId string, colle
 }
 
 // Execute executes the request
-//  @return DataResponse
-func (a *DataAPIService) UpdateDataExecute(r ApiUpdateDataRequest) (*DataResponse, *http.Response, error) {
+//  @return models.DataResponse
+func (a *DataAPIService) UpdateDataExecute(r ApiUpdateDataRequest) (*models.DataResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *DataResponse
+		localVarReturnValue  *models.DataResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DataAPIService.UpdateData")
