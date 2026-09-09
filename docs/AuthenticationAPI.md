@@ -54,11 +54,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	acceptInviteRequest := *openapiclient.NewAcceptInviteRequest("Token_example", "Password_example", "FirstName_example", "LastName_example") // AcceptInviteRequest | 
+	acceptInviteRequest := *models.NewAcceptInviteRequest("Token_example", "Password_example", "FirstName_example", "LastName_example") // AcceptInviteRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -120,11 +121,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	confirmLocalPasswordResetWithOtpRequest := *openapiclient.NewConfirmLocalPasswordResetWithOtpRequest("user@example.com", "685ad30be129932fbb7a1047", "123456", "NewSecurePass123!") // ConfirmLocalPasswordResetWithOtpRequest | 
+	confirmLocalPasswordResetWithOtpRequest := *models.NewConfirmLocalPasswordResetWithOtpRequest("user@example.com", "685ad30be129932fbb7a1047", "123456", "NewSecurePass123!") // ConfirmLocalPasswordResetWithOtpRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -186,11 +188,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	convertAnonymousAccountRequest := *openapiclient.NewConvertAnonymousAccountRequest("user@example.com", "SecurePassword123!") // ConvertAnonymousAccountRequest | 
+	convertAnonymousAccountRequest := *models.NewConvertAnonymousAccountRequest("user@example.com", "SecurePassword123!") // ConvertAnonymousAccountRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -252,11 +255,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	createAnonymousSessionRequest := *openapiclient.NewCreateAnonymousSessionRequest() // CreateAnonymousSessionRequest |  (optional)
+	createAnonymousSessionRequest := *models.NewCreateAnonymousSessionRequest() // CreateAnonymousSessionRequest |  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -318,7 +322,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -379,7 +384,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -440,7 +446,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -506,7 +513,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -567,7 +575,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -640,7 +649,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -710,11 +720,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	loginLocalUserRequest := *openapiclient.NewLoginLocalUserRequest("Email_example", "Password_example") // LoginLocalUserRequest | 
+	loginLocalUserRequest := *models.NewLoginLocalUserRequest("Email_example", "Password_example") // LoginLocalUserRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -774,11 +785,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	loginRequest := *openapiclient.NewLoginRequest("john.doe@mudbase.dev", "SecurePass123!") // LoginRequest | 
+	loginRequest := *models.NewLoginRequest("john.doe@mudbase.dev", "SecurePass123!") // LoginRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -840,7 +852,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -901,7 +914,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -962,7 +976,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -1030,7 +1045,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -1102,11 +1118,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	refreshTokenRequest := *openapiclient.NewRefreshTokenRequest("RefreshToken_example") // RefreshTokenRequest | 
+	refreshTokenRequest := *models.NewRefreshTokenRequest("RefreshToken_example") // RefreshTokenRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1168,11 +1185,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	registerLocalUserRequest := *openapiclient.NewRegisterLocalUserRequest("Email_example", "Password_example", "FirstName_example", "LastName_example", "ProjectId_example") // RegisterLocalUserRequest | 
+	registerLocalUserRequest := *models.NewRegisterLocalUserRequest("Email_example", "Password_example", "FirstName_example", "LastName_example", "ProjectId_example") // RegisterLocalUserRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1232,11 +1250,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	registerRequest := *openapiclient.NewRegisterRequest("john.doe@mudbase.dev", "SecurePass123!", "John", "Doe") // RegisterRequest | 
+	registerRequest := *models.NewRegisterRequest("john.doe@mudbase.dev", "SecurePass123!", "John", "Doe") // RegisterRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1298,11 +1317,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	requestLocalPasswordResetRequest := *openapiclient.NewRequestLocalPasswordResetRequest("user@example.com") // RequestLocalPasswordResetRequest | 
+	requestLocalPasswordResetRequest := *models.NewRequestLocalPasswordResetRequest("user@example.com") // RequestLocalPasswordResetRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1364,11 +1384,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	requestPasswordResetRequest := *openapiclient.NewRequestPasswordResetRequest("john.doe@mudbase.dev") // RequestPasswordResetRequest | 
+	requestPasswordResetRequest := *models.NewRequestPasswordResetRequest("john.doe@mudbase.dev") // RequestPasswordResetRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1430,11 +1451,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	resendVerificationAuthRequest := *openapiclient.NewResendVerificationAuthRequest("Email_example") // ResendVerificationAuthRequest | 
+	resendVerificationAuthRequest := *models.NewResendVerificationAuthRequest("Email_example") // ResendVerificationAuthRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1496,12 +1518,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	token := "token_example" // string | 
-	resetLocalPasswordRequest := *openapiclient.NewResetLocalPasswordRequest("NewSecurePass123!") // ResetLocalPasswordRequest | 
+	resetLocalPasswordRequest := *models.NewResetLocalPasswordRequest("NewSecurePass123!") // ResetLocalPasswordRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1568,12 +1591,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	token := "token_example" // string | 
-	resetPasswordRequest := *openapiclient.NewResetPasswordRequest("NewSecurePass123!") // ResetPasswordRequest | 
+	resetPasswordRequest := *models.NewResetPasswordRequest("NewSecurePass123!") // ResetPasswordRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1638,11 +1662,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	magicLinkRequest := *openapiclient.NewMagicLinkRequest("Email_example", "ProjectId_example") // MagicLinkRequest | 
+	magicLinkRequest := *models.NewMagicLinkRequest("Email_example", "ProjectId_example") // MagicLinkRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1702,11 +1727,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	oTPSendRequest := *openapiclient.NewOTPSendRequest("ProjectId_example", "Method_example") // OTPSendRequest | 
+	oTPSendRequest := *models.NewOTPSendRequest("ProjectId_example", "Method_example") // OTPSendRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1768,11 +1794,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	validatePasswordResetTokenRequest := *openapiclient.NewValidatePasswordResetTokenRequest("Token_example") // ValidatePasswordResetTokenRequest | 
+	validatePasswordResetTokenRequest := *models.NewValidatePasswordResetTokenRequest("Token_example") // ValidatePasswordResetTokenRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1834,11 +1861,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	verifyEmailAuthRequest := *openapiclient.NewVerifyEmailAuthRequest("Token_example") // VerifyEmailAuthRequest | 
+	verifyEmailAuthRequest := *models.NewVerifyEmailAuthRequest("Token_example") // VerifyEmailAuthRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1898,11 +1926,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	verifyMagicLinkRequest := *openapiclient.NewVerifyMagicLinkRequest("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJwcm9qZWN0SWQiOiI2ODVhZDMwYmUxMjk5MzJmYmI3YTEwNDciLCJpYXQiOjE3NTA3ODA4OTgsImV4cCI6MTc1MDc4NDQ5OH0.example") // VerifyMagicLinkRequest | 
+	verifyMagicLinkRequest := *models.NewVerifyMagicLinkRequest("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJwcm9qZWN0SWQiOiI2ODVhZDMwYmUxMjk5MzJmYmI3YTEwNDciLCJpYXQiOjE3NTA3ODA4OTgsImV4cCI6MTc1MDc4NDQ5OH0.example") // VerifyMagicLinkRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1962,11 +1991,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	oTPVerifyRequest := *openapiclient.NewOTPVerifyRequest("Otp_example", "ProjectId_example") // OTPVerifyRequest | 
+	oTPVerifyRequest := *models.NewOTPVerifyRequest("Otp_example", "ProjectId_example") // OTPVerifyRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

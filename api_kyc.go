@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -18,6 +18,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -129,10 +131,10 @@ func (a *KYCAPIService) ApiKycEventsGetExecute(r ApiApiKycEventsGetRequest) (*ht
 type ApiApiKycSessionsPostRequest struct {
 	ctx context.Context
 	ApiService *KYCAPIService
-	apiKycSessionsPostRequest *ApiKycSessionsPostRequest
+	apiKycSessionsPostRequest *models.ApiKycSessionsPostRequest
 }
 
-func (r ApiApiKycSessionsPostRequest) ApiKycSessionsPostRequest(apiKycSessionsPostRequest ApiKycSessionsPostRequest) ApiApiKycSessionsPostRequest {
+func (r ApiApiKycSessionsPostRequest) ApiKycSessionsPostRequest(apiKycSessionsPostRequest models.ApiKycSessionsPostRequest) ApiApiKycSessionsPostRequest {
 	r.apiKycSessionsPostRequest = &apiKycSessionsPostRequest
 	return r
 }
@@ -403,7 +405,7 @@ type ApiApiKycWebhookConfigGetRequest struct {
 	ApiService *KYCAPIService
 }
 
-func (r ApiApiKycWebhookConfigGetRequest) Execute() (*ApiKycWebhookConfigGet200Response, *http.Response, error) {
+func (r ApiApiKycWebhookConfigGetRequest) Execute() (*models.ApiKycWebhookConfigGet200Response, *http.Response, error) {
 	return r.ApiService.ApiKycWebhookConfigGetExecute(r)
 }
 
@@ -423,13 +425,13 @@ func (a *KYCAPIService) ApiKycWebhookConfigGet(ctx context.Context) ApiApiKycWeb
 }
 
 // Execute executes the request
-//  @return ApiKycWebhookConfigGet200Response
-func (a *KYCAPIService) ApiKycWebhookConfigGetExecute(r ApiApiKycWebhookConfigGetRequest) (*ApiKycWebhookConfigGet200Response, *http.Response, error) {
+//  @return models.ApiKycWebhookConfigGet200Response
+func (a *KYCAPIService) ApiKycWebhookConfigGetExecute(r ApiApiKycWebhookConfigGetRequest) (*models.ApiKycWebhookConfigGet200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ApiKycWebhookConfigGet200Response
+		localVarReturnValue  *models.ApiKycWebhookConfigGet200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "KYCAPIService.ApiKycWebhookConfigGet")
@@ -500,15 +502,15 @@ func (a *KYCAPIService) ApiKycWebhookConfigGetExecute(r ApiApiKycWebhookConfigGe
 type ApiApiKycWebhookConfigPutRequest struct {
 	ctx context.Context
 	ApiService *KYCAPIService
-	apiKycWebhookConfigPutRequest *ApiKycWebhookConfigPutRequest
+	apiKycWebhookConfigPutRequest *models.ApiKycWebhookConfigPutRequest
 }
 
-func (r ApiApiKycWebhookConfigPutRequest) ApiKycWebhookConfigPutRequest(apiKycWebhookConfigPutRequest ApiKycWebhookConfigPutRequest) ApiApiKycWebhookConfigPutRequest {
+func (r ApiApiKycWebhookConfigPutRequest) ApiKycWebhookConfigPutRequest(apiKycWebhookConfigPutRequest models.ApiKycWebhookConfigPutRequest) ApiApiKycWebhookConfigPutRequest {
 	r.apiKycWebhookConfigPutRequest = &apiKycWebhookConfigPutRequest
 	return r
 }
 
-func (r ApiApiKycWebhookConfigPutRequest) Execute() (*ApiKycWebhookConfigPut200Response, *http.Response, error) {
+func (r ApiApiKycWebhookConfigPutRequest) Execute() (*models.ApiKycWebhookConfigPut200Response, *http.Response, error) {
 	return r.ApiService.ApiKycWebhookConfigPutExecute(r)
 }
 
@@ -528,13 +530,13 @@ func (a *KYCAPIService) ApiKycWebhookConfigPut(ctx context.Context) ApiApiKycWeb
 }
 
 // Execute executes the request
-//  @return ApiKycWebhookConfigPut200Response
-func (a *KYCAPIService) ApiKycWebhookConfigPutExecute(r ApiApiKycWebhookConfigPutRequest) (*ApiKycWebhookConfigPut200Response, *http.Response, error) {
+//  @return models.ApiKycWebhookConfigPut200Response
+func (a *KYCAPIService) ApiKycWebhookConfigPutExecute(r ApiApiKycWebhookConfigPutRequest) (*models.ApiKycWebhookConfigPut200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPut
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ApiKycWebhookConfigPut200Response
+		localVarReturnValue  *models.ApiKycWebhookConfigPut200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "KYCAPIService.ApiKycWebhookConfigPut")
@@ -609,7 +611,7 @@ type ApiApiKycWebhookConfigTestPostRequest struct {
 	ApiService *KYCAPIService
 }
 
-func (r ApiApiKycWebhookConfigTestPostRequest) Execute() (*ApiKycWebhookConfigTestPost200Response, *http.Response, error) {
+func (r ApiApiKycWebhookConfigTestPostRequest) Execute() (*models.ApiKycWebhookConfigTestPost200Response, *http.Response, error) {
 	return r.ApiService.ApiKycWebhookConfigTestPostExecute(r)
 }
 
@@ -629,13 +631,13 @@ func (a *KYCAPIService) ApiKycWebhookConfigTestPost(ctx context.Context) ApiApiK
 }
 
 // Execute executes the request
-//  @return ApiKycWebhookConfigTestPost200Response
-func (a *KYCAPIService) ApiKycWebhookConfigTestPostExecute(r ApiApiKycWebhookConfigTestPostRequest) (*ApiKycWebhookConfigTestPost200Response, *http.Response, error) {
+//  @return models.ApiKycWebhookConfigTestPost200Response
+func (a *KYCAPIService) ApiKycWebhookConfigTestPostExecute(r ApiApiKycWebhookConfigTestPostRequest) (*models.ApiKycWebhookConfigTestPost200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ApiKycWebhookConfigTestPost200Response
+		localVarReturnValue  *models.ApiKycWebhookConfigTestPost200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "KYCAPIService.ApiKycWebhookConfigTestPost")
@@ -708,7 +710,7 @@ type ApiApiKycWorkflowsGetRequest struct {
 	ApiService *KYCAPIService
 }
 
-func (r ApiApiKycWorkflowsGetRequest) Execute() (*ApiKycWorkflowsGet200Response, *http.Response, error) {
+func (r ApiApiKycWorkflowsGetRequest) Execute() (*models.ApiKycWorkflowsGet200Response, *http.Response, error) {
 	return r.ApiService.ApiKycWorkflowsGetExecute(r)
 }
 
@@ -728,13 +730,13 @@ func (a *KYCAPIService) ApiKycWorkflowsGet(ctx context.Context) ApiApiKycWorkflo
 }
 
 // Execute executes the request
-//  @return ApiKycWorkflowsGet200Response
-func (a *KYCAPIService) ApiKycWorkflowsGetExecute(r ApiApiKycWorkflowsGetRequest) (*ApiKycWorkflowsGet200Response, *http.Response, error) {
+//  @return models.ApiKycWorkflowsGet200Response
+func (a *KYCAPIService) ApiKycWorkflowsGetExecute(r ApiApiKycWorkflowsGetRequest) (*models.ApiKycWorkflowsGet200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ApiKycWorkflowsGet200Response
+		localVarReturnValue  *models.ApiKycWorkflowsGet200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "KYCAPIService.ApiKycWorkflowsGet")
@@ -806,10 +808,10 @@ type ApiApiProjectsProjectIdKybSessionsPostRequest struct {
 	ctx context.Context
 	ApiService *KYCAPIService
 	projectId string
-	apiProjectsProjectIdKybSessionsPostRequest *ApiProjectsProjectIdKybSessionsPostRequest
+	apiProjectsProjectIdKybSessionsPostRequest *models.ApiProjectsProjectIdKybSessionsPostRequest
 }
 
-func (r ApiApiProjectsProjectIdKybSessionsPostRequest) ApiProjectsProjectIdKybSessionsPostRequest(apiProjectsProjectIdKybSessionsPostRequest ApiProjectsProjectIdKybSessionsPostRequest) ApiApiProjectsProjectIdKybSessionsPostRequest {
+func (r ApiApiProjectsProjectIdKybSessionsPostRequest) ApiProjectsProjectIdKybSessionsPostRequest(apiProjectsProjectIdKybSessionsPostRequest models.ApiProjectsProjectIdKybSessionsPostRequest) ApiApiProjectsProjectIdKybSessionsPostRequest {
 	r.apiProjectsProjectIdKybSessionsPostRequest = &apiProjectsProjectIdKybSessionsPostRequest
 	return r
 }

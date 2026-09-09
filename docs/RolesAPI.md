@@ -33,13 +33,14 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	orgId := "685acbe0e129932fbb7a0fc3" // string | 
 	userId := "685acbe0e129932fbb7a0fc2" // string | 
-	assignRoleRequest := *openapiclient.NewAssignRoleRequest("support_agent") // AssignRoleRequest | 
+	assignRoleRequest := *models.NewAssignRoleRequest("support_agent") // AssignRoleRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -108,7 +109,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -181,12 +183,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	orgId := "685acbe0e129932fbb7a0fc3" // string | 
-	createRoleRequest := *openapiclient.NewCreateRoleRequest("Support Agent") // CreateRoleRequest | 
+	createRoleRequest := *models.NewCreateRoleRequest("Support Agent") // CreateRoleRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -253,7 +256,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -326,7 +330,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -397,7 +402,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -470,7 +476,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -540,7 +547,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -611,13 +619,14 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	orgId := "685acbe0e129932fbb7a0fc3" // string | 
 	roleId := "role123" // string | 
-	updateRoleRequest := *openapiclient.NewUpdateRoleRequest() // UpdateRoleRequest | 
+	updateRoleRequest := *models.NewUpdateRoleRequest() // UpdateRoleRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

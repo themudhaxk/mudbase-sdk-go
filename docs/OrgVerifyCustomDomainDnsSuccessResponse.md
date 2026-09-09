@@ -13,12 +13,12 @@ Name | Type | Description | Notes
 **DnsTxtHost** | **string** |  | 
 **DnsTxtValue** | **string** |  | 
 **Edge** | Pointer to [**OrgEdgeHints**](OrgEdgeHints.md) |  | [optional] 
-**DnsRecords** | Pointer to [**[]OrgDnsRecord**](OrgDnsRecord.md) | Same shape as &#x60;OrgDomainEntryWithDns.dnsRecords&#x60; when Fly ACME ran after this successful verify; omit or empty when Fly ACME is disabled or not provisioned. | [optional] 
-**FlyCertificateStatus** | Pointer to **NullableString** | Fly certificate status after verify when Fly ACME is active; null otherwise | [optional] 
-**FlyAcmeEnabled** | Pointer to **bool** | True when Fly ACME would call the Certificates API (token, app, CUSTOM_DOMAIN_FLY_ACME_ENABLED). | [optional] 
-**FlyAcmeDisabledReason** | Pointer to **NullableString** | When &#x60;flyAcmeEnabled&#x60; is false, why Fly ACME did not run (ops misconfiguration hint). | [optional] 
-**FlyProvisionError** | Pointer to **NullableString** | When Fly ACME is enabled but POST acme failed, Fly API error message for support; null on success. | [optional] 
-**FlyLegacyStaffPipeline** | Pointer to **bool** | When true, &#x60;CUSTOM_DOMAIN_FLY_LEGACY_STAFF_PIPELINE&#x60; is on — status may stay &#x60;cname_pending_staff&#x60; and staff approve-cname is required even if Fly provision succeeds. | [optional] 
+**DnsRecords** | Pointer to [**[]OrgDnsRecord**](OrgDnsRecord.md) | Same shape as &#x60;OrgDomainEntryWithDns.dnsRecords&#x60; when certificate provisioning ran after this successful verify; omit or empty when provisioning is disabled or not yet run. | [optional] 
+**FlyCertificateStatus** | Pointer to **NullableString** | Managed certificate status after verify when provisioning is active; null otherwise | [optional] 
+**FlyAcmeEnabled** | Pointer to **bool** | True when automated managed-certificate provisioning is configured for this deployment. | [optional] 
+**FlyAcmeDisabledReason** | Pointer to **NullableString** | When &#x60;flyAcmeEnabled&#x60; is false, why automated provisioning did not run (ops misconfiguration hint). | [optional] 
+**FlyProvisionError** | Pointer to **NullableString** | When provisioning is enabled but certificate issuance failed, the provider error message for support; null on success. | [optional] 
+**FlyLegacyStaffPipeline** | Pointer to **bool** | When true, the legacy staff pipeline is on: status may stay &#x60;cname_pending_staff&#x60; and staff approve-cname is required even if certificate provisioning succeeds. | [optional] 
 
 ## Methods
 

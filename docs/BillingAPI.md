@@ -50,12 +50,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	subscriptionId := "subscriptionId_example" // string | 
-	cancelSubscriptionRequest := *openapiclient.NewCancelSubscriptionRequest() // CancelSubscriptionRequest |  (optional)
+	cancelSubscriptionRequest := *models.NewCancelSubscriptionRequest() // CancelSubscriptionRequest |  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -120,7 +121,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -192,7 +194,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -264,12 +267,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "projectId_example" // string | Project ID
-	createCheckoutSessionRequest := *openapiclient.NewCreateCheckoutSessionRequest("PlanId_example", "BillingCycle_example", *openapiclient.NewCreateCheckoutSessionRequestCustomerInfo("Email_example")) // CreateCheckoutSessionRequest | 
+	createCheckoutSessionRequest := *models.NewCreateCheckoutSessionRequest("PlanId_example", "BillingCycle_example", *models.NewCreateCheckoutSessionRequestCustomerInfo("Email_example")) // CreateCheckoutSessionRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -334,12 +338,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "projectId_example" // string | 
-	createPlanRequest := *openapiclient.NewCreatePlanRequest("Name_example", float32(123), "USD", "Interval_example") // CreatePlanRequest | 
+	createPlanRequest := *models.NewCreatePlanRequest("Name_example", float32(123), "USD", "Interval_example") // CreatePlanRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -404,7 +409,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -475,7 +481,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -548,12 +555,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	orgId := "orgId_example" // string | 
-	enablePaymentProcessingRequest := *openapiclient.NewEnablePaymentProcessingRequest("AccountBank_example", "AccountNumber_example", "Country_example", "BusinessName_example") // EnablePaymentProcessingRequest | 
+	enablePaymentProcessingRequest := *models.NewEnablePaymentProcessingRequest("AccountBank_example", "AccountNumber_example", "Country_example", "BusinessName_example") // EnablePaymentProcessingRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -618,7 +626,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -691,7 +700,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -752,7 +762,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -821,7 +832,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -891,7 +903,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -963,7 +976,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -1034,7 +1048,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -1104,7 +1119,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -1178,7 +1194,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -1248,7 +1265,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -1318,7 +1336,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -1388,7 +1407,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -1447,7 +1467,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -1517,11 +1538,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
-	initializeOrgPlanCheckoutRequest := *openapiclient.NewInitializeOrgPlanCheckoutRequest("PlanName_example") // InitializeOrgPlanCheckoutRequest | 
+	initializeOrgPlanCheckoutRequest := *models.NewInitializeOrgPlanCheckoutRequest("PlanName_example") // InitializeOrgPlanCheckoutRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1583,12 +1605,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	orgId := "orgId_example" // string | 
-	initializePaymentRequest := *openapiclient.NewInitializePaymentRequest(float32(123), *openapiclient.NewInitializePaymentRequestCustomer("Email_example")) // InitializePaymentRequest | 
+	initializePaymentRequest := *models.NewInitializePaymentRequest(float32(123), *models.NewInitializePaymentRequestCustomer("Email_example")) // InitializePaymentRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1655,12 +1678,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "projectId_example" // string | 
-	initializePaymentForProjectRequest := *openapiclient.NewInitializePaymentForProjectRequest(float32(123), *openapiclient.NewInitializePaymentRequestCustomer("Email_example")) // InitializePaymentForProjectRequest | 
+	initializePaymentForProjectRequest := *models.NewInitializePaymentForProjectRequest(float32(123), *models.NewInitializePaymentRequestCustomer("Email_example")) // InitializePaymentForProjectRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1723,12 +1747,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "projectId_example" // string | 
-	recordUsageRequest := *openapiclient.NewRecordUsageRequest("Email_example", "Metric_example", float32(123)) // RecordUsageRequest | 
+	recordUsageRequest := *models.NewRecordUsageRequest("Email_example", "Metric_example", float32(123)) // RecordUsageRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1793,13 +1818,14 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "projectId_example" // string | 
 	planId := "planId_example" // string | 
-	updatePlanRequest := *openapiclient.NewUpdatePlanRequest() // UpdatePlanRequest | 
+	updatePlanRequest := *models.NewUpdatePlanRequest() // UpdatePlanRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1868,7 +1894,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -1936,7 +1963,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {

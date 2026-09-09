@@ -36,13 +36,14 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "projectId_example" // string | 
 	chatId := "chatId_example" // string | 
-	addParticipantRequest := *openapiclient.NewAddParticipantRequest("UserId_example") // AddParticipantRequest | 
+	addParticipantRequest := *models.NewAddParticipantRequest("UserId_example") // AddParticipantRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -109,14 +110,15 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "projectId_example" // string | 
 	chatId := "chatId_example" // string | 
 	messageId := "messageId_example" // string | 
-	addReactionRequest := *openapiclient.NewAddReactionRequest("Emoji_example") // AddReactionRequest | 
+	addReactionRequest := *models.NewAddReactionRequest("Emoji_example") // AddReactionRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -185,12 +187,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "projectId_example" // string | 
-	createChatRequest := *openapiclient.NewCreateChatRequest("Name_example", "Type_example", []string{"Participants_example"}) // CreateChatRequest | 
+	createChatRequest := *models.NewCreateChatRequest("Name_example", "Type_example", []string{"Participants_example"}) // CreateChatRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -255,7 +258,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -329,14 +333,15 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "projectId_example" // string | 
 	chatId := "chatId_example" // string | 
 	messageId := "messageId_example" // string | 
-	editMessageRequest := *openapiclient.NewEditMessageRequest() // EditMessageRequest | 
+	editMessageRequest := *models.NewEditMessageRequest() // EditMessageRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -405,7 +410,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -478,7 +484,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -550,7 +557,8 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -629,7 +637,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -701,13 +710,14 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "projectId_example" // string | 
 	chatId := "chatId_example" // string | 
-	markMessagesAsReadRequest := *openapiclient.NewMarkMessagesAsReadRequest([]string{"MessageIds_example"}) // MarkMessagesAsReadRequest | 
+	markMessagesAsReadRequest := *models.NewMarkMessagesAsReadRequest([]string{"MessageIds_example"}) // MarkMessagesAsReadRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -776,12 +786,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "projectId_example" // string | 
-	putChatE2eeKeyRequest := *openapiclient.NewPutChatE2eeKeyRequest("IdentityPublicKey_example") // PutChatE2eeKeyRequest | 
+	putChatE2eeKeyRequest := *models.NewPutChatE2eeKeyRequest("IdentityPublicKey_example") // PutChatE2eeKeyRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -846,13 +857,14 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "projectId_example" // string | 
 	chatId := "chatId_example" // string | 
-	removeParticipantRequest := *openapiclient.NewRemoveParticipantRequest("UserId_example") // RemoveParticipantRequest | 
+	removeParticipantRequest := *models.NewRemoveParticipantRequest("UserId_example") // RemoveParticipantRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -919,14 +931,15 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "projectId_example" // string | 
 	chatId := "chatId_example" // string | 
 	messageId := "messageId_example" // string | 
-	addReactionRequest := *openapiclient.NewAddReactionRequest("Emoji_example") // AddReactionRequest | 
+	addReactionRequest := *models.NewAddReactionRequest("Emoji_example") // AddReactionRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -995,13 +1008,14 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "projectId_example" // string | 
 	chatId := "chatId_example" // string | 
-	sendMessageRequest := *openapiclient.NewSendMessageRequest("Type_example") // SendMessageRequest | 
+	sendMessageRequest := *models.NewSendMessageRequest("Type_example") // SendMessageRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

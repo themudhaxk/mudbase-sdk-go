@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -17,6 +17,8 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -28,7 +30,7 @@ type ApiMcpConfigGetRequest struct {
 	ApiService *MCPAPIService
 }
 
-func (r ApiMcpConfigGetRequest) Execute() (*McpConfigGet200Response, *http.Response, error) {
+func (r ApiMcpConfigGetRequest) Execute() (*models.McpConfigGet200Response, *http.Response, error) {
 	return r.ApiService.McpConfigGetExecute(r)
 }
 
@@ -48,13 +50,13 @@ func (a *MCPAPIService) McpConfigGet(ctx context.Context) ApiMcpConfigGetRequest
 }
 
 // Execute executes the request
-//  @return McpConfigGet200Response
-func (a *MCPAPIService) McpConfigGetExecute(r ApiMcpConfigGetRequest) (*McpConfigGet200Response, *http.Response, error) {
+//  @return models.McpConfigGet200Response
+func (a *MCPAPIService) McpConfigGetExecute(r ApiMcpConfigGetRequest) (*models.McpConfigGet200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *McpConfigGet200Response
+		localVarReturnValue  *models.McpConfigGet200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MCPAPIService.McpConfigGet")

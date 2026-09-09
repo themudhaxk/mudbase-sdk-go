@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -18,6 +18,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -29,7 +31,7 @@ type ApiApiMeBootstrapGetRequest struct {
 	ApiService *UsersAPIService
 }
 
-func (r ApiApiMeBootstrapGetRequest) Execute() (*ApiMeBootstrapGet200Response, *http.Response, error) {
+func (r ApiApiMeBootstrapGetRequest) Execute() (*models.ApiMeBootstrapGet200Response, *http.Response, error) {
 	return r.ApiService.ApiMeBootstrapGetExecute(r)
 }
 
@@ -49,13 +51,13 @@ func (a *UsersAPIService) ApiMeBootstrapGet(ctx context.Context) ApiApiMeBootstr
 }
 
 // Execute executes the request
-//  @return ApiMeBootstrapGet200Response
-func (a *UsersAPIService) ApiMeBootstrapGetExecute(r ApiApiMeBootstrapGetRequest) (*ApiMeBootstrapGet200Response, *http.Response, error) {
+//  @return models.ApiMeBootstrapGet200Response
+func (a *UsersAPIService) ApiMeBootstrapGetExecute(r ApiApiMeBootstrapGetRequest) (*models.ApiMeBootstrapGet200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ApiMeBootstrapGet200Response
+		localVarReturnValue  *models.ApiMeBootstrapGet200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsersAPIService.ApiMeBootstrapGet")
@@ -126,15 +128,15 @@ func (a *UsersAPIService) ApiMeBootstrapGetExecute(r ApiApiMeBootstrapGetRequest
 type ApiChangePasswordRequest struct {
 	ctx context.Context
 	ApiService *UsersAPIService
-	changePasswordRequest *ChangePasswordRequest
+	changePasswordRequest *models.ChangePasswordRequest
 }
 
-func (r ApiChangePasswordRequest) ChangePasswordRequest(changePasswordRequest ChangePasswordRequest) ApiChangePasswordRequest {
+func (r ApiChangePasswordRequest) ChangePasswordRequest(changePasswordRequest models.ChangePasswordRequest) ApiChangePasswordRequest {
 	r.changePasswordRequest = &changePasswordRequest
 	return r
 }
 
-func (r ApiChangePasswordRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiChangePasswordRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.ChangePasswordExecute(r)
 }
 
@@ -155,13 +157,13 @@ func (a *UsersAPIService) ChangePassword(ctx context.Context) ApiChangePasswordR
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *UsersAPIService) ChangePasswordExecute(r ApiChangePasswordRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *UsersAPIService) ChangePasswordExecute(r ApiChangePasswordRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsersAPIService.ChangePassword")
@@ -237,15 +239,15 @@ func (a *UsersAPIService) ChangePasswordExecute(r ApiChangePasswordRequest) (*Me
 type ApiDisable2FARequest struct {
 	ctx context.Context
 	ApiService *UsersAPIService
-	disable2FARequest *Disable2FARequest
+	disable2FARequest *models.Disable2FARequest
 }
 
-func (r ApiDisable2FARequest) Disable2FARequest(disable2FARequest Disable2FARequest) ApiDisable2FARequest {
+func (r ApiDisable2FARequest) Disable2FARequest(disable2FARequest models.Disable2FARequest) ApiDisable2FARequest {
 	r.disable2FARequest = &disable2FARequest
 	return r
 }
 
-func (r ApiDisable2FARequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiDisable2FARequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.Disable2FAExecute(r)
 }
 
@@ -266,13 +268,13 @@ func (a *UsersAPIService) Disable2FA(ctx context.Context) ApiDisable2FARequest {
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *UsersAPIService) Disable2FAExecute(r ApiDisable2FARequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *UsersAPIService) Disable2FAExecute(r ApiDisable2FARequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsersAPIService.Disable2FA")
@@ -348,15 +350,15 @@ func (a *UsersAPIService) Disable2FAExecute(r ApiDisable2FARequest) (*MessageRes
 type ApiEraseUserDataRequest struct {
 	ctx context.Context
 	ApiService *UsersAPIService
-	eraseUserDataRequest *EraseUserDataRequest
+	eraseUserDataRequest *models.EraseUserDataRequest
 }
 
-func (r ApiEraseUserDataRequest) EraseUserDataRequest(eraseUserDataRequest EraseUserDataRequest) ApiEraseUserDataRequest {
+func (r ApiEraseUserDataRequest) EraseUserDataRequest(eraseUserDataRequest models.EraseUserDataRequest) ApiEraseUserDataRequest {
 	r.eraseUserDataRequest = &eraseUserDataRequest
 	return r
 }
 
-func (r ApiEraseUserDataRequest) Execute() (*EraseUserData200Response, *http.Response, error) {
+func (r ApiEraseUserDataRequest) Execute() (*models.EraseUserData200Response, *http.Response, error) {
 	return r.ApiService.EraseUserDataExecute(r)
 }
 
@@ -385,13 +387,13 @@ func (a *UsersAPIService) EraseUserData(ctx context.Context) ApiEraseUserDataReq
 }
 
 // Execute executes the request
-//  @return EraseUserData200Response
-func (a *UsersAPIService) EraseUserDataExecute(r ApiEraseUserDataRequest) (*EraseUserData200Response, *http.Response, error) {
+//  @return models.EraseUserData200Response
+func (a *UsersAPIService) EraseUserDataExecute(r ApiEraseUserDataRequest) (*models.EraseUserData200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *EraseUserData200Response
+		localVarReturnValue  *models.EraseUserData200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsersAPIService.EraseUserData")
@@ -450,7 +452,7 @@ func (a *UsersAPIService) EraseUserDataExecute(r ApiEraseUserDataRequest) (*Eras
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v RefreshToken400Response
+			var v models.RefreshToken400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -461,7 +463,7 @@ func (a *UsersAPIService) EraseUserDataExecute(r ApiEraseUserDataRequest) (*Eras
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -472,7 +474,7 @@ func (a *UsersAPIService) EraseUserDataExecute(r ApiEraseUserDataRequest) (*Eras
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 409 {
-			var v EraseUserData409Response
+			var v models.EraseUserData409Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -501,7 +503,7 @@ type ApiExportUserDataRequest struct {
 	ApiService *UsersAPIService
 }
 
-func (r ApiExportUserDataRequest) Execute() (*ExportUserData200Response, *http.Response, error) {
+func (r ApiExportUserDataRequest) Execute() (*models.ExportUserData200Response, *http.Response, error) {
 	return r.ApiService.ExportUserDataExecute(r)
 }
 
@@ -522,13 +524,13 @@ func (a *UsersAPIService) ExportUserData(ctx context.Context) ApiExportUserDataR
 }
 
 // Execute executes the request
-//  @return ExportUserData200Response
-func (a *UsersAPIService) ExportUserDataExecute(r ApiExportUserDataRequest) (*ExportUserData200Response, *http.Response, error) {
+//  @return models.ExportUserData200Response
+func (a *UsersAPIService) ExportUserDataExecute(r ApiExportUserDataRequest) (*models.ExportUserData200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ExportUserData200Response
+		localVarReturnValue  *models.ExportUserData200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsersAPIService.ExportUserData")
@@ -601,7 +603,7 @@ type ApiGetCurrentUserRequest struct {
 	ApiService *UsersAPIService
 }
 
-func (r ApiGetCurrentUserRequest) Execute() (*GetCurrentUser200Response, *http.Response, error) {
+func (r ApiGetCurrentUserRequest) Execute() (*models.GetCurrentUser200Response, *http.Response, error) {
 	return r.ApiService.GetCurrentUserExecute(r)
 }
 
@@ -623,13 +625,13 @@ func (a *UsersAPIService) GetCurrentUser(ctx context.Context) ApiGetCurrentUserR
 }
 
 // Execute executes the request
-//  @return GetCurrentUser200Response
-func (a *UsersAPIService) GetCurrentUserExecute(r ApiGetCurrentUserRequest) (*GetCurrentUser200Response, *http.Response, error) {
+//  @return models.GetCurrentUser200Response
+func (a *UsersAPIService) GetCurrentUserExecute(r ApiGetCurrentUserRequest) (*models.GetCurrentUser200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetCurrentUser200Response
+		localVarReturnValue  *models.GetCurrentUser200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsersAPIService.GetCurrentUser")
@@ -794,7 +796,7 @@ func (a *UsersAPIService) LinkOAuthProviderExecute(r ApiLinkOAuthProviderRequest
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -805,7 +807,7 @@ func (a *UsersAPIService) LinkOAuthProviderExecute(r ApiLinkOAuthProviderRequest
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -825,7 +827,7 @@ type ApiListOAuthProvidersRequest struct {
 	ApiService *UsersAPIService
 }
 
-func (r ApiListOAuthProvidersRequest) Execute() (*ListOAuthProviders200Response, *http.Response, error) {
+func (r ApiListOAuthProvidersRequest) Execute() (*models.ListOAuthProviders200Response, *http.Response, error) {
 	return r.ApiService.ListOAuthProvidersExecute(r)
 }
 
@@ -846,13 +848,13 @@ func (a *UsersAPIService) ListOAuthProviders(ctx context.Context) ApiListOAuthPr
 }
 
 // Execute executes the request
-//  @return ListOAuthProviders200Response
-func (a *UsersAPIService) ListOAuthProvidersExecute(r ApiListOAuthProvidersRequest) (*ListOAuthProviders200Response, *http.Response, error) {
+//  @return models.ListOAuthProviders200Response
+func (a *UsersAPIService) ListOAuthProvidersExecute(r ApiListOAuthProvidersRequest) (*models.ListOAuthProviders200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ListOAuthProviders200Response
+		localVarReturnValue  *models.ListOAuthProviders200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsersAPIService.ListOAuthProviders")
@@ -906,7 +908,7 @@ func (a *UsersAPIService) ListOAuthProvidersExecute(r ApiListOAuthProvidersReque
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -935,7 +937,7 @@ type ApiResendVerificationEmailRequest struct {
 	ApiService *UsersAPIService
 }
 
-func (r ApiResendVerificationEmailRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiResendVerificationEmailRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.ResendVerificationEmailExecute(r)
 }
 
@@ -958,13 +960,13 @@ func (a *UsersAPIService) ResendVerificationEmail(ctx context.Context) ApiResend
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *UsersAPIService) ResendVerificationEmailExecute(r ApiResendVerificationEmailRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *UsersAPIService) ResendVerificationEmailExecute(r ApiResendVerificationEmailRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsersAPIService.ResendVerificationEmail")
@@ -1037,7 +1039,7 @@ type ApiSetup2FARequest struct {
 	ApiService *UsersAPIService
 }
 
-func (r ApiSetup2FARequest) Execute() (*TwoFASetupResponse, *http.Response, error) {
+func (r ApiSetup2FARequest) Execute() (*models.TwoFASetupResponse, *http.Response, error) {
 	return r.ApiService.Setup2FAExecute(r)
 }
 
@@ -1058,13 +1060,13 @@ func (a *UsersAPIService) Setup2FA(ctx context.Context) ApiSetup2FARequest {
 }
 
 // Execute executes the request
-//  @return TwoFASetupResponse
-func (a *UsersAPIService) Setup2FAExecute(r ApiSetup2FARequest) (*TwoFASetupResponse, *http.Response, error) {
+//  @return models.TwoFASetupResponse
+func (a *UsersAPIService) Setup2FAExecute(r ApiSetup2FARequest) (*models.TwoFASetupResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *TwoFASetupResponse
+		localVarReturnValue  *models.TwoFASetupResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsersAPIService.Setup2FA")
@@ -1138,7 +1140,7 @@ type ApiUnlinkOAuthProviderRequest struct {
 	provider string
 }
 
-func (r ApiUnlinkOAuthProviderRequest) Execute() (*UnlinkOAuthProvider200Response, *http.Response, error) {
+func (r ApiUnlinkOAuthProviderRequest) Execute() (*models.UnlinkOAuthProvider200Response, *http.Response, error) {
 	return r.ApiService.UnlinkOAuthProviderExecute(r)
 }
 
@@ -1161,13 +1163,13 @@ func (a *UsersAPIService) UnlinkOAuthProvider(ctx context.Context, provider stri
 }
 
 // Execute executes the request
-//  @return UnlinkOAuthProvider200Response
-func (a *UsersAPIService) UnlinkOAuthProviderExecute(r ApiUnlinkOAuthProviderRequest) (*UnlinkOAuthProvider200Response, *http.Response, error) {
+//  @return models.UnlinkOAuthProvider200Response
+func (a *UsersAPIService) UnlinkOAuthProviderExecute(r ApiUnlinkOAuthProviderRequest) (*models.UnlinkOAuthProvider200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *UnlinkOAuthProvider200Response
+		localVarReturnValue  *models.UnlinkOAuthProvider200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsersAPIService.UnlinkOAuthProvider")
@@ -1222,7 +1224,7 @@ func (a *UsersAPIService) UnlinkOAuthProviderExecute(r ApiUnlinkOAuthProviderReq
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1233,7 +1235,7 @@ func (a *UsersAPIService) UnlinkOAuthProviderExecute(r ApiUnlinkOAuthProviderReq
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1260,15 +1262,15 @@ func (a *UsersAPIService) UnlinkOAuthProviderExecute(r ApiUnlinkOAuthProviderReq
 type ApiUpdateUserProfileRequest struct {
 	ctx context.Context
 	ApiService *UsersAPIService
-	updateUserRequest *UpdateUserRequest
+	updateUserRequest *models.UpdateUserRequest
 }
 
-func (r ApiUpdateUserProfileRequest) UpdateUserRequest(updateUserRequest UpdateUserRequest) ApiUpdateUserProfileRequest {
+func (r ApiUpdateUserProfileRequest) UpdateUserRequest(updateUserRequest models.UpdateUserRequest) ApiUpdateUserProfileRequest {
 	r.updateUserRequest = &updateUserRequest
 	return r
 }
 
-func (r ApiUpdateUserProfileRequest) Execute() (*UpdateUserProfile200Response, *http.Response, error) {
+func (r ApiUpdateUserProfileRequest) Execute() (*models.UpdateUserProfile200Response, *http.Response, error) {
 	return r.ApiService.UpdateUserProfileExecute(r)
 }
 
@@ -1289,13 +1291,13 @@ func (a *UsersAPIService) UpdateUserProfile(ctx context.Context) ApiUpdateUserPr
 }
 
 // Execute executes the request
-//  @return UpdateUserProfile200Response
-func (a *UsersAPIService) UpdateUserProfileExecute(r ApiUpdateUserProfileRequest) (*UpdateUserProfile200Response, *http.Response, error) {
+//  @return models.UpdateUserProfile200Response
+func (a *UsersAPIService) UpdateUserProfileExecute(r ApiUpdateUserProfileRequest) (*models.UpdateUserProfile200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *UpdateUserProfile200Response
+		localVarReturnValue  *models.UpdateUserProfile200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsersAPIService.UpdateUserProfile")
@@ -1371,15 +1373,15 @@ func (a *UsersAPIService) UpdateUserProfileExecute(r ApiUpdateUserProfileRequest
 type ApiVerify2FARequest struct {
 	ctx context.Context
 	ApiService *UsersAPIService
-	verify2FARequest *Verify2FARequest
+	verify2FARequest *models.Verify2FARequest
 }
 
-func (r ApiVerify2FARequest) Verify2FARequest(verify2FARequest Verify2FARequest) ApiVerify2FARequest {
+func (r ApiVerify2FARequest) Verify2FARequest(verify2FARequest models.Verify2FARequest) ApiVerify2FARequest {
 	r.verify2FARequest = &verify2FARequest
 	return r
 }
 
-func (r ApiVerify2FARequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiVerify2FARequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.Verify2FAExecute(r)
 }
 
@@ -1400,13 +1402,13 @@ func (a *UsersAPIService) Verify2FA(ctx context.Context) ApiVerify2FARequest {
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *UsersAPIService) Verify2FAExecute(r ApiVerify2FARequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *UsersAPIService) Verify2FAExecute(r ApiVerify2FARequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsersAPIService.Verify2FA")
@@ -1482,15 +1484,15 @@ func (a *UsersAPIService) Verify2FAExecute(r ApiVerify2FARequest) (*MessageRespo
 type ApiVerifyEmailRequest struct {
 	ctx context.Context
 	ApiService *UsersAPIService
-	verifyEmailAuthRequest *VerifyEmailAuthRequest
+	verifyEmailAuthRequest *models.VerifyEmailAuthRequest
 }
 
-func (r ApiVerifyEmailRequest) VerifyEmailAuthRequest(verifyEmailAuthRequest VerifyEmailAuthRequest) ApiVerifyEmailRequest {
+func (r ApiVerifyEmailRequest) VerifyEmailAuthRequest(verifyEmailAuthRequest models.VerifyEmailAuthRequest) ApiVerifyEmailRequest {
 	r.verifyEmailAuthRequest = &verifyEmailAuthRequest
 	return r
 }
 
-func (r ApiVerifyEmailRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiVerifyEmailRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.VerifyEmailExecute(r)
 }
 
@@ -1514,13 +1516,13 @@ func (a *UsersAPIService) VerifyEmail(ctx context.Context) ApiVerifyEmailRequest
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *UsersAPIService) VerifyEmailExecute(r ApiVerifyEmailRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *UsersAPIService) VerifyEmailExecute(r ApiVerifyEmailRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsersAPIService.VerifyEmail")

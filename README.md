@@ -47,6 +47,12 @@ func main() {
 - **Webhooks** - configurable delivery with retry and logs
 - **Roles & permissions** - project-level access control
 
+## Versioning
+
+There is one current version of this SDK. Model types now live in their own `models` package (imported separately from the top-level `mudbase` package) instead of being flat in the repo root - if you reference a model type by name (for example `models.User`), add that import. Method calls on `client.<Resource>API` are unaffected.
+
+See `CHANGELOG.md` for what changed.
+
 ## Documentation
 
 - **Docs & API reference:** https://docs.mudbase.dev

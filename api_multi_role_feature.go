@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -18,6 +18,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -28,15 +30,15 @@ type ApiAddCustomRoleRequest struct {
 	ctx context.Context
 	ApiService *MultiRoleFeatureAPIService
 	projectId string
-	addCustomRoleRequest *AddCustomRoleRequest
+	addCustomRoleRequest *models.AddCustomRoleRequest
 }
 
-func (r ApiAddCustomRoleRequest) AddCustomRoleRequest(addCustomRoleRequest AddCustomRoleRequest) ApiAddCustomRoleRequest {
+func (r ApiAddCustomRoleRequest) AddCustomRoleRequest(addCustomRoleRequest models.AddCustomRoleRequest) ApiAddCustomRoleRequest {
 	r.addCustomRoleRequest = &addCustomRoleRequest
 	return r
 }
 
-func (r ApiAddCustomRoleRequest) Execute() (*ApplyRoleFeaturePreset200Response, *http.Response, error) {
+func (r ApiAddCustomRoleRequest) Execute() (*models.ApplyRoleFeaturePreset200Response, *http.Response, error) {
 	return r.ApiService.AddCustomRoleExecute(r)
 }
 
@@ -62,13 +64,13 @@ func (a *MultiRoleFeatureAPIService) AddCustomRole(ctx context.Context, projectI
 }
 
 // Execute executes the request
-//  @return ApplyRoleFeaturePreset200Response
-func (a *MultiRoleFeatureAPIService) AddCustomRoleExecute(r ApiAddCustomRoleRequest) (*ApplyRoleFeaturePreset200Response, *http.Response, error) {
+//  @return models.ApplyRoleFeaturePreset200Response
+func (a *MultiRoleFeatureAPIService) AddCustomRoleExecute(r ApiAddCustomRoleRequest) (*models.ApplyRoleFeaturePreset200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ApplyRoleFeaturePreset200Response
+		localVarReturnValue  *models.ApplyRoleFeaturePreset200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MultiRoleFeatureAPIService.AddCustomRole")
@@ -147,20 +149,20 @@ type ApiApplyRoleFeaturePresetRequest struct {
 	ApiService *MultiRoleFeatureAPIService
 	projectId string
 	roleSlug string
-	applyRoleFeaturePresetRequest *ApplyRoleFeaturePresetRequest
+	applyRoleFeaturePresetRequest *models.ApplyRoleFeaturePresetRequest
 }
 
-func (r ApiApplyRoleFeaturePresetRequest) ApplyRoleFeaturePresetRequest(applyRoleFeaturePresetRequest ApplyRoleFeaturePresetRequest) ApiApplyRoleFeaturePresetRequest {
+func (r ApiApplyRoleFeaturePresetRequest) ApplyRoleFeaturePresetRequest(applyRoleFeaturePresetRequest models.ApplyRoleFeaturePresetRequest) ApiApplyRoleFeaturePresetRequest {
 	r.applyRoleFeaturePresetRequest = &applyRoleFeaturePresetRequest
 	return r
 }
 
-func (r ApiApplyRoleFeaturePresetRequest) Execute() (*ApplyRoleFeaturePreset200Response, *http.Response, error) {
+func (r ApiApplyRoleFeaturePresetRequest) Execute() (*models.ApplyRoleFeaturePreset200Response, *http.Response, error) {
 	return r.ApiService.ApplyRoleFeaturePresetExecute(r)
 }
 
 /*
-ApplyRoleFeaturePreset Apply Admin / User / Viewer feature permission preset
+ApplyRoleFeaturePreset Apply Admin / models.User / Viewer feature permission preset
 
 Sets `featurePermissions` on the role from a bundled preset (`admin`, `user`, `viewer`).
 Does not change collection CRUD or `dataScope`; use collection permission APIs for those.
@@ -181,13 +183,13 @@ func (a *MultiRoleFeatureAPIService) ApplyRoleFeaturePreset(ctx context.Context,
 }
 
 // Execute executes the request
-//  @return ApplyRoleFeaturePreset200Response
-func (a *MultiRoleFeatureAPIService) ApplyRoleFeaturePresetExecute(r ApiApplyRoleFeaturePresetRequest) (*ApplyRoleFeaturePreset200Response, *http.Response, error) {
+//  @return models.ApplyRoleFeaturePreset200Response
+func (a *MultiRoleFeatureAPIService) ApplyRoleFeaturePresetExecute(r ApiApplyRoleFeaturePresetRequest) (*models.ApplyRoleFeaturePreset200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ApplyRoleFeaturePreset200Response
+		localVarReturnValue  *models.ApplyRoleFeaturePreset200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MultiRoleFeatureAPIService.ApplyRoleFeaturePreset")
@@ -248,7 +250,7 @@ func (a *MultiRoleFeatureAPIService) ApplyRoleFeaturePresetExecute(r ApiApplyRol
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -278,7 +280,7 @@ type ApiGetAvailableRolesRequest struct {
 	projectId string
 }
 
-func (r ApiGetAvailableRolesRequest) Execute() (*GetAvailableRoles200Response, *http.Response, error) {
+func (r ApiGetAvailableRolesRequest) Execute() (*models.GetAvailableRoles200Response, *http.Response, error) {
 	return r.ApiService.GetAvailableRolesExecute(r)
 }
 
@@ -302,13 +304,13 @@ func (a *MultiRoleFeatureAPIService) GetAvailableRoles(ctx context.Context, proj
 }
 
 // Execute executes the request
-//  @return GetAvailableRoles200Response
-func (a *MultiRoleFeatureAPIService) GetAvailableRolesExecute(r ApiGetAvailableRolesRequest) (*GetAvailableRoles200Response, *http.Response, error) {
+//  @return models.GetAvailableRoles200Response
+func (a *MultiRoleFeatureAPIService) GetAvailableRolesExecute(r ApiGetAvailableRolesRequest) (*models.GetAvailableRoles200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetAvailableRoles200Response
+		localVarReturnValue  *models.GetAvailableRoles200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MultiRoleFeatureAPIService.GetAvailableRoles")
@@ -383,7 +385,7 @@ type ApiGetMultiRoleConfigRequest struct {
 	projectId string
 }
 
-func (r ApiGetMultiRoleConfigRequest) Execute() (*GetMultiRoleConfig200Response, *http.Response, error) {
+func (r ApiGetMultiRoleConfigRequest) Execute() (*models.GetMultiRoleConfig200Response, *http.Response, error) {
 	return r.ApiService.GetMultiRoleConfigExecute(r)
 }
 
@@ -405,13 +407,13 @@ func (a *MultiRoleFeatureAPIService) GetMultiRoleConfig(ctx context.Context, pro
 }
 
 // Execute executes the request
-//  @return GetMultiRoleConfig200Response
-func (a *MultiRoleFeatureAPIService) GetMultiRoleConfigExecute(r ApiGetMultiRoleConfigRequest) (*GetMultiRoleConfig200Response, *http.Response, error) {
+//  @return models.GetMultiRoleConfig200Response
+func (a *MultiRoleFeatureAPIService) GetMultiRoleConfigExecute(r ApiGetMultiRoleConfigRequest) (*models.GetMultiRoleConfig200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetMultiRoleConfig200Response
+		localVarReturnValue  *models.GetMultiRoleConfig200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MultiRoleFeatureAPIService.GetMultiRoleConfig")
@@ -486,7 +488,7 @@ type ApiGetPermissionsMatrixRequest struct {
 	projectId string
 }
 
-func (r ApiGetPermissionsMatrixRequest) Execute() (*GetPermissionsMatrix200Response, *http.Response, error) {
+func (r ApiGetPermissionsMatrixRequest) Execute() (*models.GetPermissionsMatrix200Response, *http.Response, error) {
 	return r.ApiService.GetPermissionsMatrixExecute(r)
 }
 
@@ -510,13 +512,13 @@ func (a *MultiRoleFeatureAPIService) GetPermissionsMatrix(ctx context.Context, p
 }
 
 // Execute executes the request
-//  @return GetPermissionsMatrix200Response
-func (a *MultiRoleFeatureAPIService) GetPermissionsMatrixExecute(r ApiGetPermissionsMatrixRequest) (*GetPermissionsMatrix200Response, *http.Response, error) {
+//  @return models.GetPermissionsMatrix200Response
+func (a *MultiRoleFeatureAPIService) GetPermissionsMatrixExecute(r ApiGetPermissionsMatrixRequest) (*models.GetPermissionsMatrix200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetPermissionsMatrix200Response
+		localVarReturnValue  *models.GetPermissionsMatrix200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MultiRoleFeatureAPIService.GetPermissionsMatrix")
@@ -695,7 +697,7 @@ func (a *MultiRoleFeatureAPIService) OauthSignupWithRoleExecute(r ApiOauthSignup
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v InitiateOrgOAuth400Response
+			var v models.InitiateOrgOAuth400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -706,7 +708,7 @@ func (a *MultiRoleFeatureAPIService) OauthSignupWithRoleExecute(r ApiOauthSignup
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v InitiateOAuth404Response
+			var v models.InitiateOAuth404Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -717,7 +719,7 @@ func (a *MultiRoleFeatureAPIService) OauthSignupWithRoleExecute(r ApiOauthSignup
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -736,15 +738,15 @@ type ApiRegisterWithRoleRequest struct {
 	ctx context.Context
 	ApiService *MultiRoleFeatureAPIService
 	role string
-	registerWithRoleRequest *RegisterWithRoleRequest
+	registerWithRoleRequest *models.RegisterWithRoleRequest
 }
 
-func (r ApiRegisterWithRoleRequest) RegisterWithRoleRequest(registerWithRoleRequest RegisterWithRoleRequest) ApiRegisterWithRoleRequest {
+func (r ApiRegisterWithRoleRequest) RegisterWithRoleRequest(registerWithRoleRequest models.RegisterWithRoleRequest) ApiRegisterWithRoleRequest {
 	r.registerWithRoleRequest = &registerWithRoleRequest
 	return r
 }
 
-func (r ApiRegisterWithRoleRequest) Execute() (*RegisterWithRole201Response, *http.Response, error) {
+func (r ApiRegisterWithRoleRequest) Execute() (*models.RegisterWithRole201Response, *http.Response, error) {
 	return r.ApiService.RegisterWithRoleExecute(r)
 }
 
@@ -768,13 +770,13 @@ func (a *MultiRoleFeatureAPIService) RegisterWithRole(ctx context.Context, role 
 }
 
 // Execute executes the request
-//  @return RegisterWithRole201Response
-func (a *MultiRoleFeatureAPIService) RegisterWithRoleExecute(r ApiRegisterWithRoleRequest) (*RegisterWithRole201Response, *http.Response, error) {
+//  @return models.RegisterWithRole201Response
+func (a *MultiRoleFeatureAPIService) RegisterWithRoleExecute(r ApiRegisterWithRoleRequest) (*models.RegisterWithRole201Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *RegisterWithRole201Response
+		localVarReturnValue  *models.RegisterWithRole201Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MultiRoleFeatureAPIService.RegisterWithRole")
@@ -852,15 +854,15 @@ type ApiSimulateAppPermissionsRequest struct {
 	ctx context.Context
 	ApiService *MultiRoleFeatureAPIService
 	projectId string
-	simulateAppPermissionsRequest *SimulateAppPermissionsRequest
+	simulateAppPermissionsRequest *models.SimulateAppPermissionsRequest
 }
 
-func (r ApiSimulateAppPermissionsRequest) SimulateAppPermissionsRequest(simulateAppPermissionsRequest SimulateAppPermissionsRequest) ApiSimulateAppPermissionsRequest {
+func (r ApiSimulateAppPermissionsRequest) SimulateAppPermissionsRequest(simulateAppPermissionsRequest models.SimulateAppPermissionsRequest) ApiSimulateAppPermissionsRequest {
 	r.simulateAppPermissionsRequest = &simulateAppPermissionsRequest
 	return r
 }
 
-func (r ApiSimulateAppPermissionsRequest) Execute() (*SimulateAppPermissions200Response, *http.Response, error) {
+func (r ApiSimulateAppPermissionsRequest) Execute() (*models.SimulateAppPermissions200Response, *http.Response, error) {
 	return r.ApiService.SimulateAppPermissionsExecute(r)
 }
 
@@ -886,13 +888,13 @@ func (a *MultiRoleFeatureAPIService) SimulateAppPermissions(ctx context.Context,
 }
 
 // Execute executes the request
-//  @return SimulateAppPermissions200Response
-func (a *MultiRoleFeatureAPIService) SimulateAppPermissionsExecute(r ApiSimulateAppPermissionsRequest) (*SimulateAppPermissions200Response, *http.Response, error) {
+//  @return models.SimulateAppPermissions200Response
+func (a *MultiRoleFeatureAPIService) SimulateAppPermissionsExecute(r ApiSimulateAppPermissionsRequest) (*models.SimulateAppPermissions200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *SimulateAppPermissions200Response
+		localVarReturnValue  *models.SimulateAppPermissions200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MultiRoleFeatureAPIService.SimulateAppPermissions")
@@ -971,15 +973,15 @@ type ApiToggleRoleRequest struct {
 	ApiService *MultiRoleFeatureAPIService
 	projectId string
 	roleSlug string
-	toggleRoleRequest *ToggleRoleRequest
+	toggleRoleRequest *models.ToggleRoleRequest
 }
 
-func (r ApiToggleRoleRequest) ToggleRoleRequest(toggleRoleRequest ToggleRoleRequest) ApiToggleRoleRequest {
+func (r ApiToggleRoleRequest) ToggleRoleRequest(toggleRoleRequest models.ToggleRoleRequest) ApiToggleRoleRequest {
 	r.toggleRoleRequest = &toggleRoleRequest
 	return r
 }
 
-func (r ApiToggleRoleRequest) Execute() (*ApplyRoleFeaturePreset200Response, *http.Response, error) {
+func (r ApiToggleRoleRequest) Execute() (*models.ApplyRoleFeaturePreset200Response, *http.Response, error) {
 	return r.ApiService.ToggleRoleExecute(r)
 }
 
@@ -1001,13 +1003,13 @@ func (a *MultiRoleFeatureAPIService) ToggleRole(ctx context.Context, projectId s
 }
 
 // Execute executes the request
-//  @return ApplyRoleFeaturePreset200Response
-func (a *MultiRoleFeatureAPIService) ToggleRoleExecute(r ApiToggleRoleRequest) (*ApplyRoleFeaturePreset200Response, *http.Response, error) {
+//  @return models.ApplyRoleFeaturePreset200Response
+func (a *MultiRoleFeatureAPIService) ToggleRoleExecute(r ApiToggleRoleRequest) (*models.ApplyRoleFeaturePreset200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ApplyRoleFeaturePreset200Response
+		localVarReturnValue  *models.ApplyRoleFeaturePreset200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MultiRoleFeatureAPIService.ToggleRole")
@@ -1088,15 +1090,15 @@ type ApiUpdateCollectionPermissionsRequest struct {
 	projectId string
 	roleSlug string
 	collectionId string
-	updateCollectionPermissionsRequest *UpdateCollectionPermissionsRequest
+	updateCollectionPermissionsRequest *models.UpdateCollectionPermissionsRequest
 }
 
-func (r ApiUpdateCollectionPermissionsRequest) UpdateCollectionPermissionsRequest(updateCollectionPermissionsRequest UpdateCollectionPermissionsRequest) ApiUpdateCollectionPermissionsRequest {
+func (r ApiUpdateCollectionPermissionsRequest) UpdateCollectionPermissionsRequest(updateCollectionPermissionsRequest models.UpdateCollectionPermissionsRequest) ApiUpdateCollectionPermissionsRequest {
 	r.updateCollectionPermissionsRequest = &updateCollectionPermissionsRequest
 	return r
 }
 
-func (r ApiUpdateCollectionPermissionsRequest) Execute() (*ApplyRoleFeaturePreset200Response, *http.Response, error) {
+func (r ApiUpdateCollectionPermissionsRequest) Execute() (*models.ApplyRoleFeaturePreset200Response, *http.Response, error) {
 	return r.ApiService.UpdateCollectionPermissionsExecute(r)
 }
 
@@ -1124,13 +1126,13 @@ func (a *MultiRoleFeatureAPIService) UpdateCollectionPermissions(ctx context.Con
 }
 
 // Execute executes the request
-//  @return ApplyRoleFeaturePreset200Response
-func (a *MultiRoleFeatureAPIService) UpdateCollectionPermissionsExecute(r ApiUpdateCollectionPermissionsRequest) (*ApplyRoleFeaturePreset200Response, *http.Response, error) {
+//  @return models.ApplyRoleFeaturePreset200Response
+func (a *MultiRoleFeatureAPIService) UpdateCollectionPermissionsExecute(r ApiUpdateCollectionPermissionsRequest) (*models.ApplyRoleFeaturePreset200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ApplyRoleFeaturePreset200Response
+		localVarReturnValue  *models.ApplyRoleFeaturePreset200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MultiRoleFeatureAPIService.UpdateCollectionPermissions")
@@ -1210,15 +1212,15 @@ type ApiUpdateMultiRoleSettingsRequest struct {
 	ctx context.Context
 	ApiService *MultiRoleFeatureAPIService
 	projectId string
-	updateMultiRoleSettingsRequest *UpdateMultiRoleSettingsRequest
+	updateMultiRoleSettingsRequest *models.UpdateMultiRoleSettingsRequest
 }
 
-func (r ApiUpdateMultiRoleSettingsRequest) UpdateMultiRoleSettingsRequest(updateMultiRoleSettingsRequest UpdateMultiRoleSettingsRequest) ApiUpdateMultiRoleSettingsRequest {
+func (r ApiUpdateMultiRoleSettingsRequest) UpdateMultiRoleSettingsRequest(updateMultiRoleSettingsRequest models.UpdateMultiRoleSettingsRequest) ApiUpdateMultiRoleSettingsRequest {
 	r.updateMultiRoleSettingsRequest = &updateMultiRoleSettingsRequest
 	return r
 }
 
-func (r ApiUpdateMultiRoleSettingsRequest) Execute() (*UpdateMultiRoleSettings200Response, *http.Response, error) {
+func (r ApiUpdateMultiRoleSettingsRequest) Execute() (*models.UpdateMultiRoleSettings200Response, *http.Response, error) {
 	return r.ApiService.UpdateMultiRoleSettingsExecute(r)
 }
 
@@ -1243,13 +1245,13 @@ func (a *MultiRoleFeatureAPIService) UpdateMultiRoleSettings(ctx context.Context
 }
 
 // Execute executes the request
-//  @return UpdateMultiRoleSettings200Response
-func (a *MultiRoleFeatureAPIService) UpdateMultiRoleSettingsExecute(r ApiUpdateMultiRoleSettingsRequest) (*UpdateMultiRoleSettings200Response, *http.Response, error) {
+//  @return models.UpdateMultiRoleSettings200Response
+func (a *MultiRoleFeatureAPIService) UpdateMultiRoleSettingsExecute(r ApiUpdateMultiRoleSettingsRequest) (*models.UpdateMultiRoleSettings200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *UpdateMultiRoleSettings200Response
+		localVarReturnValue  *models.UpdateMultiRoleSettings200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MultiRoleFeatureAPIService.UpdateMultiRoleSettings")
@@ -1328,16 +1330,16 @@ type ApiUpdateProjectRoleRequest struct {
 	ApiService *MultiRoleFeatureAPIService
 	projectId string
 	roleSlug string
-	updateProjectRoleRequest *UpdateProjectRoleRequest
+	updateProjectRoleRequest *models.UpdateProjectRoleRequest
 }
 
 // Same fields as **Add custom role** — send only fields you want to change. &#x60;defaultPermissions&#x60; / &#x60;collectionPermissions&#x60; are normalized the same way as on create. **&#x60;featurePermissions&#x60;:** &#x60;components/schemas/AppRoleFeaturePermissions&#x60; (aligned with &#x60;services/appRoleFeatureMap.js&#x60;). 
-func (r ApiUpdateProjectRoleRequest) UpdateProjectRoleRequest(updateProjectRoleRequest UpdateProjectRoleRequest) ApiUpdateProjectRoleRequest {
+func (r ApiUpdateProjectRoleRequest) UpdateProjectRoleRequest(updateProjectRoleRequest models.UpdateProjectRoleRequest) ApiUpdateProjectRoleRequest {
 	r.updateProjectRoleRequest = &updateProjectRoleRequest
 	return r
 }
 
-func (r ApiUpdateProjectRoleRequest) Execute() (*ApplyRoleFeaturePreset200Response, *http.Response, error) {
+func (r ApiUpdateProjectRoleRequest) Execute() (*models.ApplyRoleFeaturePreset200Response, *http.Response, error) {
 	return r.ApiService.UpdateProjectRoleExecute(r)
 }
 
@@ -1363,13 +1365,13 @@ func (a *MultiRoleFeatureAPIService) UpdateProjectRole(ctx context.Context, proj
 }
 
 // Execute executes the request
-//  @return ApplyRoleFeaturePreset200Response
-func (a *MultiRoleFeatureAPIService) UpdateProjectRoleExecute(r ApiUpdateProjectRoleRequest) (*ApplyRoleFeaturePreset200Response, *http.Response, error) {
+//  @return models.ApplyRoleFeaturePreset200Response
+func (a *MultiRoleFeatureAPIService) UpdateProjectRoleExecute(r ApiUpdateProjectRoleRequest) (*models.ApplyRoleFeaturePreset200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ApplyRoleFeaturePreset200Response
+		localVarReturnValue  *models.ApplyRoleFeaturePreset200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MultiRoleFeatureAPIService.UpdateProjectRole")

@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -19,6 +19,8 @@ import (
 	"net/url"
 	"strings"
 	"time"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -29,15 +31,15 @@ type ApiEnqueueProjectEmailRequest struct {
 	ctx context.Context
 	ApiService *EmailAPIService
 	projectId string
-	projectEmailSendRequest *ProjectEmailSendRequest
+	projectEmailSendRequest *models.ProjectEmailSendRequest
 }
 
-func (r ApiEnqueueProjectEmailRequest) ProjectEmailSendRequest(projectEmailSendRequest ProjectEmailSendRequest) ApiEnqueueProjectEmailRequest {
+func (r ApiEnqueueProjectEmailRequest) ProjectEmailSendRequest(projectEmailSendRequest models.ProjectEmailSendRequest) ApiEnqueueProjectEmailRequest {
 	r.projectEmailSendRequest = &projectEmailSendRequest
 	return r
 }
 
-func (r ApiEnqueueProjectEmailRequest) Execute() (*EnqueueProjectEmail202Response, *http.Response, error) {
+func (r ApiEnqueueProjectEmailRequest) Execute() (*models.EnqueueProjectEmail202Response, *http.Response, error) {
 	return r.ApiService.EnqueueProjectEmailExecute(r)
 }
 
@@ -61,13 +63,13 @@ func (a *EmailAPIService) EnqueueProjectEmail(ctx context.Context, projectId str
 }
 
 // Execute executes the request
-//  @return EnqueueProjectEmail202Response
-func (a *EmailAPIService) EnqueueProjectEmailExecute(r ApiEnqueueProjectEmailRequest) (*EnqueueProjectEmail202Response, *http.Response, error) {
+//  @return models.EnqueueProjectEmail202Response
+func (a *EmailAPIService) EnqueueProjectEmailExecute(r ApiEnqueueProjectEmailRequest) (*models.EnqueueProjectEmail202Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *EnqueueProjectEmail202Response
+		localVarReturnValue  *models.EnqueueProjectEmail202Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EmailAPIService.EnqueueProjectEmail")
@@ -141,7 +143,7 @@ func (a *EmailAPIService) EnqueueProjectEmailExecute(r ApiEnqueueProjectEmailReq
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -152,7 +154,7 @@ func (a *EmailAPIService) EnqueueProjectEmailExecute(r ApiEnqueueProjectEmailReq
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 503 {
-			var v TriggerFunctionWebhook400Response
+			var v models.TriggerFunctionWebhook400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -194,7 +196,7 @@ func (r ApiGetProjectEmailAnalyticsRequest) To(to time.Time) ApiGetProjectEmailA
 	return r
 }
 
-func (r ApiGetProjectEmailAnalyticsRequest) Execute() (*GetProjectEmailAnalytics200Response, *http.Response, error) {
+func (r ApiGetProjectEmailAnalyticsRequest) Execute() (*models.GetProjectEmailAnalytics200Response, *http.Response, error) {
 	return r.ApiService.GetProjectEmailAnalyticsExecute(r)
 }
 
@@ -217,13 +219,13 @@ func (a *EmailAPIService) GetProjectEmailAnalytics(ctx context.Context, projectI
 }
 
 // Execute executes the request
-//  @return GetProjectEmailAnalytics200Response
-func (a *EmailAPIService) GetProjectEmailAnalyticsExecute(r ApiGetProjectEmailAnalyticsRequest) (*GetProjectEmailAnalytics200Response, *http.Response, error) {
+//  @return models.GetProjectEmailAnalytics200Response
+func (a *EmailAPIService) GetProjectEmailAnalyticsExecute(r ApiGetProjectEmailAnalyticsRequest) (*models.GetProjectEmailAnalytics200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetProjectEmailAnalytics200Response
+		localVarReturnValue  *models.GetProjectEmailAnalytics200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EmailAPIService.GetProjectEmailAnalytics")
@@ -298,7 +300,7 @@ func (a *EmailAPIService) GetProjectEmailAnalyticsExecute(r ApiGetProjectEmailAn
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -309,7 +311,7 @@ func (a *EmailAPIService) GetProjectEmailAnalyticsExecute(r ApiGetProjectEmailAn
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -339,7 +341,7 @@ type ApiGetProjectEmailSmtpRequest struct {
 	projectId string
 }
 
-func (r ApiGetProjectEmailSmtpRequest) Execute() (*GetProjectEmailSmtp200Response, *http.Response, error) {
+func (r ApiGetProjectEmailSmtpRequest) Execute() (*models.GetProjectEmailSmtp200Response, *http.Response, error) {
 	return r.ApiService.GetProjectEmailSmtpExecute(r)
 }
 
@@ -359,13 +361,13 @@ func (a *EmailAPIService) GetProjectEmailSmtp(ctx context.Context, projectId str
 }
 
 // Execute executes the request
-//  @return GetProjectEmailSmtp200Response
-func (a *EmailAPIService) GetProjectEmailSmtpExecute(r ApiGetProjectEmailSmtpRequest) (*GetProjectEmailSmtp200Response, *http.Response, error) {
+//  @return models.GetProjectEmailSmtp200Response
+func (a *EmailAPIService) GetProjectEmailSmtpExecute(r ApiGetProjectEmailSmtpRequest) (*models.GetProjectEmailSmtp200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetProjectEmailSmtp200Response
+		localVarReturnValue  *models.GetProjectEmailSmtp200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EmailAPIService.GetProjectEmailSmtp")
@@ -455,7 +457,7 @@ type ApiGetProjectEmailTemplateRequest struct {
 	name string
 }
 
-func (r ApiGetProjectEmailTemplateRequest) Execute() (*GetProjectEmailTemplate200Response, *http.Response, error) {
+func (r ApiGetProjectEmailTemplateRequest) Execute() (*models.GetProjectEmailTemplate200Response, *http.Response, error) {
 	return r.ApiService.GetProjectEmailTemplateExecute(r)
 }
 
@@ -482,13 +484,13 @@ func (a *EmailAPIService) GetProjectEmailTemplate(ctx context.Context, projectId
 }
 
 // Execute executes the request
-//  @return GetProjectEmailTemplate200Response
-func (a *EmailAPIService) GetProjectEmailTemplateExecute(r ApiGetProjectEmailTemplateRequest) (*GetProjectEmailTemplate200Response, *http.Response, error) {
+//  @return models.GetProjectEmailTemplate200Response
+func (a *EmailAPIService) GetProjectEmailTemplateExecute(r ApiGetProjectEmailTemplateRequest) (*models.GetProjectEmailTemplate200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetProjectEmailTemplate200Response
+		localVarReturnValue  *models.GetProjectEmailTemplate200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EmailAPIService.GetProjectEmailTemplate")
@@ -558,7 +560,7 @@ func (a *EmailAPIService) GetProjectEmailTemplateExecute(r ApiGetProjectEmailTem
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -588,7 +590,7 @@ type ApiListProjectEmailTemplatesRequest struct {
 	projectId string
 }
 
-func (r ApiListProjectEmailTemplatesRequest) Execute() (*ListProjectEmailTemplates200Response, *http.Response, error) {
+func (r ApiListProjectEmailTemplatesRequest) Execute() (*models.ListProjectEmailTemplates200Response, *http.Response, error) {
 	return r.ApiService.ListProjectEmailTemplatesExecute(r)
 }
 
@@ -613,13 +615,13 @@ func (a *EmailAPIService) ListProjectEmailTemplates(ctx context.Context, project
 }
 
 // Execute executes the request
-//  @return ListProjectEmailTemplates200Response
-func (a *EmailAPIService) ListProjectEmailTemplatesExecute(r ApiListProjectEmailTemplatesRequest) (*ListProjectEmailTemplates200Response, *http.Response, error) {
+//  @return models.ListProjectEmailTemplates200Response
+func (a *EmailAPIService) ListProjectEmailTemplatesExecute(r ApiListProjectEmailTemplatesRequest) (*models.ListProjectEmailTemplates200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ListProjectEmailTemplates200Response
+		localVarReturnValue  *models.ListProjectEmailTemplates200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EmailAPIService.ListProjectEmailTemplates")
@@ -706,15 +708,15 @@ type ApiPatchProjectEmailSmtpRequest struct {
 	ctx context.Context
 	ApiService *EmailAPIService
 	projectId string
-	projectSmtpPatchRequest *ProjectSmtpPatchRequest
+	projectSmtpPatchRequest *models.ProjectSmtpPatchRequest
 }
 
-func (r ApiPatchProjectEmailSmtpRequest) ProjectSmtpPatchRequest(projectSmtpPatchRequest ProjectSmtpPatchRequest) ApiPatchProjectEmailSmtpRequest {
+func (r ApiPatchProjectEmailSmtpRequest) ProjectSmtpPatchRequest(projectSmtpPatchRequest models.ProjectSmtpPatchRequest) ApiPatchProjectEmailSmtpRequest {
 	r.projectSmtpPatchRequest = &projectSmtpPatchRequest
 	return r
 }
 
-func (r ApiPatchProjectEmailSmtpRequest) Execute() (*GetProjectEmailSmtp200Response, *http.Response, error) {
+func (r ApiPatchProjectEmailSmtpRequest) Execute() (*models.GetProjectEmailSmtp200Response, *http.Response, error) {
 	return r.ApiService.PatchProjectEmailSmtpExecute(r)
 }
 
@@ -737,13 +739,13 @@ func (a *EmailAPIService) PatchProjectEmailSmtp(ctx context.Context, projectId s
 }
 
 // Execute executes the request
-//  @return GetProjectEmailSmtp200Response
-func (a *EmailAPIService) PatchProjectEmailSmtpExecute(r ApiPatchProjectEmailSmtpRequest) (*GetProjectEmailSmtp200Response, *http.Response, error) {
+//  @return models.GetProjectEmailSmtp200Response
+func (a *EmailAPIService) PatchProjectEmailSmtpExecute(r ApiPatchProjectEmailSmtpRequest) (*models.GetProjectEmailSmtp200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetProjectEmailSmtp200Response
+		localVarReturnValue  *models.GetProjectEmailSmtp200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EmailAPIService.PatchProjectEmailSmtp")
@@ -817,7 +819,7 @@ func (a *EmailAPIService) PatchProjectEmailSmtpExecute(r ApiPatchProjectEmailSmt
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -846,10 +848,10 @@ type ApiPreviewProjectEmailTemplateRequest struct {
 	ApiService *EmailAPIService
 	projectId string
 	name string
-	previewProjectEmailTemplateRequest *PreviewProjectEmailTemplateRequest
+	previewProjectEmailTemplateRequest *models.PreviewProjectEmailTemplateRequest
 }
 
-func (r ApiPreviewProjectEmailTemplateRequest) PreviewProjectEmailTemplateRequest(previewProjectEmailTemplateRequest PreviewProjectEmailTemplateRequest) ApiPreviewProjectEmailTemplateRequest {
+func (r ApiPreviewProjectEmailTemplateRequest) PreviewProjectEmailTemplateRequest(previewProjectEmailTemplateRequest models.PreviewProjectEmailTemplateRequest) ApiPreviewProjectEmailTemplateRequest {
 	r.previewProjectEmailTemplateRequest = &previewProjectEmailTemplateRequest
 	return r
 }
@@ -1072,15 +1074,15 @@ type ApiTestProjectEmailSmtpRequest struct {
 	ctx context.Context
 	ApiService *EmailAPIService
 	projectId string
-	projectSmtpTestRequest *ProjectSmtpTestRequest
+	projectSmtpTestRequest *models.ProjectSmtpTestRequest
 }
 
-func (r ApiTestProjectEmailSmtpRequest) ProjectSmtpTestRequest(projectSmtpTestRequest ProjectSmtpTestRequest) ApiTestProjectEmailSmtpRequest {
+func (r ApiTestProjectEmailSmtpRequest) ProjectSmtpTestRequest(projectSmtpTestRequest models.ProjectSmtpTestRequest) ApiTestProjectEmailSmtpRequest {
 	r.projectSmtpTestRequest = &projectSmtpTestRequest
 	return r
 }
 
-func (r ApiTestProjectEmailSmtpRequest) Execute() (*DeleteFunction200Response, *http.Response, error) {
+func (r ApiTestProjectEmailSmtpRequest) Execute() (*models.DeleteFunction200Response, *http.Response, error) {
 	return r.ApiService.TestProjectEmailSmtpExecute(r)
 }
 
@@ -1103,13 +1105,13 @@ func (a *EmailAPIService) TestProjectEmailSmtp(ctx context.Context, projectId st
 }
 
 // Execute executes the request
-//  @return DeleteFunction200Response
-func (a *EmailAPIService) TestProjectEmailSmtpExecute(r ApiTestProjectEmailSmtpRequest) (*DeleteFunction200Response, *http.Response, error) {
+//  @return models.DeleteFunction200Response
+func (a *EmailAPIService) TestProjectEmailSmtpExecute(r ApiTestProjectEmailSmtpRequest) (*models.DeleteFunction200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *DeleteFunction200Response
+		localVarReturnValue  *models.DeleteFunction200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EmailAPIService.TestProjectEmailSmtp")
@@ -1183,7 +1185,7 @@ func (a *EmailAPIService) TestProjectEmailSmtpExecute(r ApiTestProjectEmailSmtpR
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1194,7 +1196,7 @@ func (a *EmailAPIService) TestProjectEmailSmtpExecute(r ApiTestProjectEmailSmtpR
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
-			var v RegisterUser429Response
+			var v models.RegisterUser429Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1223,10 +1225,10 @@ type ApiUpsertProjectEmailTemplateRequest struct {
 	ApiService *EmailAPIService
 	projectId string
 	name string
-	upsertProjectEmailTemplateRequest *UpsertProjectEmailTemplateRequest
+	upsertProjectEmailTemplateRequest *models.UpsertProjectEmailTemplateRequest
 }
 
-func (r ApiUpsertProjectEmailTemplateRequest) UpsertProjectEmailTemplateRequest(upsertProjectEmailTemplateRequest UpsertProjectEmailTemplateRequest) ApiUpsertProjectEmailTemplateRequest {
+func (r ApiUpsertProjectEmailTemplateRequest) UpsertProjectEmailTemplateRequest(upsertProjectEmailTemplateRequest models.UpsertProjectEmailTemplateRequest) ApiUpsertProjectEmailTemplateRequest {
 	r.upsertProjectEmailTemplateRequest = &upsertProjectEmailTemplateRequest
 	return r
 }
@@ -1335,7 +1337,7 @@ func (a *EmailAPIService) UpsertProjectEmailTemplateExecute(r ApiUpsertProjectEm
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1354,10 +1356,10 @@ type ApiVerifyProjectEmailSmtpDomainRequest struct {
 	ctx context.Context
 	ApiService *EmailAPIService
 	projectId string
-	verifyProjectEmailSmtpDomainRequest *VerifyProjectEmailSmtpDomainRequest
+	verifyProjectEmailSmtpDomainRequest *models.VerifyProjectEmailSmtpDomainRequest
 }
 
-func (r ApiVerifyProjectEmailSmtpDomainRequest) VerifyProjectEmailSmtpDomainRequest(verifyProjectEmailSmtpDomainRequest VerifyProjectEmailSmtpDomainRequest) ApiVerifyProjectEmailSmtpDomainRequest {
+func (r ApiVerifyProjectEmailSmtpDomainRequest) VerifyProjectEmailSmtpDomainRequest(verifyProjectEmailSmtpDomainRequest models.VerifyProjectEmailSmtpDomainRequest) ApiVerifyProjectEmailSmtpDomainRequest {
 	r.verifyProjectEmailSmtpDomainRequest = &verifyProjectEmailSmtpDomainRequest
 	return r
 }
@@ -1461,7 +1463,7 @@ func (a *EmailAPIService) VerifyProjectEmailSmtpDomainExecute(r ApiVerifyProject
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

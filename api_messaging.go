@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -19,6 +19,8 @@ import (
 	"net/url"
 	"strings"
 	"time"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -55,7 +57,7 @@ func (r ApiGetMessageHistoryRequest) Status(status string) ApiGetMessageHistoryR
 	return r
 }
 
-func (r ApiGetMessageHistoryRequest) Execute() (*MessageHistoryResponse, *http.Response, error) {
+func (r ApiGetMessageHistoryRequest) Execute() (*models.MessageHistoryResponse, *http.Response, error) {
 	return r.ApiService.GetMessageHistoryExecute(r)
 }
 
@@ -79,13 +81,13 @@ func (a *MessagingAPIService) GetMessageHistory(ctx context.Context, projectId s
 }
 
 // Execute executes the request
-//  @return MessageHistoryResponse
-func (a *MessagingAPIService) GetMessageHistoryExecute(r ApiGetMessageHistoryRequest) (*MessageHistoryResponse, *http.Response, error) {
+//  @return models.MessageHistoryResponse
+func (a *MessagingAPIService) GetMessageHistoryExecute(r ApiGetMessageHistoryRequest) (*models.MessageHistoryResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageHistoryResponse
+		localVarReturnValue  *models.MessageHistoryResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MessagingAPIService.GetMessageHistory")
@@ -160,7 +162,7 @@ func (a *MessagingAPIService) GetMessageHistoryExecute(r ApiGetMessageHistoryReq
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v FeatureNotAllowedError
+			var v models.FeatureNotAllowedError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -202,7 +204,7 @@ func (r ApiGetMessageStatsRequest) EndDate(endDate time.Time) ApiGetMessageStats
 	return r
 }
 
-func (r ApiGetMessageStatsRequest) Execute() (*MessageStatsResponse, *http.Response, error) {
+func (r ApiGetMessageStatsRequest) Execute() (*models.MessageStatsResponse, *http.Response, error) {
 	return r.ApiService.GetMessageStatsExecute(r)
 }
 
@@ -226,13 +228,13 @@ func (a *MessagingAPIService) GetMessageStats(ctx context.Context, projectId str
 }
 
 // Execute executes the request
-//  @return MessageStatsResponse
-func (a *MessagingAPIService) GetMessageStatsExecute(r ApiGetMessageStatsRequest) (*MessageStatsResponse, *http.Response, error) {
+//  @return models.MessageStatsResponse
+func (a *MessagingAPIService) GetMessageStatsExecute(r ApiGetMessageStatsRequest) (*models.MessageStatsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageStatsResponse
+		localVarReturnValue  *models.MessageStatsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MessagingAPIService.GetMessageStats")
@@ -293,7 +295,7 @@ func (a *MessagingAPIService) GetMessageStatsExecute(r ApiGetMessageStatsRequest
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v FeatureNotAllowedError
+			var v models.FeatureNotAllowedError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -323,7 +325,7 @@ type ApiGetProjectFcmConfigRequest struct {
 	projectId string
 }
 
-func (r ApiGetProjectFcmConfigRequest) Execute() (*GetProjectFcmConfig200Response, *http.Response, error) {
+func (r ApiGetProjectFcmConfigRequest) Execute() (*models.GetProjectFcmConfig200Response, *http.Response, error) {
 	return r.ApiService.GetProjectFcmConfigExecute(r)
 }
 
@@ -345,13 +347,13 @@ func (a *MessagingAPIService) GetProjectFcmConfig(ctx context.Context, projectId
 }
 
 // Execute executes the request
-//  @return GetProjectFcmConfig200Response
-func (a *MessagingAPIService) GetProjectFcmConfigExecute(r ApiGetProjectFcmConfigRequest) (*GetProjectFcmConfig200Response, *http.Response, error) {
+//  @return models.GetProjectFcmConfig200Response
+func (a *MessagingAPIService) GetProjectFcmConfigExecute(r ApiGetProjectFcmConfigRequest) (*models.GetProjectFcmConfig200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetProjectFcmConfig200Response
+		localVarReturnValue  *models.GetProjectFcmConfig200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MessagingAPIService.GetProjectFcmConfig")
@@ -440,7 +442,7 @@ type ApiGetProjectSmsByoRequest struct {
 	projectId string
 }
 
-func (r ApiGetProjectSmsByoRequest) Execute() (*GetProjectSmsByo200Response, *http.Response, error) {
+func (r ApiGetProjectSmsByoRequest) Execute() (*models.GetProjectSmsByo200Response, *http.Response, error) {
 	return r.ApiService.GetProjectSmsByoExecute(r)
 }
 
@@ -463,13 +465,13 @@ func (a *MessagingAPIService) GetProjectSmsByo(ctx context.Context, projectId st
 }
 
 // Execute executes the request
-//  @return GetProjectSmsByo200Response
-func (a *MessagingAPIService) GetProjectSmsByoExecute(r ApiGetProjectSmsByoRequest) (*GetProjectSmsByo200Response, *http.Response, error) {
+//  @return models.GetProjectSmsByo200Response
+func (a *MessagingAPIService) GetProjectSmsByoExecute(r ApiGetProjectSmsByoRequest) (*models.GetProjectSmsByo200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetProjectSmsByo200Response
+		localVarReturnValue  *models.GetProjectSmsByo200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MessagingAPIService.GetProjectSmsByo")
@@ -558,7 +560,7 @@ type ApiGetProjectVapidPublicKeyRequest struct {
 	projectId string
 }
 
-func (r ApiGetProjectVapidPublicKeyRequest) Execute() (*WebPushPublicKeyResponse, *http.Response, error) {
+func (r ApiGetProjectVapidPublicKeyRequest) Execute() (*models.WebPushPublicKeyResponse, *http.Response, error) {
 	return r.ApiService.GetProjectVapidPublicKeyExecute(r)
 }
 
@@ -583,13 +585,13 @@ func (a *MessagingAPIService) GetProjectVapidPublicKey(ctx context.Context, proj
 }
 
 // Execute executes the request
-//  @return WebPushPublicKeyResponse
-func (a *MessagingAPIService) GetProjectVapidPublicKeyExecute(r ApiGetProjectVapidPublicKeyRequest) (*WebPushPublicKeyResponse, *http.Response, error) {
+//  @return models.WebPushPublicKeyResponse
+func (a *MessagingAPIService) GetProjectVapidPublicKeyExecute(r ApiGetProjectVapidPublicKeyRequest) (*models.WebPushPublicKeyResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *WebPushPublicKeyResponse
+		localVarReturnValue  *models.WebPushPublicKeyResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MessagingAPIService.GetProjectVapidPublicKey")
@@ -644,7 +646,7 @@ func (a *MessagingAPIService) GetProjectVapidPublicKeyExecute(r ApiGetProjectVap
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -674,7 +676,7 @@ type ApiGetProjectWebPushConfigRequest struct {
 	projectId string
 }
 
-func (r ApiGetProjectWebPushConfigRequest) Execute() (*WebPushConfigResponse, *http.Response, error) {
+func (r ApiGetProjectWebPushConfigRequest) Execute() (*models.WebPushConfigResponse, *http.Response, error) {
 	return r.ApiService.GetProjectWebPushConfigExecute(r)
 }
 
@@ -701,13 +703,13 @@ func (a *MessagingAPIService) GetProjectWebPushConfig(ctx context.Context, proje
 }
 
 // Execute executes the request
-//  @return WebPushConfigResponse
-func (a *MessagingAPIService) GetProjectWebPushConfigExecute(r ApiGetProjectWebPushConfigRequest) (*WebPushConfigResponse, *http.Response, error) {
+//  @return models.WebPushConfigResponse
+func (a *MessagingAPIService) GetProjectWebPushConfigExecute(r ApiGetProjectWebPushConfigRequest) (*models.WebPushConfigResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *WebPushConfigResponse
+		localVarReturnValue  *models.WebPushConfigResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MessagingAPIService.GetProjectWebPushConfig")
@@ -776,7 +778,7 @@ func (a *MessagingAPIService) GetProjectWebPushConfigExecute(r ApiGetProjectWebP
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -806,7 +808,7 @@ type ApiListDeviceTokensRequest struct {
 	projectId string
 }
 
-func (r ApiListDeviceTokensRequest) Execute() (*DeviceListResponse, *http.Response, error) {
+func (r ApiListDeviceTokensRequest) Execute() (*models.DeviceListResponse, *http.Response, error) {
 	return r.ApiService.ListDeviceTokensExecute(r)
 }
 
@@ -831,13 +833,13 @@ func (a *MessagingAPIService) ListDeviceTokens(ctx context.Context, projectId st
 }
 
 // Execute executes the request
-//  @return DeviceListResponse
-func (a *MessagingAPIService) ListDeviceTokensExecute(r ApiListDeviceTokensRequest) (*DeviceListResponse, *http.Response, error) {
+//  @return models.DeviceListResponse
+func (a *MessagingAPIService) ListDeviceTokensExecute(r ApiListDeviceTokensRequest) (*models.DeviceListResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *DeviceListResponse
+		localVarReturnValue  *models.DeviceListResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MessagingAPIService.ListDeviceTokens")
@@ -926,7 +928,7 @@ type ApiListWebPushSubscriptionsRequest struct {
 	projectId string
 }
 
-func (r ApiListWebPushSubscriptionsRequest) Execute() (*WebPushSubscriptionListResponse, *http.Response, error) {
+func (r ApiListWebPushSubscriptionsRequest) Execute() (*models.WebPushSubscriptionListResponse, *http.Response, error) {
 	return r.ApiService.ListWebPushSubscriptionsExecute(r)
 }
 
@@ -951,13 +953,13 @@ func (a *MessagingAPIService) ListWebPushSubscriptions(ctx context.Context, proj
 }
 
 // Execute executes the request
-//  @return WebPushSubscriptionListResponse
-func (a *MessagingAPIService) ListWebPushSubscriptionsExecute(r ApiListWebPushSubscriptionsRequest) (*WebPushSubscriptionListResponse, *http.Response, error) {
+//  @return models.WebPushSubscriptionListResponse
+func (a *MessagingAPIService) ListWebPushSubscriptionsExecute(r ApiListWebPushSubscriptionsRequest) (*models.WebPushSubscriptionListResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *WebPushSubscriptionListResponse
+		localVarReturnValue  *models.WebPushSubscriptionListResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MessagingAPIService.ListWebPushSubscriptions")
@@ -1044,10 +1046,10 @@ type ApiPatchProjectFcmConfigRequest struct {
 	ctx context.Context
 	ApiService *MessagingAPIService
 	projectId string
-	patchProjectFcmConfigRequest *PatchProjectFcmConfigRequest
+	patchProjectFcmConfigRequest *models.PatchProjectFcmConfigRequest
 }
 
-func (r ApiPatchProjectFcmConfigRequest) PatchProjectFcmConfigRequest(patchProjectFcmConfigRequest PatchProjectFcmConfigRequest) ApiPatchProjectFcmConfigRequest {
+func (r ApiPatchProjectFcmConfigRequest) PatchProjectFcmConfigRequest(patchProjectFcmConfigRequest models.PatchProjectFcmConfigRequest) ApiPatchProjectFcmConfigRequest {
 	r.patchProjectFcmConfigRequest = &patchProjectFcmConfigRequest
 	return r
 }
@@ -1153,7 +1155,7 @@ func (a *MessagingAPIService) PatchProjectFcmConfigExecute(r ApiPatchProjectFcmC
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1172,15 +1174,15 @@ type ApiPatchProjectSmsByoRequest struct {
 	ctx context.Context
 	ApiService *MessagingAPIService
 	projectId string
-	projectSmsByoPatchRequest *ProjectSmsByoPatchRequest
+	projectSmsByoPatchRequest *models.ProjectSmsByoPatchRequest
 }
 
-func (r ApiPatchProjectSmsByoRequest) ProjectSmsByoPatchRequest(projectSmsByoPatchRequest ProjectSmsByoPatchRequest) ApiPatchProjectSmsByoRequest {
+func (r ApiPatchProjectSmsByoRequest) ProjectSmsByoPatchRequest(projectSmsByoPatchRequest models.ProjectSmsByoPatchRequest) ApiPatchProjectSmsByoRequest {
 	r.projectSmsByoPatchRequest = &projectSmsByoPatchRequest
 	return r
 }
 
-func (r ApiPatchProjectSmsByoRequest) Execute() (*GetProjectSmsByo200Response, *http.Response, error) {
+func (r ApiPatchProjectSmsByoRequest) Execute() (*models.GetProjectSmsByo200Response, *http.Response, error) {
 	return r.ApiService.PatchProjectSmsByoExecute(r)
 }
 
@@ -1207,13 +1209,13 @@ func (a *MessagingAPIService) PatchProjectSmsByo(ctx context.Context, projectId 
 }
 
 // Execute executes the request
-//  @return GetProjectSmsByo200Response
-func (a *MessagingAPIService) PatchProjectSmsByoExecute(r ApiPatchProjectSmsByoRequest) (*GetProjectSmsByo200Response, *http.Response, error) {
+//  @return models.GetProjectSmsByo200Response
+func (a *MessagingAPIService) PatchProjectSmsByoExecute(r ApiPatchProjectSmsByoRequest) (*models.GetProjectSmsByo200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetProjectSmsByo200Response
+		localVarReturnValue  *models.GetProjectSmsByo200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MessagingAPIService.PatchProjectSmsByo")
@@ -1287,7 +1289,7 @@ func (a *MessagingAPIService) PatchProjectSmsByoExecute(r ApiPatchProjectSmsByoR
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1315,15 +1317,15 @@ type ApiPatchProjectWebPushConfigRequest struct {
 	ctx context.Context
 	ApiService *MessagingAPIService
 	projectId string
-	webPushConfigPatchRequest *WebPushConfigPatchRequest
+	webPushConfigPatchRequest *models.WebPushConfigPatchRequest
 }
 
-func (r ApiPatchProjectWebPushConfigRequest) WebPushConfigPatchRequest(webPushConfigPatchRequest WebPushConfigPatchRequest) ApiPatchProjectWebPushConfigRequest {
+func (r ApiPatchProjectWebPushConfigRequest) WebPushConfigPatchRequest(webPushConfigPatchRequest models.WebPushConfigPatchRequest) ApiPatchProjectWebPushConfigRequest {
 	r.webPushConfigPatchRequest = &webPushConfigPatchRequest
 	return r
 }
 
-func (r ApiPatchProjectWebPushConfigRequest) Execute() (*WebPushConfigResponse, *http.Response, error) {
+func (r ApiPatchProjectWebPushConfigRequest) Execute() (*models.WebPushConfigResponse, *http.Response, error) {
 	return r.ApiService.PatchProjectWebPushConfigExecute(r)
 }
 
@@ -1354,13 +1356,13 @@ func (a *MessagingAPIService) PatchProjectWebPushConfig(ctx context.Context, pro
 }
 
 // Execute executes the request
-//  @return WebPushConfigResponse
-func (a *MessagingAPIService) PatchProjectWebPushConfigExecute(r ApiPatchProjectWebPushConfigRequest) (*WebPushConfigResponse, *http.Response, error) {
+//  @return models.WebPushConfigResponse
+func (a *MessagingAPIService) PatchProjectWebPushConfigExecute(r ApiPatchProjectWebPushConfigRequest) (*models.WebPushConfigResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *WebPushConfigResponse
+		localVarReturnValue  *models.WebPushConfigResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MessagingAPIService.PatchProjectWebPushConfig")
@@ -1434,7 +1436,7 @@ func (a *MessagingAPIService) PatchProjectWebPushConfigExecute(r ApiPatchProject
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1445,7 +1447,7 @@ func (a *MessagingAPIService) PatchProjectWebPushConfigExecute(r ApiPatchProject
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1473,15 +1475,15 @@ type ApiRegisterDeviceTokenRequest struct {
 	ctx context.Context
 	ApiService *MessagingAPIService
 	projectId string
-	deviceRegisterRequest *DeviceRegisterRequest
+	deviceRegisterRequest *models.DeviceRegisterRequest
 }
 
-func (r ApiRegisterDeviceTokenRequest) DeviceRegisterRequest(deviceRegisterRequest DeviceRegisterRequest) ApiRegisterDeviceTokenRequest {
+func (r ApiRegisterDeviceTokenRequest) DeviceRegisterRequest(deviceRegisterRequest models.DeviceRegisterRequest) ApiRegisterDeviceTokenRequest {
 	r.deviceRegisterRequest = &deviceRegisterRequest
 	return r
 }
 
-func (r ApiRegisterDeviceTokenRequest) Execute() (*DeviceRegisteredResponse, *http.Response, error) {
+func (r ApiRegisterDeviceTokenRequest) Execute() (*models.DeviceRegisteredResponse, *http.Response, error) {
 	return r.ApiService.RegisterDeviceTokenExecute(r)
 }
 
@@ -1510,13 +1512,13 @@ func (a *MessagingAPIService) RegisterDeviceToken(ctx context.Context, projectId
 }
 
 // Execute executes the request
-//  @return DeviceRegisteredResponse
-func (a *MessagingAPIService) RegisterDeviceTokenExecute(r ApiRegisterDeviceTokenRequest) (*DeviceRegisteredResponse, *http.Response, error) {
+//  @return models.DeviceRegisteredResponse
+func (a *MessagingAPIService) RegisterDeviceTokenExecute(r ApiRegisterDeviceTokenRequest) (*models.DeviceRegisteredResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *DeviceRegisteredResponse
+		localVarReturnValue  *models.DeviceRegisteredResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MessagingAPIService.RegisterDeviceToken")
@@ -1590,7 +1592,7 @@ func (a *MessagingAPIService) RegisterDeviceTokenExecute(r ApiRegisterDeviceToke
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1601,7 +1603,7 @@ func (a *MessagingAPIService) RegisterDeviceTokenExecute(r ApiRegisterDeviceToke
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v FeatureNotAllowedError
+			var v models.FeatureNotAllowedError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1612,7 +1614,7 @@ func (a *MessagingAPIService) RegisterDeviceTokenExecute(r ApiRegisterDeviceToke
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
-			var v GetWebhookConfig404Response
+			var v models.GetWebhookConfig404Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1640,15 +1642,15 @@ type ApiRegisterWebPushSubscriptionRequest struct {
 	ctx context.Context
 	ApiService *MessagingAPIService
 	projectId string
-	webPushSubscribeRequest *WebPushSubscribeRequest
+	webPushSubscribeRequest *models.WebPushSubscribeRequest
 }
 
-func (r ApiRegisterWebPushSubscriptionRequest) WebPushSubscribeRequest(webPushSubscribeRequest WebPushSubscribeRequest) ApiRegisterWebPushSubscriptionRequest {
+func (r ApiRegisterWebPushSubscriptionRequest) WebPushSubscribeRequest(webPushSubscribeRequest models.WebPushSubscribeRequest) ApiRegisterWebPushSubscriptionRequest {
 	r.webPushSubscribeRequest = &webPushSubscribeRequest
 	return r
 }
 
-func (r ApiRegisterWebPushSubscriptionRequest) Execute() (*WebPushSubscribeResponse, *http.Response, error) {
+func (r ApiRegisterWebPushSubscriptionRequest) Execute() (*models.WebPushSubscribeResponse, *http.Response, error) {
 	return r.ApiService.RegisterWebPushSubscriptionExecute(r)
 }
 
@@ -1675,13 +1677,13 @@ func (a *MessagingAPIService) RegisterWebPushSubscription(ctx context.Context, p
 }
 
 // Execute executes the request
-//  @return WebPushSubscribeResponse
-func (a *MessagingAPIService) RegisterWebPushSubscriptionExecute(r ApiRegisterWebPushSubscriptionRequest) (*WebPushSubscribeResponse, *http.Response, error) {
+//  @return models.WebPushSubscribeResponse
+func (a *MessagingAPIService) RegisterWebPushSubscriptionExecute(r ApiRegisterWebPushSubscriptionRequest) (*models.WebPushSubscribeResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *WebPushSubscribeResponse
+		localVarReturnValue  *models.WebPushSubscribeResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MessagingAPIService.RegisterWebPushSubscription")
@@ -1755,7 +1757,7 @@ func (a *MessagingAPIService) RegisterWebPushSubscriptionExecute(r ApiRegisterWe
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1766,7 +1768,7 @@ func (a *MessagingAPIService) RegisterWebPushSubscriptionExecute(r ApiRegisterWe
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v FeatureNotAllowedError
+			var v models.FeatureNotAllowedError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1777,7 +1779,7 @@ func (a *MessagingAPIService) RegisterWebPushSubscriptionExecute(r ApiRegisterWe
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
-			var v GetWebhookConfig404Response
+			var v models.GetWebhookConfig404Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1805,15 +1807,15 @@ type ApiRemoveWebPushSubscriptionRequest struct {
 	ctx context.Context
 	ApiService *MessagingAPIService
 	projectId string
-	webPushUnsubscribeRequest *WebPushUnsubscribeRequest
+	webPushUnsubscribeRequest *models.WebPushUnsubscribeRequest
 }
 
-func (r ApiRemoveWebPushSubscriptionRequest) WebPushUnsubscribeRequest(webPushUnsubscribeRequest WebPushUnsubscribeRequest) ApiRemoveWebPushSubscriptionRequest {
+func (r ApiRemoveWebPushSubscriptionRequest) WebPushUnsubscribeRequest(webPushUnsubscribeRequest models.WebPushUnsubscribeRequest) ApiRemoveWebPushSubscriptionRequest {
 	r.webPushUnsubscribeRequest = &webPushUnsubscribeRequest
 	return r
 }
 
-func (r ApiRemoveWebPushSubscriptionRequest) Execute() (*WebPushUnsubscribeResponse, *http.Response, error) {
+func (r ApiRemoveWebPushSubscriptionRequest) Execute() (*models.WebPushUnsubscribeResponse, *http.Response, error) {
 	return r.ApiService.RemoveWebPushSubscriptionExecute(r)
 }
 
@@ -1838,13 +1840,13 @@ func (a *MessagingAPIService) RemoveWebPushSubscription(ctx context.Context, pro
 }
 
 // Execute executes the request
-//  @return WebPushUnsubscribeResponse
-func (a *MessagingAPIService) RemoveWebPushSubscriptionExecute(r ApiRemoveWebPushSubscriptionRequest) (*WebPushUnsubscribeResponse, *http.Response, error) {
+//  @return models.WebPushUnsubscribeResponse
+func (a *MessagingAPIService) RemoveWebPushSubscriptionExecute(r ApiRemoveWebPushSubscriptionRequest) (*models.WebPushUnsubscribeResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *WebPushUnsubscribeResponse
+		localVarReturnValue  *models.WebPushUnsubscribeResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MessagingAPIService.RemoveWebPushSubscription")
@@ -1936,15 +1938,15 @@ type ApiSendEmailRequest struct {
 	ctx context.Context
 	ApiService *MessagingAPIService
 	projectId string
-	emailRequest *EmailRequest
+	emailRequest *models.EmailRequest
 }
 
-func (r ApiSendEmailRequest) EmailRequest(emailRequest EmailRequest) ApiSendEmailRequest {
+func (r ApiSendEmailRequest) EmailRequest(emailRequest models.EmailRequest) ApiSendEmailRequest {
 	r.emailRequest = &emailRequest
 	return r
 }
 
-func (r ApiSendEmailRequest) Execute() (*MessageSentResponse, *http.Response, error) {
+func (r ApiSendEmailRequest) Execute() (*models.MessageSentResponse, *http.Response, error) {
 	return r.ApiService.SendEmailExecute(r)
 }
 
@@ -1968,13 +1970,13 @@ func (a *MessagingAPIService) SendEmail(ctx context.Context, projectId string) A
 }
 
 // Execute executes the request
-//  @return MessageSentResponse
-func (a *MessagingAPIService) SendEmailExecute(r ApiSendEmailRequest) (*MessageSentResponse, *http.Response, error) {
+//  @return models.MessageSentResponse
+func (a *MessagingAPIService) SendEmailExecute(r ApiSendEmailRequest) (*models.MessageSentResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageSentResponse
+		localVarReturnValue  *models.MessageSentResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MessagingAPIService.SendEmail")
@@ -2048,7 +2050,7 @@ func (a *MessagingAPIService) SendEmailExecute(r ApiSendEmailRequest) (*MessageS
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v FeatureNotAllowedError
+			var v models.FeatureNotAllowedError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2059,7 +2061,7 @@ func (a *MessagingAPIService) SendEmailExecute(r ApiSendEmailRequest) (*MessageS
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
-			var v SendPushNotification429Response
+			var v models.SendPushNotification429Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2087,15 +2089,15 @@ type ApiSendPushNotificationRequest struct {
 	ctx context.Context
 	ApiService *MessagingAPIService
 	projectId string
-	pushNotificationRequest *PushNotificationRequest
+	pushNotificationRequest *models.PushNotificationRequest
 }
 
-func (r ApiSendPushNotificationRequest) PushNotificationRequest(pushNotificationRequest PushNotificationRequest) ApiSendPushNotificationRequest {
+func (r ApiSendPushNotificationRequest) PushNotificationRequest(pushNotificationRequest models.PushNotificationRequest) ApiSendPushNotificationRequest {
 	r.pushNotificationRequest = &pushNotificationRequest
 	return r
 }
 
-func (r ApiSendPushNotificationRequest) Execute() (*PushSentResponse, *http.Response, error) {
+func (r ApiSendPushNotificationRequest) Execute() (*models.PushSentResponse, *http.Response, error) {
 	return r.ApiService.SendPushNotificationExecute(r)
 }
 
@@ -2119,13 +2121,13 @@ func (a *MessagingAPIService) SendPushNotification(ctx context.Context, projectI
 }
 
 // Execute executes the request
-//  @return PushSentResponse
-func (a *MessagingAPIService) SendPushNotificationExecute(r ApiSendPushNotificationRequest) (*PushSentResponse, *http.Response, error) {
+//  @return models.PushSentResponse
+func (a *MessagingAPIService) SendPushNotificationExecute(r ApiSendPushNotificationRequest) (*models.PushSentResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *PushSentResponse
+		localVarReturnValue  *models.PushSentResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MessagingAPIService.SendPushNotification")
@@ -2185,7 +2187,7 @@ func (a *MessagingAPIService) SendPushNotificationExecute(r ApiSendPushNotificat
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v FeatureNotAllowedError
+			var v models.FeatureNotAllowedError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2196,7 +2198,7 @@ func (a *MessagingAPIService) SendPushNotificationExecute(r ApiSendPushNotificat
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
-			var v SendPushNotification429Response
+			var v models.SendPushNotification429Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2224,15 +2226,15 @@ type ApiSendSMSRequest struct {
 	ctx context.Context
 	ApiService *MessagingAPIService
 	projectId string
-	sMSRequest *SMSRequest
+	sMSRequest *models.SMSRequest
 }
 
-func (r ApiSendSMSRequest) SMSRequest(sMSRequest SMSRequest) ApiSendSMSRequest {
+func (r ApiSendSMSRequest) SMSRequest(sMSRequest models.SMSRequest) ApiSendSMSRequest {
 	r.sMSRequest = &sMSRequest
 	return r
 }
 
-func (r ApiSendSMSRequest) Execute() (*MessageSentResponse, *http.Response, error) {
+func (r ApiSendSMSRequest) Execute() (*models.MessageSentResponse, *http.Response, error) {
 	return r.ApiService.SendSMSExecute(r)
 }
 
@@ -2256,13 +2258,13 @@ func (a *MessagingAPIService) SendSMS(ctx context.Context, projectId string) Api
 }
 
 // Execute executes the request
-//  @return MessageSentResponse
-func (a *MessagingAPIService) SendSMSExecute(r ApiSendSMSRequest) (*MessageSentResponse, *http.Response, error) {
+//  @return models.MessageSentResponse
+func (a *MessagingAPIService) SendSMSExecute(r ApiSendSMSRequest) (*models.MessageSentResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageSentResponse
+		localVarReturnValue  *models.MessageSentResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MessagingAPIService.SendSMS")
@@ -2336,7 +2338,7 @@ func (a *MessagingAPIService) SendSMSExecute(r ApiSendSMSRequest) (*MessageSentR
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v FeatureNotAllowedError
+			var v models.FeatureNotAllowedError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2347,7 +2349,7 @@ func (a *MessagingAPIService) SendSMSExecute(r ApiSendSMSRequest) (*MessageSentR
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
-			var v SendPushNotification429Response
+			var v models.SendPushNotification429Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2375,15 +2377,15 @@ type ApiUnregisterDeviceTokenRequest struct {
 	ctx context.Context
 	ApiService *MessagingAPIService
 	projectId string
-	deviceUnregisterRequest *DeviceUnregisterRequest
+	deviceUnregisterRequest *models.DeviceUnregisterRequest
 }
 
-func (r ApiUnregisterDeviceTokenRequest) DeviceUnregisterRequest(deviceUnregisterRequest DeviceUnregisterRequest) ApiUnregisterDeviceTokenRequest {
+func (r ApiUnregisterDeviceTokenRequest) DeviceUnregisterRequest(deviceUnregisterRequest models.DeviceUnregisterRequest) ApiUnregisterDeviceTokenRequest {
 	r.deviceUnregisterRequest = &deviceUnregisterRequest
 	return r
 }
 
-func (r ApiUnregisterDeviceTokenRequest) Execute() (*DeviceUnregisteredResponse, *http.Response, error) {
+func (r ApiUnregisterDeviceTokenRequest) Execute() (*models.DeviceUnregisteredResponse, *http.Response, error) {
 	return r.ApiService.UnregisterDeviceTokenExecute(r)
 }
 
@@ -2410,13 +2412,13 @@ func (a *MessagingAPIService) UnregisterDeviceToken(ctx context.Context, project
 }
 
 // Execute executes the request
-//  @return DeviceUnregisteredResponse
-func (a *MessagingAPIService) UnregisterDeviceTokenExecute(r ApiUnregisterDeviceTokenRequest) (*DeviceUnregisteredResponse, *http.Response, error) {
+//  @return models.DeviceUnregisteredResponse
+func (a *MessagingAPIService) UnregisterDeviceTokenExecute(r ApiUnregisterDeviceTokenRequest) (*models.DeviceUnregisteredResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *DeviceUnregisteredResponse
+		localVarReturnValue  *models.DeviceUnregisteredResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MessagingAPIService.UnregisterDeviceToken")

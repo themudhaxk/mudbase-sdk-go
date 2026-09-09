@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -18,6 +18,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -29,24 +31,24 @@ type ApiAddOrgCustomDomainRequest struct {
 	ApiService *OrganizationsAPIService
 	orgId string
 	projectId string
-	addOrgDomainRequest *AddOrgDomainRequest
+	addOrgDomainRequest *models.AddOrgDomainRequest
 }
 
-func (r ApiAddOrgCustomDomainRequest) AddOrgDomainRequest(addOrgDomainRequest AddOrgDomainRequest) ApiAddOrgCustomDomainRequest {
+func (r ApiAddOrgCustomDomainRequest) AddOrgDomainRequest(addOrgDomainRequest models.AddOrgDomainRequest) ApiAddOrgCustomDomainRequest {
 	r.addOrgDomainRequest = &addOrgDomainRequest
 	return r
 }
 
-func (r ApiAddOrgCustomDomainRequest) Execute() (*OrgAddDomainResponse, *http.Response, error) {
+func (r ApiAddOrgCustomDomainRequest) Execute() (*models.OrgAddDomainResponse, *http.Response, error) {
 	return r.ApiService.AddOrgCustomDomainExecute(r)
 }
 
 /*
 AddOrgCustomDomain Add a custom domain
 
-Creates a pending domain row; the response **`domain`** uses the compact **`OrgDomainEntryOrgConsole`** shape (**`dnsRecords`** includes the Mudbase ownership TXT).
-**`dnsRecords`** may include Mudbase TXT and routing CNAME only until Mudbase TXT succeeds and Fly ACME (if enabled) provisions a certificate.
-**`flyCertificateStatus`** is typically omitted until Fly ACME runs after first successful **`verify-dns`**.
+Creates a pending domain row; the response **`domain`** uses the compact **`models.OrgDomainEntryOrgConsole`** shape (**`dnsRecords`** includes the Mudbase ownership TXT).
+**`dnsRecords`** may include the Mudbase TXT and routing CNAME only until the Mudbase TXT succeeds and the managed certificate is provisioned.
+**`flyCertificateStatus`** is typically omitted until certificate provisioning runs after the first successful **`verify-dns`**.
 
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -64,13 +66,13 @@ func (a *OrganizationsAPIService) AddOrgCustomDomain(ctx context.Context, orgId 
 }
 
 // Execute executes the request
-//  @return OrgAddDomainResponse
-func (a *OrganizationsAPIService) AddOrgCustomDomainExecute(r ApiAddOrgCustomDomainRequest) (*OrgAddDomainResponse, *http.Response, error) {
+//  @return models.OrgAddDomainResponse
+func (a *OrganizationsAPIService) AddOrgCustomDomainExecute(r ApiAddOrgCustomDomainRequest) (*models.OrgAddDomainResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *OrgAddDomainResponse
+		localVarReturnValue  *models.OrgAddDomainResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.AddOrgCustomDomain")
@@ -148,10 +150,10 @@ func (a *OrganizationsAPIService) AddOrgCustomDomainExecute(r ApiAddOrgCustomDom
 type ApiCreateOrganizationRequest struct {
 	ctx context.Context
 	ApiService *OrganizationsAPIService
-	createOrganizationRequest *CreateOrganizationRequest
+	createOrganizationRequest *models.CreateOrganizationRequest
 }
 
-func (r ApiCreateOrganizationRequest) CreateOrganizationRequest(createOrganizationRequest CreateOrganizationRequest) ApiCreateOrganizationRequest {
+func (r ApiCreateOrganizationRequest) CreateOrganizationRequest(createOrganizationRequest models.CreateOrganizationRequest) ApiCreateOrganizationRequest {
 	r.createOrganizationRequest = &createOrganizationRequest
 	return r
 }
@@ -245,7 +247,7 @@ func (a *OrganizationsAPIService) CreateOrganizationExecute(r ApiCreateOrganizat
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v CreateOrganization403Response
+			var v models.CreateOrganization403Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -364,7 +366,7 @@ type ApiDeleteOrganizationRequest struct {
 	orgId string
 }
 
-func (r ApiDeleteOrganizationRequest) Execute() (*DeleteOrganization200Response, *http.Response, error) {
+func (r ApiDeleteOrganizationRequest) Execute() (*models.DeleteOrganization200Response, *http.Response, error) {
 	return r.ApiService.DeleteOrganizationExecute(r)
 }
 
@@ -388,13 +390,13 @@ func (a *OrganizationsAPIService) DeleteOrganization(ctx context.Context, orgId 
 }
 
 // Execute executes the request
-//  @return DeleteOrganization200Response
-func (a *OrganizationsAPIService) DeleteOrganizationExecute(r ApiDeleteOrganizationRequest) (*DeleteOrganization200Response, *http.Response, error) {
+//  @return models.DeleteOrganization200Response
+func (a *OrganizationsAPIService) DeleteOrganizationExecute(r ApiDeleteOrganizationRequest) (*models.DeleteOrganization200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *DeleteOrganization200Response
+		localVarReturnValue  *models.DeleteOrganization200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.DeleteOrganization")
@@ -470,7 +472,7 @@ type ApiDeleteSubOrganizationRequest struct {
 	suborgId string
 }
 
-func (r ApiDeleteSubOrganizationRequest) Execute() (*DeleteSubOrganization200Response, *http.Response, error) {
+func (r ApiDeleteSubOrganizationRequest) Execute() (*models.DeleteSubOrganization200Response, *http.Response, error) {
 	return r.ApiService.DeleteSubOrganizationExecute(r)
 }
 
@@ -494,14 +496,14 @@ func (a *OrganizationsAPIService) DeleteSubOrganization(ctx context.Context, org
 }
 
 // Execute executes the request
-//  @return DeleteSubOrganization200Response
+//  @return models.DeleteSubOrganization200Response
 // Deprecated
-func (a *OrganizationsAPIService) DeleteSubOrganizationExecute(r ApiDeleteSubOrganizationRequest) (*DeleteSubOrganization200Response, *http.Response, error) {
+func (a *OrganizationsAPIService) DeleteSubOrganizationExecute(r ApiDeleteSubOrganizationRequest) (*models.DeleteSubOrganization200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *DeleteSubOrganization200Response
+		localVarReturnValue  *models.DeleteSubOrganization200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.DeleteSubOrganization")
@@ -579,7 +581,7 @@ type ApiGetOrgCustomDomainDnsInstructionsRequest struct {
 	hostname string
 }
 
-func (r ApiGetOrgCustomDomainDnsInstructionsRequest) Execute() (*OrgDnsInstructionsResponse, *http.Response, error) {
+func (r ApiGetOrgCustomDomainDnsInstructionsRequest) Execute() (*models.OrgDnsInstructionsResponse, *http.Response, error) {
 	return r.ApiService.GetOrgCustomDomainDnsInstructionsExecute(r)
 }
 
@@ -587,7 +589,7 @@ func (r ApiGetOrgCustomDomainDnsInstructionsRequest) Execute() (*OrgDnsInstructi
 GetOrgCustomDomainDnsInstructions Get DNS TXT record instructions for one hostname
 
 Returns the same shape as list/add for one hostname (URL-encode `hostname` in the path), including **`dnsRecords`** and **`flyCertificateStatus`** when applicable.
-See **`listOrgCustomDomains`** for how Fly ACME and Cloudflare SaaS affect those fields.
+See **`listOrgCustomDomains`** for how managed certificate provisioning affects those fields.
 
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -607,13 +609,13 @@ func (a *OrganizationsAPIService) GetOrgCustomDomainDnsInstructions(ctx context.
 }
 
 // Execute executes the request
-//  @return OrgDnsInstructionsResponse
-func (a *OrganizationsAPIService) GetOrgCustomDomainDnsInstructionsExecute(r ApiGetOrgCustomDomainDnsInstructionsRequest) (*OrgDnsInstructionsResponse, *http.Response, error) {
+//  @return models.OrgDnsInstructionsResponse
+func (a *OrganizationsAPIService) GetOrgCustomDomainDnsInstructionsExecute(r ApiGetOrgCustomDomainDnsInstructionsRequest) (*models.OrgDnsInstructionsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *OrgDnsInstructionsResponse
+		localVarReturnValue  *models.OrgDnsInstructionsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.GetOrgCustomDomainDnsInstructions")
@@ -690,7 +692,7 @@ type ApiGetOrganizationRequest struct {
 	orgId string
 }
 
-func (r ApiGetOrganizationRequest) Execute() (*Organization, *http.Response, error) {
+func (r ApiGetOrganizationRequest) Execute() (*models.Organization, *http.Response, error) {
 	return r.ApiService.GetOrganizationExecute(r)
 }
 
@@ -714,13 +716,13 @@ func (a *OrganizationsAPIService) GetOrganization(ctx context.Context, orgId str
 }
 
 // Execute executes the request
-//  @return Organization
-func (a *OrganizationsAPIService) GetOrganizationExecute(r ApiGetOrganizationRequest) (*Organization, *http.Response, error) {
+//  @return models.Organization
+func (a *OrganizationsAPIService) GetOrganizationExecute(r ApiGetOrganizationRequest) (*models.Organization, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *Organization
+		localVarReturnValue  *models.Organization
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.GetOrganization")
@@ -795,7 +797,7 @@ type ApiGetOrganizationMembersRequest struct {
 	orgId string
 }
 
-func (r ApiGetOrganizationMembersRequest) Execute() (*GetOrganizationMembers200Response, *http.Response, error) {
+func (r ApiGetOrganizationMembersRequest) Execute() (*models.GetOrganizationMembers200Response, *http.Response, error) {
 	return r.ApiService.GetOrganizationMembersExecute(r)
 }
 
@@ -818,13 +820,13 @@ func (a *OrganizationsAPIService) GetOrganizationMembers(ctx context.Context, or
 }
 
 // Execute executes the request
-//  @return GetOrganizationMembers200Response
-func (a *OrganizationsAPIService) GetOrganizationMembersExecute(r ApiGetOrganizationMembersRequest) (*GetOrganizationMembers200Response, *http.Response, error) {
+//  @return models.GetOrganizationMembers200Response
+func (a *OrganizationsAPIService) GetOrganizationMembersExecute(r ApiGetOrganizationMembersRequest) (*models.GetOrganizationMembers200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetOrganizationMembers200Response
+		localVarReturnValue  *models.GetOrganizationMembers200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.GetOrganizationMembers")
@@ -899,7 +901,7 @@ type ApiGetOrganizationUsageRequest struct {
 	orgId string
 }
 
-func (r ApiGetOrganizationUsageRequest) Execute() (*GetOrganizationUsage200Response, *http.Response, error) {
+func (r ApiGetOrganizationUsageRequest) Execute() (*models.GetOrganizationUsage200Response, *http.Response, error) {
 	return r.ApiService.GetOrganizationUsageExecute(r)
 }
 
@@ -923,13 +925,13 @@ func (a *OrganizationsAPIService) GetOrganizationUsage(ctx context.Context, orgI
 }
 
 // Execute executes the request
-//  @return GetOrganizationUsage200Response
-func (a *OrganizationsAPIService) GetOrganizationUsageExecute(r ApiGetOrganizationUsageRequest) (*GetOrganizationUsage200Response, *http.Response, error) {
+//  @return models.GetOrganizationUsage200Response
+func (a *OrganizationsAPIService) GetOrganizationUsageExecute(r ApiGetOrganizationUsageRequest) (*models.GetOrganizationUsage200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetOrganizationUsage200Response
+		localVarReturnValue  *models.GetOrganizationUsage200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.GetOrganizationUsage")
@@ -1011,7 +1013,7 @@ func (r ApiGetOrganizationUsersRequest) Status(status string) ApiGetOrganization
 	return r
 }
 
-func (r ApiGetOrganizationUsersRequest) Execute() (*GetOrganizationUsers200Response, *http.Response, error) {
+func (r ApiGetOrganizationUsersRequest) Execute() (*models.GetOrganizationUsers200Response, *http.Response, error) {
 	return r.ApiService.GetOrganizationUsersExecute(r)
 }
 
@@ -1035,13 +1037,13 @@ func (a *OrganizationsAPIService) GetOrganizationUsers(ctx context.Context, orgI
 }
 
 // Execute executes the request
-//  @return GetOrganizationUsers200Response
-func (a *OrganizationsAPIService) GetOrganizationUsersExecute(r ApiGetOrganizationUsersRequest) (*GetOrganizationUsers200Response, *http.Response, error) {
+//  @return models.GetOrganizationUsers200Response
+func (a *OrganizationsAPIService) GetOrganizationUsersExecute(r ApiGetOrganizationUsersRequest) (*models.GetOrganizationUsers200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetOrganizationUsers200Response
+		localVarReturnValue  *models.GetOrganizationUsers200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.GetOrganizationUsers")
@@ -1099,7 +1101,7 @@ func (a *OrganizationsAPIService) GetOrganizationUsersExecute(r ApiGetOrganizati
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1110,7 +1112,7 @@ func (a *OrganizationsAPIService) GetOrganizationUsersExecute(r ApiGetOrganizati
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1121,7 +1123,7 @@ func (a *OrganizationsAPIService) GetOrganizationUsersExecute(r ApiGetOrganizati
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1159,7 +1161,7 @@ func (r ApiGetProjectUsersRequest) Status(status string) ApiGetProjectUsersReque
 	return r
 }
 
-func (r ApiGetProjectUsersRequest) Execute() (*GetProjectUsers200Response, *http.Response, error) {
+func (r ApiGetProjectUsersRequest) Execute() (*models.GetProjectUsers200Response, *http.Response, error) {
 	return r.ApiService.GetProjectUsersExecute(r)
 }
 
@@ -1167,7 +1169,7 @@ func (r ApiGetProjectUsersRequest) Execute() (*GetProjectUsers200Response, *http
 GetProjectUsers List project users with metadata
 
 Get all users in a project with metadata (email, full name, role, accountStatus, etc.).
-Optional query `status` filters by accountStatus. Project must belong to the organization. Requires owner or admin role.
+Optional query `status` filters by accountStatus. models.Project must belong to the organization. Requires owner or admin role.
 
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -1185,13 +1187,13 @@ func (a *OrganizationsAPIService) GetProjectUsers(ctx context.Context, orgId str
 }
 
 // Execute executes the request
-//  @return GetProjectUsers200Response
-func (a *OrganizationsAPIService) GetProjectUsersExecute(r ApiGetProjectUsersRequest) (*GetProjectUsers200Response, *http.Response, error) {
+//  @return models.GetProjectUsers200Response
+func (a *OrganizationsAPIService) GetProjectUsersExecute(r ApiGetProjectUsersRequest) (*models.GetProjectUsers200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetProjectUsers200Response
+		localVarReturnValue  *models.GetProjectUsers200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.GetProjectUsers")
@@ -1250,7 +1252,7 @@ func (a *OrganizationsAPIService) GetProjectUsersExecute(r ApiGetProjectUsersReq
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1261,7 +1263,7 @@ func (a *OrganizationsAPIService) GetProjectUsersExecute(r ApiGetProjectUsersReq
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1272,7 +1274,7 @@ func (a *OrganizationsAPIService) GetProjectUsersExecute(r ApiGetProjectUsersReq
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1302,7 +1304,7 @@ type ApiGetSubOrganizationsRequest struct {
 	orgId string
 }
 
-func (r ApiGetSubOrganizationsRequest) Execute() (*GetSubOrganizations200Response, *http.Response, error) {
+func (r ApiGetSubOrganizationsRequest) Execute() (*models.GetSubOrganizations200Response, *http.Response, error) {
 	return r.ApiService.GetSubOrganizationsExecute(r)
 }
 
@@ -1328,14 +1330,14 @@ func (a *OrganizationsAPIService) GetSubOrganizations(ctx context.Context, orgId
 }
 
 // Execute executes the request
-//  @return GetSubOrganizations200Response
+//  @return models.GetSubOrganizations200Response
 // Deprecated
-func (a *OrganizationsAPIService) GetSubOrganizationsExecute(r ApiGetSubOrganizationsRequest) (*GetSubOrganizations200Response, *http.Response, error) {
+func (a *OrganizationsAPIService) GetSubOrganizationsExecute(r ApiGetSubOrganizationsRequest) (*models.GetSubOrganizations200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetSubOrganizations200Response
+		localVarReturnValue  *models.GetSubOrganizations200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.GetSubOrganizations")
@@ -1411,7 +1413,7 @@ type ApiGetUserOverviewRequest struct {
 	userId string
 }
 
-func (r ApiGetUserOverviewRequest) Execute() (*GetUserOverview200Response, *http.Response, error) {
+func (r ApiGetUserOverviewRequest) Execute() (*models.GetUserOverview200Response, *http.Response, error) {
 	return r.ApiService.GetUserOverviewExecute(r)
 }
 
@@ -1437,13 +1439,13 @@ func (a *OrganizationsAPIService) GetUserOverview(ctx context.Context, orgId str
 }
 
 // Execute executes the request
-//  @return GetUserOverview200Response
-func (a *OrganizationsAPIService) GetUserOverviewExecute(r ApiGetUserOverviewRequest) (*GetUserOverview200Response, *http.Response, error) {
+//  @return models.GetUserOverview200Response
+func (a *OrganizationsAPIService) GetUserOverviewExecute(r ApiGetUserOverviewRequest) (*models.GetUserOverview200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetUserOverview200Response
+		localVarReturnValue  *models.GetUserOverview200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.GetUserOverview")
@@ -1499,7 +1501,7 @@ func (a *OrganizationsAPIService) GetUserOverviewExecute(r ApiGetUserOverviewReq
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1510,7 +1512,7 @@ func (a *OrganizationsAPIService) GetUserOverviewExecute(r ApiGetUserOverviewReq
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1521,7 +1523,7 @@ func (a *OrganizationsAPIService) GetUserOverviewExecute(r ApiGetUserOverviewReq
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1548,10 +1550,10 @@ func (a *OrganizationsAPIService) GetUserOverviewExecute(r ApiGetUserOverviewReq
 type ApiInternalCustomDomainAddonRequest struct {
 	ctx context.Context
 	ApiService *OrganizationsAPIService
-	internalCustomDomainAddonRequest *InternalCustomDomainAddonRequest
+	internalCustomDomainAddonRequest *models.InternalCustomDomainAddonRequest
 }
 
-func (r ApiInternalCustomDomainAddonRequest) InternalCustomDomainAddonRequest(internalCustomDomainAddonRequest InternalCustomDomainAddonRequest) ApiInternalCustomDomainAddonRequest {
+func (r ApiInternalCustomDomainAddonRequest) InternalCustomDomainAddonRequest(internalCustomDomainAddonRequest models.InternalCustomDomainAddonRequest) ApiInternalCustomDomainAddonRequest {
 	r.internalCustomDomainAddonRequest = &internalCustomDomainAddonRequest
 	return r
 }
@@ -1668,7 +1670,7 @@ func (r ApiInternalCustomDomainSweepStatusRequest) Execute() (*http.Response, er
 /*
 InternalCustomDomainSweepStatus Custom domain background sweep status (internal)
 
-Returns the last automated custom-domain sweep (TXT recheck + Fly ACME retry), job env flags, and Fly deploy troubleshooting hints when the proxy reports the app is not listening on 0.0.0.0:PORT. Requires header `X-Internal-Api-Key` (same as other /internal routes).
+Returns the last automated custom-domain sweep (TXT recheck + certificate provisioning retry), job env flags, and deploy troubleshooting hints when the proxy reports the app is not listening on 0.0.0.0:PORT. Requires header `X-Internal-Api-Key` (same as other /internal routes).
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiInternalCustomDomainSweepStatusRequest
@@ -1761,10 +1763,10 @@ func (a *OrganizationsAPIService) InternalCustomDomainSweepStatusExecute(r ApiIn
 type ApiInternalDomainDnsRecheckBatchRequest struct {
 	ctx context.Context
 	ApiService *OrganizationsAPIService
-	internalDomainDnsRecheckBatchRequest *InternalDomainDnsRecheckBatchRequest
+	internalDomainDnsRecheckBatchRequest *models.InternalDomainDnsRecheckBatchRequest
 }
 
-func (r ApiInternalDomainDnsRecheckBatchRequest) InternalDomainDnsRecheckBatchRequest(internalDomainDnsRecheckBatchRequest InternalDomainDnsRecheckBatchRequest) ApiInternalDomainDnsRecheckBatchRequest {
+func (r ApiInternalDomainDnsRecheckBatchRequest) InternalDomainDnsRecheckBatchRequest(internalDomainDnsRecheckBatchRequest models.InternalDomainDnsRecheckBatchRequest) ApiInternalDomainDnsRecheckBatchRequest {
 	r.internalDomainDnsRecheckBatchRequest = &internalDomainDnsRecheckBatchRequest
 	return r
 }
@@ -1869,10 +1871,10 @@ func (a *OrganizationsAPIService) InternalDomainDnsRecheckBatchExecute(r ApiInte
 type ApiInternalProvisionEnterpriseRequest struct {
 	ctx context.Context
 	ApiService *OrganizationsAPIService
-	provisionEnterpriseRequest *ProvisionEnterpriseRequest
+	provisionEnterpriseRequest *models.ProvisionEnterpriseRequest
 }
 
-func (r ApiInternalProvisionEnterpriseRequest) ProvisionEnterpriseRequest(provisionEnterpriseRequest ProvisionEnterpriseRequest) ApiInternalProvisionEnterpriseRequest {
+func (r ApiInternalProvisionEnterpriseRequest) ProvisionEnterpriseRequest(provisionEnterpriseRequest models.ProvisionEnterpriseRequest) ApiInternalProvisionEnterpriseRequest {
 	r.provisionEnterpriseRequest = &provisionEnterpriseRequest
 	return r
 }
@@ -1982,15 +1984,15 @@ type ApiInviteSubOrganizationMemberRequest struct {
 	ApiService *OrganizationsAPIService
 	orgId string
 	suborgId string
-	inviteMemberRequest *InviteMemberRequest
+	inviteMemberRequest *models.InviteMemberRequest
 }
 
-func (r ApiInviteSubOrganizationMemberRequest) InviteMemberRequest(inviteMemberRequest InviteMemberRequest) ApiInviteSubOrganizationMemberRequest {
+func (r ApiInviteSubOrganizationMemberRequest) InviteMemberRequest(inviteMemberRequest models.InviteMemberRequest) ApiInviteSubOrganizationMemberRequest {
 	r.inviteMemberRequest = &inviteMemberRequest
 	return r
 }
 
-func (r ApiInviteSubOrganizationMemberRequest) Execute() (*InviteSubOrganizationMember200Response, *http.Response, error) {
+func (r ApiInviteSubOrganizationMemberRequest) Execute() (*models.InviteSubOrganizationMember200Response, *http.Response, error) {
 	return r.ApiService.InviteSubOrganizationMemberExecute(r)
 }
 
@@ -2014,14 +2016,14 @@ func (a *OrganizationsAPIService) InviteSubOrganizationMember(ctx context.Contex
 }
 
 // Execute executes the request
-//  @return InviteSubOrganizationMember200Response
+//  @return models.InviteSubOrganizationMember200Response
 // Deprecated
-func (a *OrganizationsAPIService) InviteSubOrganizationMemberExecute(r ApiInviteSubOrganizationMemberRequest) (*InviteSubOrganizationMember200Response, *http.Response, error) {
+func (a *OrganizationsAPIService) InviteSubOrganizationMemberExecute(r ApiInviteSubOrganizationMemberRequest) (*models.InviteSubOrganizationMember200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *InviteSubOrganizationMember200Response
+		localVarReturnValue  *models.InviteSubOrganizationMember200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.InviteSubOrganizationMember")
@@ -2100,15 +2102,15 @@ type ApiInviteTeamMemberRequest struct {
 	ctx context.Context
 	ApiService *OrganizationsAPIService
 	orgId string
-	inviteMemberRequest *InviteMemberRequest
+	inviteMemberRequest *models.InviteMemberRequest
 }
 
-func (r ApiInviteTeamMemberRequest) InviteMemberRequest(inviteMemberRequest InviteMemberRequest) ApiInviteTeamMemberRequest {
+func (r ApiInviteTeamMemberRequest) InviteMemberRequest(inviteMemberRequest models.InviteMemberRequest) ApiInviteTeamMemberRequest {
 	r.inviteMemberRequest = &inviteMemberRequest
 	return r
 }
 
-func (r ApiInviteTeamMemberRequest) Execute() (*InviteTeamMember200Response, *http.Response, error) {
+func (r ApiInviteTeamMemberRequest) Execute() (*models.InviteTeamMember200Response, *http.Response, error) {
 	return r.ApiService.InviteTeamMemberExecute(r)
 }
 
@@ -2132,13 +2134,13 @@ func (a *OrganizationsAPIService) InviteTeamMember(ctx context.Context, orgId st
 }
 
 // Execute executes the request
-//  @return InviteTeamMember200Response
-func (a *OrganizationsAPIService) InviteTeamMemberExecute(r ApiInviteTeamMemberRequest) (*InviteTeamMember200Response, *http.Response, error) {
+//  @return models.InviteTeamMember200Response
+func (a *OrganizationsAPIService) InviteTeamMemberExecute(r ApiInviteTeamMemberRequest) (*models.InviteTeamMember200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *InviteTeamMember200Response
+		localVarReturnValue  *models.InviteTeamMember200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.InviteTeamMember")
@@ -2219,7 +2221,7 @@ type ApiListOrgCustomDomainsRequest struct {
 	projectId string
 }
 
-func (r ApiListOrgCustomDomainsRequest) Execute() (*OrgDomainsListResponse, *http.Response, error) {
+func (r ApiListOrgCustomDomainsRequest) Execute() (*models.OrgDomainsListResponse, *http.Response, error) {
 	return r.ApiService.ListOrgCustomDomainsExecute(r)
 }
 
@@ -2228,11 +2230,10 @@ ListOrgCustomDomains List custom domains and DNS verification hints
 
 Returns allowed hostnames for **this project**, primary hostname (per project), API base URL, and per-domain DNS guidance.
 
-Each row uses **`dnsRecords`** for the Mudbase ownership TXT (purpose **`mudbase_ownership`**) and routing **CNAME** from Fly **`dns_requirements.cname`** when Fly ACME has provisioned (else fallback **`CUSTOM_DOMAIN_API_CNAME_TARGET`**), and—when Fly ACME is enabled
-(**`FLY_API_TOKEN`** + **`CUSTOM_DOMAIN_FLY_ACME_ENABLED`**)—Fly rows (`fly_ownership`, `acme_challenge`, etc.) after the org has passed Mudbase TXT at least once.
-**`flyCertificateStatus`** mirrors Fly’s certificate state when ACME automation is on (e.g. `pending_validation`, `active`).
+Each row uses **`dnsRecords`** for the Mudbase ownership TXT (purpose **`mudbase_ownership`**) and the routing **CNAME** target that Mudbase provisions for the hostname (else the platform default target). Once the ownership TXT has passed at least once, Mudbase provisions and manages the TLS certificate for the hostname automatically and may add further checklist rows (for example `acme_challenge`) needed to complete certificate issuance.
+The certificate status field mirrors the managed certificate’s state during issuance (e.g. `pending_validation`, `active`).
 
-**`edge`** appears only when edge SSL (SSL-for-SaaS) is configured. Fly ACME and edge SSL are mutually exclusive on the server.
+Managed edge TLS details are present only on deployments that serve managed edge certificates.
 
 Requires Growth, Scale, or Enterprise plan (custom domains included in plan features).
 
@@ -2252,13 +2253,13 @@ func (a *OrganizationsAPIService) ListOrgCustomDomains(ctx context.Context, orgI
 }
 
 // Execute executes the request
-//  @return OrgDomainsListResponse
-func (a *OrganizationsAPIService) ListOrgCustomDomainsExecute(r ApiListOrgCustomDomainsRequest) (*OrgDomainsListResponse, *http.Response, error) {
+//  @return models.OrgDomainsListResponse
+func (a *OrganizationsAPIService) ListOrgCustomDomainsExecute(r ApiListOrgCustomDomainsRequest) (*models.OrgDomainsListResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *OrgDomainsListResponse
+		localVarReturnValue  *models.OrgDomainsListResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.ListOrgCustomDomains")
@@ -2333,7 +2334,7 @@ type ApiListOrganizationsRequest struct {
 	ApiService *OrganizationsAPIService
 }
 
-func (r ApiListOrganizationsRequest) Execute() (*ListOrganizations200Response, *http.Response, error) {
+func (r ApiListOrganizationsRequest) Execute() (*models.ListOrganizations200Response, *http.Response, error) {
 	return r.ApiService.ListOrganizationsExecute(r)
 }
 
@@ -2355,13 +2356,13 @@ func (a *OrganizationsAPIService) ListOrganizations(ctx context.Context) ApiList
 }
 
 // Execute executes the request
-//  @return ListOrganizations200Response
-func (a *OrganizationsAPIService) ListOrganizationsExecute(r ApiListOrganizationsRequest) (*ListOrganizations200Response, *http.Response, error) {
+//  @return models.ListOrganizations200Response
+func (a *OrganizationsAPIService) ListOrganizationsExecute(r ApiListOrganizationsRequest) (*models.ListOrganizations200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ListOrganizations200Response
+		localVarReturnValue  *models.ListOrganizations200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.ListOrganizations")
@@ -2435,10 +2436,10 @@ type ApiOrgCustomDomainPlatformReadyRequest struct {
 	orgId string
 	projectId string
 	hostname string
-	orgCustomDomainPlatformReadyRequest *OrgCustomDomainPlatformReadyRequest
+	orgCustomDomainPlatformReadyRequest *models.OrgCustomDomainPlatformReadyRequest
 }
 
-func (r ApiOrgCustomDomainPlatformReadyRequest) OrgCustomDomainPlatformReadyRequest(orgCustomDomainPlatformReadyRequest OrgCustomDomainPlatformReadyRequest) ApiOrgCustomDomainPlatformReadyRequest {
+func (r ApiOrgCustomDomainPlatformReadyRequest) OrgCustomDomainPlatformReadyRequest(orgCustomDomainPlatformReadyRequest models.OrgCustomDomainPlatformReadyRequest) ApiOrgCustomDomainPlatformReadyRequest {
 	r.orgCustomDomainPlatformReadyRequest = &orgCustomDomainPlatformReadyRequest
 	return r
 }
@@ -2549,15 +2550,15 @@ type ApiOrgCustomDomainSubmitCnameRequest struct {
 	hostname string
 }
 
-func (r ApiOrgCustomDomainSubmitCnameRequest) Execute() (*OrgPatchDomainResponse, *http.Response, error) {
+func (r ApiOrgCustomDomainSubmitCnameRequest) Execute() (*models.OrgPatchDomainResponse, *http.Response, error) {
 	return r.ApiService.OrgCustomDomainSubmitCnameExecute(r)
 }
 
 /*
 OrgCustomDomainSubmitCname Custom domain step 2 (optional): org confirms routing CNAME was added
 
-Usually unnecessary. With Fly ACME default automation, Mudbase TXT verify may already set `cname_approved`. Legacy pipelines may queue `cname_pending_staff` until staff **`approve-cname`**.
-Use **`routingCnameTarget`** from **`GET .../projects/{projectId}/domains`** (Fly **`dns_requirements.cname`** when provisioned, else **`CUSTOM_DOMAIN_API_CNAME_TARGET`**).
+Usually unnecessary. With automated certificate provisioning, the Mudbase TXT verify may already set `cname_approved`. Legacy pipelines may queue `cname_pending_staff` until staff **`approve-cname`**.
+Use **`routingCnameTarget`** from **`GET .../projects/{projectId}/domains`** (the managed routing CNAME target when provisioned, else the platform default target).
 
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -2577,13 +2578,13 @@ func (a *OrganizationsAPIService) OrgCustomDomainSubmitCname(ctx context.Context
 }
 
 // Execute executes the request
-//  @return OrgPatchDomainResponse
-func (a *OrganizationsAPIService) OrgCustomDomainSubmitCnameExecute(r ApiOrgCustomDomainSubmitCnameRequest) (*OrgPatchDomainResponse, *http.Response, error) {
+//  @return models.OrgPatchDomainResponse
+func (a *OrganizationsAPIService) OrgCustomDomainSubmitCnameExecute(r ApiOrgCustomDomainSubmitCnameRequest) (*models.OrgPatchDomainResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *OrgPatchDomainResponse
+		localVarReturnValue  *models.OrgPatchDomainResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.OrgCustomDomainSubmitCname")
@@ -2662,14 +2663,14 @@ type ApiOrgCustomDomainSubmitPlatformDnsVerificationDeprecatedRequest struct {
 	hostname string
 }
 
-func (r ApiOrgCustomDomainSubmitPlatformDnsVerificationDeprecatedRequest) Execute() (*OrgPatchDomainResponse, *http.Response, error) {
+func (r ApiOrgCustomDomainSubmitPlatformDnsVerificationDeprecatedRequest) Execute() (*models.OrgPatchDomainResponse, *http.Response, error) {
 	return r.ApiService.OrgCustomDomainSubmitPlatformDnsVerificationDeprecatedExecute(r)
 }
 
 /*
 OrgCustomDomainSubmitPlatformDnsVerificationDeprecated Deprecated — use POST .../verify-platform-dns
 
-Deprecated alias of **`orgCustomDomainVerifyPlatformDns`** (same behavior — manual TXT and/or Fly ACME path per server config).
+Deprecated alias of **`orgCustomDomainVerifyPlatformDns`** (same behavior: manual TXT and/or automated certificate provisioning per deployment).
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param orgId
@@ -2690,14 +2691,14 @@ func (a *OrganizationsAPIService) OrgCustomDomainSubmitPlatformDnsVerificationDe
 }
 
 // Execute executes the request
-//  @return OrgPatchDomainResponse
+//  @return models.OrgPatchDomainResponse
 // Deprecated
-func (a *OrganizationsAPIService) OrgCustomDomainSubmitPlatformDnsVerificationDeprecatedExecute(r ApiOrgCustomDomainSubmitPlatformDnsVerificationDeprecatedRequest) (*OrgPatchDomainResponse, *http.Response, error) {
+func (a *OrganizationsAPIService) OrgCustomDomainSubmitPlatformDnsVerificationDeprecatedExecute(r ApiOrgCustomDomainSubmitPlatformDnsVerificationDeprecatedRequest) (*models.OrgPatchDomainResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *OrgPatchDomainResponse
+		localVarReturnValue  *models.OrgPatchDomainResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.OrgCustomDomainSubmitPlatformDnsVerificationDeprecated")
@@ -2776,20 +2777,20 @@ type ApiOrgCustomDomainVerifyPlatformDnsRequest struct {
 	hostname string
 }
 
-func (r ApiOrgCustomDomainVerifyPlatformDnsRequest) Execute() (*OrgPatchDomainResponse, *http.Response, error) {
+func (r ApiOrgCustomDomainVerifyPlatformDnsRequest) Execute() (*models.OrgPatchDomainResponse, *http.Response, error) {
 	return r.ApiService.OrgCustomDomainVerifyPlatformDnsExecute(r)
 }
 
 /*
-OrgCustomDomainVerifyPlatformDns Custom domain step 3: verify platform DNS (manual TXT or Fly certificate readiness)
+OrgCustomDomainVerifyPlatformDns Custom domain step 3: verify platform DNS (manual TXT or managed certificate readiness)
 
-**Manual path (no Fly ACME):** After staff **`PATCH .../platform-dns-verification`**, the org adds the published TXT and calls this endpoint. The API resolves public TXT at **`platformDnsVerification.recordName`** and matches **`recordValue`**. On success, `status` → **`platform_dns_pending_review`** until staff **`POST .../activate`**.
+**Manual path:** After staff **`PATCH .../platform-dns-verification`**, the org adds the published TXT and calls this endpoint. The API resolves public TXT at **`platformDnsVerification.recordName`** and matches **`recordValue`**. On success, `status` → **`platform_dns_pending_review`** until staff **`POST .../activate`**.
 
-**Fly ACME path (default):** When Fly ACME is enabled and **`CUSTOM_DOMAIN_FLY_LEGACY_STAFF_PIPELINE`** is **not** set, the org calls this after Mudbase TXT and Fly DNS rows are in place (status typically **`cname_approved`** from automated verify-dns). The API triggers Fly **`POST .../check`** and **`GET`** certificate with bounded retries. On success, `status` → **`active`** and the org may receive the activation email—**no** staff **`approve-cname`** or **`activate`** required.
+**Automated path (default):** When automated certificate provisioning is in effect, the org calls this after the Mudbase TXT and the certificate DNS rows are in place (status typically **`cname_approved`** from automated verify-dns). The API checks the managed certificate with bounded retries. On success, `status` → **`active`** and the org may receive the activation email, with no staff **`approve-cname`** or **`activate`** required.
 
-**Fly legacy:** If **`CUSTOM_DOMAIN_FLY_LEGACY_STAFF_PIPELINE=true`**, behavior matches the older flow: staff **`approve-cname`** may be required first; after a ready Fly cert, **`status`** becomes **`active`** only when **`CUSTOM_DOMAIN_FLY_AUTO_ACTIVATE=true`**, else **`platform_dns_pending_review`** until staff **`activate`**.
+**Legacy path:** In the legacy staff pipeline, staff **`approve-cname`** may be required first; after the managed certificate is ready, **`status`** becomes **`active`** on auto-activation, else **`platform_dns_pending_review`** until staff **`activate`**.
 
-**`platform_dns_verification_failed`** may include **`details.flyStatus`** / **`details.flyError`** on the Fly path.
+**`platform_dns_verification_failed`** may include **`details.flyStatus`** / **`details.flyError`** with provisioning error context.
 
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -2809,13 +2810,13 @@ func (a *OrganizationsAPIService) OrgCustomDomainVerifyPlatformDns(ctx context.C
 }
 
 // Execute executes the request
-//  @return OrgPatchDomainResponse
-func (a *OrganizationsAPIService) OrgCustomDomainVerifyPlatformDnsExecute(r ApiOrgCustomDomainVerifyPlatformDnsRequest) (*OrgPatchDomainResponse, *http.Response, error) {
+//  @return models.OrgPatchDomainResponse
+func (a *OrganizationsAPIService) OrgCustomDomainVerifyPlatformDnsExecute(r ApiOrgCustomDomainVerifyPlatformDnsRequest) (*models.OrgPatchDomainResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *OrgPatchDomainResponse
+		localVarReturnValue  *models.OrgPatchDomainResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.OrgCustomDomainVerifyPlatformDns")
@@ -2892,15 +2893,15 @@ type ApiPatchOrgCustomDomainRequest struct {
 	orgId string
 	projectId string
 	hostname string
-	patchOrgDomainRequest *PatchOrgDomainRequest
+	patchOrgDomainRequest *models.PatchOrgDomainRequest
 }
 
-func (r ApiPatchOrgCustomDomainRequest) PatchOrgDomainRequest(patchOrgDomainRequest PatchOrgDomainRequest) ApiPatchOrgCustomDomainRequest {
+func (r ApiPatchOrgCustomDomainRequest) PatchOrgDomainRequest(patchOrgDomainRequest models.PatchOrgDomainRequest) ApiPatchOrgCustomDomainRequest {
 	r.patchOrgDomainRequest = &patchOrgDomainRequest
 	return r
 }
 
-func (r ApiPatchOrgCustomDomainRequest) Execute() (*OrgPatchDomainResponse, *http.Response, error) {
+func (r ApiPatchOrgCustomDomainRequest) Execute() (*models.OrgPatchDomainResponse, *http.Response, error) {
 	return r.ApiService.PatchOrgCustomDomainExecute(r)
 }
 
@@ -2924,13 +2925,13 @@ func (a *OrganizationsAPIService) PatchOrgCustomDomain(ctx context.Context, orgI
 }
 
 // Execute executes the request
-//  @return OrgPatchDomainResponse
-func (a *OrganizationsAPIService) PatchOrgCustomDomainExecute(r ApiPatchOrgCustomDomainRequest) (*OrgPatchDomainResponse, *http.Response, error) {
+//  @return models.OrgPatchDomainResponse
+func (a *OrganizationsAPIService) PatchOrgCustomDomainExecute(r ApiPatchOrgCustomDomainRequest) (*models.OrgPatchDomainResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *OrgPatchDomainResponse
+		localVarReturnValue  *models.OrgPatchDomainResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.PatchOrgCustomDomain")
@@ -3011,7 +3012,7 @@ type ApiRemoveSubOrganizationMemberRequest struct {
 	userId string
 }
 
-func (r ApiRemoveSubOrganizationMemberRequest) Execute() (*RemoveTeamMember200Response, *http.Response, error) {
+func (r ApiRemoveSubOrganizationMemberRequest) Execute() (*models.RemoveTeamMember200Response, *http.Response, error) {
 	return r.ApiService.RemoveSubOrganizationMemberExecute(r)
 }
 
@@ -3037,14 +3038,14 @@ func (a *OrganizationsAPIService) RemoveSubOrganizationMember(ctx context.Contex
 }
 
 // Execute executes the request
-//  @return RemoveTeamMember200Response
+//  @return models.RemoveTeamMember200Response
 // Deprecated
-func (a *OrganizationsAPIService) RemoveSubOrganizationMemberExecute(r ApiRemoveSubOrganizationMemberRequest) (*RemoveTeamMember200Response, *http.Response, error) {
+func (a *OrganizationsAPIService) RemoveSubOrganizationMemberExecute(r ApiRemoveSubOrganizationMemberRequest) (*models.RemoveTeamMember200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *RemoveTeamMember200Response
+		localVarReturnValue  *models.RemoveTeamMember200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.RemoveSubOrganizationMember")
@@ -3122,7 +3123,7 @@ type ApiRemoveTeamMemberRequest struct {
 	userId string
 }
 
-func (r ApiRemoveTeamMemberRequest) Execute() (*RemoveTeamMember200Response, *http.Response, error) {
+func (r ApiRemoveTeamMemberRequest) Execute() (*models.RemoveTeamMember200Response, *http.Response, error) {
 	return r.ApiService.RemoveTeamMemberExecute(r)
 }
 
@@ -3148,13 +3149,13 @@ func (a *OrganizationsAPIService) RemoveTeamMember(ctx context.Context, orgId st
 }
 
 // Execute executes the request
-//  @return RemoveTeamMember200Response
-func (a *OrganizationsAPIService) RemoveTeamMemberExecute(r ApiRemoveTeamMemberRequest) (*RemoveTeamMember200Response, *http.Response, error) {
+//  @return models.RemoveTeamMember200Response
+func (a *OrganizationsAPIService) RemoveTeamMemberExecute(r ApiRemoveTeamMemberRequest) (*models.RemoveTeamMember200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *RemoveTeamMember200Response
+		localVarReturnValue  *models.RemoveTeamMember200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.RemoveTeamMember")
@@ -3229,10 +3230,10 @@ type ApiSetOrgPrimaryDomainRequest struct {
 	ApiService *OrganizationsAPIService
 	orgId string
 	projectId string
-	setOrgPrimaryDomainRequest *SetOrgPrimaryDomainRequest
+	setOrgPrimaryDomainRequest *models.SetOrgPrimaryDomainRequest
 }
 
-func (r ApiSetOrgPrimaryDomainRequest) SetOrgPrimaryDomainRequest(setOrgPrimaryDomainRequest SetOrgPrimaryDomainRequest) ApiSetOrgPrimaryDomainRequest {
+func (r ApiSetOrgPrimaryDomainRequest) SetOrgPrimaryDomainRequest(setOrgPrimaryDomainRequest models.SetOrgPrimaryDomainRequest) ApiSetOrgPrimaryDomainRequest {
 	r.setOrgPrimaryDomainRequest = &setOrgPrimaryDomainRequest
 	return r
 }
@@ -3334,15 +3335,15 @@ type ApiUpdateMemberRoleRequest struct {
 	ApiService *OrganizationsAPIService
 	orgId string
 	userId string
-	updateMemberRoleRequest *UpdateMemberRoleRequest
+	updateMemberRoleRequest *models.UpdateMemberRoleRequest
 }
 
-func (r ApiUpdateMemberRoleRequest) UpdateMemberRoleRequest(updateMemberRoleRequest UpdateMemberRoleRequest) ApiUpdateMemberRoleRequest {
+func (r ApiUpdateMemberRoleRequest) UpdateMemberRoleRequest(updateMemberRoleRequest models.UpdateMemberRoleRequest) ApiUpdateMemberRoleRequest {
 	r.updateMemberRoleRequest = &updateMemberRoleRequest
 	return r
 }
 
-func (r ApiUpdateMemberRoleRequest) Execute() (*UpdateMemberRole200Response, *http.Response, error) {
+func (r ApiUpdateMemberRoleRequest) Execute() (*models.UpdateMemberRole200Response, *http.Response, error) {
 	return r.ApiService.UpdateMemberRoleExecute(r)
 }
 
@@ -3367,13 +3368,13 @@ func (a *OrganizationsAPIService) UpdateMemberRole(ctx context.Context, orgId st
 }
 
 // Execute executes the request
-//  @return UpdateMemberRole200Response
-func (a *OrganizationsAPIService) UpdateMemberRoleExecute(r ApiUpdateMemberRoleRequest) (*UpdateMemberRole200Response, *http.Response, error) {
+//  @return models.UpdateMemberRole200Response
+func (a *OrganizationsAPIService) UpdateMemberRoleExecute(r ApiUpdateMemberRoleRequest) (*models.UpdateMemberRole200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *UpdateMemberRole200Response
+		localVarReturnValue  *models.UpdateMemberRole200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.UpdateMemberRole")
@@ -3452,15 +3453,15 @@ type ApiUpdateOrganizationRequest struct {
 	ctx context.Context
 	ApiService *OrganizationsAPIService
 	orgId string
-	updateOrganizationRequest *UpdateOrganizationRequest
+	updateOrganizationRequest *models.UpdateOrganizationRequest
 }
 
-func (r ApiUpdateOrganizationRequest) UpdateOrganizationRequest(updateOrganizationRequest UpdateOrganizationRequest) ApiUpdateOrganizationRequest {
+func (r ApiUpdateOrganizationRequest) UpdateOrganizationRequest(updateOrganizationRequest models.UpdateOrganizationRequest) ApiUpdateOrganizationRequest {
 	r.updateOrganizationRequest = &updateOrganizationRequest
 	return r
 }
 
-func (r ApiUpdateOrganizationRequest) Execute() (*UpdateOrganization200Response, *http.Response, error) {
+func (r ApiUpdateOrganizationRequest) Execute() (*models.UpdateOrganization200Response, *http.Response, error) {
 	return r.ApiService.UpdateOrganizationExecute(r)
 }
 
@@ -3483,13 +3484,13 @@ func (a *OrganizationsAPIService) UpdateOrganization(ctx context.Context, orgId 
 }
 
 // Execute executes the request
-//  @return UpdateOrganization200Response
-func (a *OrganizationsAPIService) UpdateOrganizationExecute(r ApiUpdateOrganizationRequest) (*UpdateOrganization200Response, *http.Response, error) {
+//  @return models.UpdateOrganization200Response
+func (a *OrganizationsAPIService) UpdateOrganizationExecute(r ApiUpdateOrganizationRequest) (*models.UpdateOrganization200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *UpdateOrganization200Response
+		localVarReturnValue  *models.UpdateOrganization200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.UpdateOrganization")
@@ -3567,15 +3568,15 @@ type ApiUpdateOrganizationPlanRequest struct {
 	ctx context.Context
 	ApiService *OrganizationsAPIService
 	orgId string
-	updateOrganizationPlanRequest *UpdateOrganizationPlanRequest
+	updateOrganizationPlanRequest *models.UpdateOrganizationPlanRequest
 }
 
-func (r ApiUpdateOrganizationPlanRequest) UpdateOrganizationPlanRequest(updateOrganizationPlanRequest UpdateOrganizationPlanRequest) ApiUpdateOrganizationPlanRequest {
+func (r ApiUpdateOrganizationPlanRequest) UpdateOrganizationPlanRequest(updateOrganizationPlanRequest models.UpdateOrganizationPlanRequest) ApiUpdateOrganizationPlanRequest {
 	r.updateOrganizationPlanRequest = &updateOrganizationPlanRequest
 	return r
 }
 
-func (r ApiUpdateOrganizationPlanRequest) Execute() (*UpdateOrganizationPlan200Response, *http.Response, error) {
+func (r ApiUpdateOrganizationPlanRequest) Execute() (*models.UpdateOrganizationPlan200Response, *http.Response, error) {
 	return r.ApiService.UpdateOrganizationPlanExecute(r)
 }
 
@@ -3595,13 +3596,13 @@ func (a *OrganizationsAPIService) UpdateOrganizationPlan(ctx context.Context, or
 }
 
 // Execute executes the request
-//  @return UpdateOrganizationPlan200Response
-func (a *OrganizationsAPIService) UpdateOrganizationPlanExecute(r ApiUpdateOrganizationPlanRequest) (*UpdateOrganizationPlan200Response, *http.Response, error) {
+//  @return models.UpdateOrganizationPlan200Response
+func (a *OrganizationsAPIService) UpdateOrganizationPlanExecute(r ApiUpdateOrganizationPlanRequest) (*models.UpdateOrganizationPlan200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *UpdateOrganizationPlan200Response
+		localVarReturnValue  *models.UpdateOrganizationPlan200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.UpdateOrganizationPlan")
@@ -3680,15 +3681,15 @@ type ApiUpdateSubOrganizationRequest struct {
 	ApiService *OrganizationsAPIService
 	orgId string
 	suborgId string
-	updateOrganizationRequest *UpdateOrganizationRequest
+	updateOrganizationRequest *models.UpdateOrganizationRequest
 }
 
-func (r ApiUpdateSubOrganizationRequest) UpdateOrganizationRequest(updateOrganizationRequest UpdateOrganizationRequest) ApiUpdateSubOrganizationRequest {
+func (r ApiUpdateSubOrganizationRequest) UpdateOrganizationRequest(updateOrganizationRequest models.UpdateOrganizationRequest) ApiUpdateSubOrganizationRequest {
 	r.updateOrganizationRequest = &updateOrganizationRequest
 	return r
 }
 
-func (r ApiUpdateSubOrganizationRequest) Execute() (*UpdateSubOrganization200Response, *http.Response, error) {
+func (r ApiUpdateSubOrganizationRequest) Execute() (*models.UpdateSubOrganization200Response, *http.Response, error) {
 	return r.ApiService.UpdateSubOrganizationExecute(r)
 }
 
@@ -3716,14 +3717,14 @@ func (a *OrganizationsAPIService) UpdateSubOrganization(ctx context.Context, org
 }
 
 // Execute executes the request
-//  @return UpdateSubOrganization200Response
+//  @return models.UpdateSubOrganization200Response
 // Deprecated
-func (a *OrganizationsAPIService) UpdateSubOrganizationExecute(r ApiUpdateSubOrganizationRequest) (*UpdateSubOrganization200Response, *http.Response, error) {
+func (a *OrganizationsAPIService) UpdateSubOrganizationExecute(r ApiUpdateSubOrganizationRequest) (*models.UpdateSubOrganization200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *UpdateSubOrganization200Response
+		localVarReturnValue  *models.UpdateSubOrganization200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.UpdateSubOrganization")
@@ -3804,15 +3805,15 @@ type ApiUpdateSubOrganizationMemberRoleRequest struct {
 	orgId string
 	suborgId string
 	userId string
-	updateMemberRoleRequest *UpdateMemberRoleRequest
+	updateMemberRoleRequest *models.UpdateMemberRoleRequest
 }
 
-func (r ApiUpdateSubOrganizationMemberRoleRequest) UpdateMemberRoleRequest(updateMemberRoleRequest UpdateMemberRoleRequest) ApiUpdateSubOrganizationMemberRoleRequest {
+func (r ApiUpdateSubOrganizationMemberRoleRequest) UpdateMemberRoleRequest(updateMemberRoleRequest models.UpdateMemberRoleRequest) ApiUpdateSubOrganizationMemberRoleRequest {
 	r.updateMemberRoleRequest = &updateMemberRoleRequest
 	return r
 }
 
-func (r ApiUpdateSubOrganizationMemberRoleRequest) Execute() (*UpdateMemberRole200Response, *http.Response, error) {
+func (r ApiUpdateSubOrganizationMemberRoleRequest) Execute() (*models.UpdateMemberRole200Response, *http.Response, error) {
 	return r.ApiService.UpdateSubOrganizationMemberRoleExecute(r)
 }
 
@@ -3838,14 +3839,14 @@ func (a *OrganizationsAPIService) UpdateSubOrganizationMemberRole(ctx context.Co
 }
 
 // Execute executes the request
-//  @return UpdateMemberRole200Response
+//  @return models.UpdateMemberRole200Response
 // Deprecated
-func (a *OrganizationsAPIService) UpdateSubOrganizationMemberRoleExecute(r ApiUpdateSubOrganizationMemberRoleRequest) (*UpdateMemberRole200Response, *http.Response, error) {
+func (a *OrganizationsAPIService) UpdateSubOrganizationMemberRoleExecute(r ApiUpdateSubOrganizationMemberRoleRequest) (*models.UpdateMemberRole200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *UpdateMemberRole200Response
+		localVarReturnValue  *models.UpdateMemberRole200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.UpdateSubOrganizationMemberRole")
@@ -3926,15 +3927,15 @@ type ApiUpdateUserAccountStatusRequest struct {
 	ApiService *OrganizationsAPIService
 	orgId string
 	userId string
-	updateUserAccountStatusRequest *UpdateUserAccountStatusRequest
+	updateUserAccountStatusRequest *models.UpdateUserAccountStatusRequest
 }
 
-func (r ApiUpdateUserAccountStatusRequest) UpdateUserAccountStatusRequest(updateUserAccountStatusRequest UpdateUserAccountStatusRequest) ApiUpdateUserAccountStatusRequest {
+func (r ApiUpdateUserAccountStatusRequest) UpdateUserAccountStatusRequest(updateUserAccountStatusRequest models.UpdateUserAccountStatusRequest) ApiUpdateUserAccountStatusRequest {
 	r.updateUserAccountStatusRequest = &updateUserAccountStatusRequest
 	return r
 }
 
-func (r ApiUpdateUserAccountStatusRequest) Execute() (*UpdateUserAccountStatus200Response, *http.Response, error) {
+func (r ApiUpdateUserAccountStatusRequest) Execute() (*models.UpdateUserAccountStatus200Response, *http.Response, error) {
 	return r.ApiService.UpdateUserAccountStatusExecute(r)
 }
 
@@ -3960,13 +3961,13 @@ func (a *OrganizationsAPIService) UpdateUserAccountStatus(ctx context.Context, o
 }
 
 // Execute executes the request
-//  @return UpdateUserAccountStatus200Response
-func (a *OrganizationsAPIService) UpdateUserAccountStatusExecute(r ApiUpdateUserAccountStatusRequest) (*UpdateUserAccountStatus200Response, *http.Response, error) {
+//  @return models.UpdateUserAccountStatus200Response
+func (a *OrganizationsAPIService) UpdateUserAccountStatusExecute(r ApiUpdateUserAccountStatusRequest) (*models.UpdateUserAccountStatus200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *UpdateUserAccountStatus200Response
+		localVarReturnValue  *models.UpdateUserAccountStatus200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.UpdateUserAccountStatus")
@@ -4027,7 +4028,7 @@ func (a *OrganizationsAPIService) UpdateUserAccountStatusExecute(r ApiUpdateUser
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -4038,7 +4039,7 @@ func (a *OrganizationsAPIService) UpdateUserAccountStatusExecute(r ApiUpdateUser
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -4049,7 +4050,7 @@ func (a *OrganizationsAPIService) UpdateUserAccountStatusExecute(r ApiUpdateUser
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -4060,7 +4061,7 @@ func (a *OrganizationsAPIService) UpdateUserAccountStatusExecute(r ApiUpdateUser
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -4092,7 +4093,7 @@ type ApiVerifyOrgCustomDomainDnsRequest struct {
 	hostname string
 }
 
-func (r ApiVerifyOrgCustomDomainDnsRequest) Execute() (*OrgVerifyCustomDomainDnsSuccessResponse, *http.Response, error) {
+func (r ApiVerifyOrgCustomDomainDnsRequest) Execute() (*models.OrgVerifyCustomDomainDnsSuccessResponse, *http.Response, error) {
 	return r.ApiService.VerifyOrgCustomDomainDnsExecute(r)
 }
 
@@ -4101,13 +4102,11 @@ VerifyOrgCustomDomainDns Verify domain ownership via DNS TXT
 
 Looks up TXT at `_mudbase-verify.<hostname>` for value `mudbase-domain-verification=<token>`.
 
-When the server has **`CLOUDFLARE_API_TOKEN`** and **`CLOUDFLARE_ZONE_ID`** configured (and Fly ACME is **not** enabled), a successful verify also creates or refreshes a Cloudflare Custom Hostname (SSL for SaaS) and returns **`cloudflare`** with DCV hints.
+On a successful verify, Mudbase begins provisioning and managing the TLS certificate for the hostname automatically. Depending on the deployment, the response may include managed edge TLS details with domain-control validation (DCV) hints for the certificate.
 
-When **Fly ACME** is enabled (**`FLY_API_TOKEN`** + **`CUSTOM_DOMAIN_FLY_ACME_ENABLED=true`** + app slug), a successful verify calls Fly’s Certificates API (`POST .../certificates/acme`) and persists DNS requirements. If Fly returns DNS rows and **`CUSTOM_DOMAIN_FLY_LEGACY_STAFF_PIPELINE`** is **not** set, status advances to **`cname_approved`** in the same response (no staff **`approve-cname`**); **`org.domain.cname_staff_queued`** is not logged for that path. Otherwise (legacy Fly or non-Fly), first success from `pending`/`failed` may move to **`cname_pending_staff`** and queue staff as before.
+When automated certificate provisioning is in effect, a successful verify records the certificate’s DNS requirements and status may advance to **`cname_approved`** in the same response (no staff **`approve-cname`** step). Otherwise, first success from `pending`/`failed` may move to **`cname_pending_staff`** and queue platform review as before.
 
-The **200** response may include **`dnsRecords`**, **`flyCertificateStatus`**, and **`routingCnameTarget`** from Fly’s **`dns_requirements.cname`** when provisioned.
-
-Cloudflare SaaS and Fly ACME cannot both be enabled; the API process refuses to start if both are configured.
+The **200** response may include **`dnsRecords`**, certificate status, and **`routingCnameTarget`** for the managed certificate once its requirements are provisioned.
 
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -4127,13 +4126,13 @@ func (a *OrganizationsAPIService) VerifyOrgCustomDomainDns(ctx context.Context, 
 }
 
 // Execute executes the request
-//  @return OrgVerifyCustomDomainDnsSuccessResponse
-func (a *OrganizationsAPIService) VerifyOrgCustomDomainDnsExecute(r ApiVerifyOrgCustomDomainDnsRequest) (*OrgVerifyCustomDomainDnsSuccessResponse, *http.Response, error) {
+//  @return models.OrgVerifyCustomDomainDnsSuccessResponse
+func (a *OrganizationsAPIService) VerifyOrgCustomDomainDnsExecute(r ApiVerifyOrgCustomDomainDnsRequest) (*models.OrgVerifyCustomDomainDnsSuccessResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *OrgVerifyCustomDomainDnsSuccessResponse
+		localVarReturnValue  *models.OrgVerifyCustomDomainDnsSuccessResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.VerifyOrgCustomDomainDns")
@@ -4190,7 +4189,7 @@ func (a *OrganizationsAPIService) VerifyOrgCustomDomainDnsExecute(r ApiVerifyOrg
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v OrgVerifyCustomDomainDnsFailureResponse
+			var v models.OrgVerifyCustomDomainDnsFailureResponse
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

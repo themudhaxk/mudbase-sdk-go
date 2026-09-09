@@ -23,7 +23,7 @@ info:
     name: MIT
     url: https://opensource.org/licenses/MIT
   title: MUDBASESDK
-  version: 1.3.12
+  version: 1.3.13
 servers:
 - description: Production server
   url: https://cloud.mudbase.dev
@@ -2637,11 +2637,10 @@ paths:
       description: |
         Returns allowed hostnames for **this project**, primary hostname (per project), API base URL, and per-domain DNS guidance.
 
-        Each row uses **`dnsRecords`** for the Mudbase ownership TXT (purpose **`mudbase_ownership`**) and routing **CNAME** from Fly **`dns_requirements.cname`** when Fly ACME has provisioned (else fallback **`CUSTOM_DOMAIN_API_CNAME_TARGET`**), and—when Fly ACME is enabled
-        (**`FLY_API_TOKEN`** + **`CUSTOM_DOMAIN_FLY_ACME_ENABLED`**)—Fly rows (`fly_ownership`, `acme_challenge`, etc.) after the org has passed Mudbase TXT at least once.
-        **`flyCertificateStatus`** mirrors Fly’s certificate state when ACME automation is on (e.g. `pending_validation`, `active`).
+        Each row uses **`dnsRecords`** for the Mudbase ownership TXT (purpose **`mudbase_ownership`**) and the routing **CNAME** target that Mudbase provisions for the hostname (else the platform default target). Once the ownership TXT has passed at least once, Mudbase provisions and manages the TLS certificate for the hostname automatically and may add further checklist rows (for example `acme_challenge`) needed to complete certificate issuance.
+        The certificate status field mirrors the managed certificate’s state during issuance (e.g. `pending_validation`, `active`).
 
-        **`edge`** appears only when edge SSL (SSL-for-SaaS) is configured. Fly ACME and edge SSL are mutually exclusive on the server.
+        Managed edge TLS details are present only on deployments that serve managed edge certificates.
 
         Requires Growth, Scale, or Enterprise plan (custom domains included in plan features).
       operationId: listOrgCustomDomains
@@ -2679,8 +2678,8 @@ paths:
     post:
       description: |
         Creates a pending domain row; the response **`domain`** uses the compact **`OrgDomainEntryOrgConsole`** shape (**`dnsRecords`** includes the Mudbase ownership TXT).
-        **`dnsRecords`** may include Mudbase TXT and routing CNAME only until Mudbase TXT succeeds and Fly ACME (if enabled) provisions a certificate.
-        **`flyCertificateStatus`** is typically omitted until Fly ACME runs after first successful **`verify-dns`**.
+        **`dnsRecords`** may include the Mudbase TXT and routing CNAME only until the Mudbase TXT succeeds and the managed certificate is provisioned.
+        **`flyCertificateStatus`** is typically omitted until certificate provisioning runs after the first successful **`verify-dns`**.
       operationId: addOrgCustomDomain
       parameters:
       - explode: false
@@ -2734,7 +2733,7 @@ paths:
     get:
       description: |
         Returns the same shape as list/add for one hostname (URL-encode `hostname` in the path), including **`dnsRecords`** and **`flyCertificateStatus`** when applicable.
-        See **`listOrgCustomDomains`** for how Fly ACME and Cloudflare SaaS affect those fields.
+        See **`listOrgCustomDomains`** for how managed certificate provisioning affects those fields.
       operationId: getOrgCustomDomainDnsInstructions
       parameters:
       - explode: false
@@ -2822,13 +2821,11 @@ paths:
       description: |
         Looks up TXT at `_mudbase-verify.<hostname>` for value `mudbase-domain-verification=<token>`.
 
-        When the server has **`CLOUDFLARE_API_TOKEN`** and **`CLOUDFLARE_ZONE_ID`** configured (and Fly ACME is **not** enabled), a successful verify also creates or refreshes a Cloudflare Custom Hostname (SSL for SaaS) and returns **`cloudflare`** with DCV hints.
+        On a successful verify, Mudbase begins provisioning and managing the TLS certificate for the hostname automatically. Depending on the deployment, the response may include managed edge TLS details with domain-control validation (DCV) hints for the certificate.
 
-        When **Fly ACME** is enabled (**`FLY_API_TOKEN`** + **`CUSTOM_DOMAIN_FLY_ACME_ENABLED=true`** + app slug), a successful verify calls Fly’s Certificates API (`POST .../certificates/acme`) and persists DNS requirements. If Fly returns DNS rows and **`CUSTOM_DOMAIN_FLY_LEGACY_STAFF_PIPELINE`** is **not** set, status advances to **`cname_approved`** in the same response (no staff **`approve-cname`**); **`org.domain.cname_staff_queued`** is not logged for that path. Otherwise (legacy Fly or non-Fly), first success from `pending`/`failed` may move to **`cname_pending_staff`** and queue staff as before.
+        When automated certificate provisioning is in effect, a successful verify records the certificate’s DNS requirements and status may advance to **`cname_approved`** in the same response (no staff **`approve-cname`** step). Otherwise, first success from `pending`/`failed` may move to **`cname_pending_staff`** and queue platform review as before.
 
-        The **200** response may include **`dnsRecords`**, **`flyCertificateStatus`**, and **`routingCnameTarget`** from Fly’s **`dns_requirements.cname`** when provisioned.
-
-        Cloudflare SaaS and Fly ACME cannot both be enabled; the API process refuses to start if both are configured.
+        The **200** response may include **`dnsRecords`**, certificate status, and **`routingCnameTarget`** for the managed certificate once its requirements are provisioned.
       operationId: verifyOrgCustomDomainDns
       parameters:
       - explode: false
@@ -2858,11 +2855,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/OrgVerifyCustomDomainDnsSuccessResponse"
-          description: "TXT verified. Fly ACME (default automation): often `cname_approved`\
-            \ when Fly returns DNS requirements; legacy Fly or non-Fly may show `cname_pending_staff`\
-            \ or `dns_verified`. Includes `dnsTxtHost`/`dnsTxtValue`, optional `cloudflare`\
-            \ (Cloudflare SaaS), optional `dnsRecords` + `flyCertificateStatus` when\
-            \ Fly ACME ran after this verify."
+          description: "TXT verified. With automated certificate provisioning, often\
+            \ `cname_approved` once DNS requirements are returned; otherwise may show\
+            \ `cname_pending_staff` or `dns_verified`. Includes `dnsTxtHost`/`dnsTxtValue`,\
+            \ optional managed edge TLS details, optional `dnsRecords` + certificate\
+            \ status when provisioning ran after this verify."
         "400":
           content:
             application/json:
@@ -2942,8 +2939,8 @@ paths:
   /api/orgs/{orgId}/projects/{projectId}/domains/{hostname}/submit-cname:
     post:
       description: |
-        Usually unnecessary. With Fly ACME default automation, Mudbase TXT verify may already set `cname_approved`. Legacy pipelines may queue `cname_pending_staff` until staff **`approve-cname`**.
-        Use **`routingCnameTarget`** from **`GET .../projects/{projectId}/domains`** (Fly **`dns_requirements.cname`** when provisioned, else **`CUSTOM_DOMAIN_API_CNAME_TARGET`**).
+        Usually unnecessary. With automated certificate provisioning, the Mudbase TXT verify may already set `cname_approved`. Legacy pipelines may queue `cname_pending_staff` until staff **`approve-cname`**.
+        Use **`routingCnameTarget`** from **`GET .../projects/{projectId}/domains`** (the managed routing CNAME target when provisioned, else the platform default target).
       operationId: orgCustomDomainSubmitCname
       parameters:
       - explode: false
@@ -2988,13 +2985,13 @@ paths:
   /api/orgs/{orgId}/projects/{projectId}/domains/{hostname}/verify-platform-dns:
     post:
       description: |
-        **Manual path (no Fly ACME):** After staff **`PATCH .../platform-dns-verification`**, the org adds the published TXT and calls this endpoint. The API resolves public TXT at **`platformDnsVerification.recordName`** and matches **`recordValue`**. On success, `status` → **`platform_dns_pending_review`** until staff **`POST .../activate`**.
+        **Manual path:** After staff **`PATCH .../platform-dns-verification`**, the org adds the published TXT and calls this endpoint. The API resolves public TXT at **`platformDnsVerification.recordName`** and matches **`recordValue`**. On success, `status` → **`platform_dns_pending_review`** until staff **`POST .../activate`**.
 
-        **Fly ACME path (default):** When Fly ACME is enabled and **`CUSTOM_DOMAIN_FLY_LEGACY_STAFF_PIPELINE`** is **not** set, the org calls this after Mudbase TXT and Fly DNS rows are in place (status typically **`cname_approved`** from automated verify-dns). The API triggers Fly **`POST .../check`** and **`GET`** certificate with bounded retries. On success, `status` → **`active`** and the org may receive the activation email—**no** staff **`approve-cname`** or **`activate`** required.
+        **Automated path (default):** When automated certificate provisioning is in effect, the org calls this after the Mudbase TXT and the certificate DNS rows are in place (status typically **`cname_approved`** from automated verify-dns). The API checks the managed certificate with bounded retries. On success, `status` → **`active`** and the org may receive the activation email, with no staff **`approve-cname`** or **`activate`** required.
 
-        **Fly legacy:** If **`CUSTOM_DOMAIN_FLY_LEGACY_STAFF_PIPELINE=true`**, behavior matches the older flow: staff **`approve-cname`** may be required first; after a ready Fly cert, **`status`** becomes **`active`** only when **`CUSTOM_DOMAIN_FLY_AUTO_ACTIVATE=true`**, else **`platform_dns_pending_review`** until staff **`activate`**.
+        **Legacy path:** In the legacy staff pipeline, staff **`approve-cname`** may be required first; after the managed certificate is ready, **`status`** becomes **`active`** on auto-activation, else **`platform_dns_pending_review`** until staff **`activate`**.
 
-        **`platform_dns_verification_failed`** may include **`details.flyStatus`** / **`details.flyError`** on the Fly path.
+        **`platform_dns_verification_failed`** may include **`details.flyStatus`** / **`details.flyError`** with provisioning error context.
       operationId: orgCustomDomainVerifyPlatformDns
       parameters:
       - explode: false
@@ -3025,15 +3022,15 @@ paths:
               schema:
                 $ref: "#/components/schemas/OrgPatchDomainResponse"
           description: "Domain row updated (`OrgPatchDomainResponse.domain`). Manual\
-            \ TXT path typically sets `platform_dns_pending_review`. Fly ACME default\
-            \ automation: typically `active` when the certificate is ready. Fly legacy\
-            \ staff pipeline: may set `platform_dns_pending_review` unless `CUSTOM_DOMAIN_FLY_AUTO_ACTIVATE`\
-            \ is enabled. Body may include refreshed `dnsRecords` and `flyCertificateStatus`\
-            \ on the Fly path."
+            \ TXT path typically sets `platform_dns_pending_review`. Automated provisioning:\
+            \ typically `active` when the certificate is ready. Legacy staff pipeline:\
+            \ may set `platform_dns_pending_review` unless auto-activation is enabled.\
+            \ Body may include refreshed `dnsRecords` and `flyCertificateStatus` when\
+            \ certificate provisioning ran."
         "400":
           description: "custom_domain_invalid_state, platform_dns_verification_failed\
-            \ (manual TXT mismatch or Fly cert not active yet; see response details\
-            \ on Fly path)"
+            \ (manual TXT mismatch or managed certificate not active yet; see response\
+            \ details)"
         "401":
           description: Unauthorized
         "403":
@@ -3042,15 +3039,15 @@ paths:
           description: dns_lookup_error
       security:
       - OrgBearerAuth: []
-      summary: "Custom domain step 3: verify platform DNS (manual TXT or Fly certificate\
+      summary: "Custom domain step 3: verify platform DNS (manual TXT or managed certificate\
         \ readiness)"
       tags:
       - Organizations
   /api/orgs/{orgId}/projects/{projectId}/domains/{hostname}/submit-platform-dns-verification:
     post:
       deprecated: true
-      description: Deprecated alias of **`orgCustomDomainVerifyPlatformDns`** (same
-        behavior — manual TXT and/or Fly ACME path per server config).
+      description: "Deprecated alias of **`orgCustomDomainVerifyPlatformDns`** (same\
+        \ behavior: manual TXT and/or automated certificate provisioning per deployment)."
       operationId: orgCustomDomainSubmitPlatformDnsVerificationDeprecated
       parameters:
       - explode: false
@@ -3219,9 +3216,9 @@ paths:
   /internal/custom-domain/sweep-status:
     get:
       description: "Returns the last automated custom-domain sweep (TXT recheck +\
-        \ Fly ACME retry), job env flags, and Fly deploy troubleshooting hints when\
-        \ the proxy reports the app is not listening on 0.0.0.0:PORT. Requires header\
-        \ `X-Internal-Api-Key` (same as other /internal routes)."
+        \ certificate provisioning retry), job env flags, and deploy troubleshooting\
+        \ hints when the proxy reports the app is not listening on 0.0.0.0:PORT. Requires\
+        \ header `X-Internal-Api-Key` (same as other /internal routes)."
       operationId: internalCustomDomainSweepStatus
       responses:
         "200":
@@ -4937,7 +4934,7 @@ paths:
                 value:
                   role: customer
                   method: POST
-                  pathname: /api/messaging/projects/685ad30be129932fbb7a1047/messaging/email
+                  pathname: /api/messaging/projects/65f1a2b3c4d5e6f7a8b9c0d1/messaging/email
               byOperationId:
                 summary: Simulate using OpenAPI operationId (matches integration/messaging
                   operationIds in this spec)
@@ -4949,7 +4946,7 @@ paths:
                 value:
                   role: viewer
                   method: GET
-                  path: /api/search/projects/685ad30be129932fbb7a1047/search
+                  path: /api/search/projects/65f1a2b3c4d5e6f7a8b9c0d1/search
             schema:
               $ref: "#/components/schemas/simulateAppPermissions_request"
         required: true
@@ -4966,7 +4963,7 @@ paths:
                     reason: allowed
                     evaluated:
                       role: customer
-                      pathname: /api/messaging/projects/685ad30be129932fbb7a1047/messaging/email
+                      pathname: /api/messaging/projects/65f1a2b3c4d5e6f7a8b9c0d1/messaging/email
                       method: POST
                       resource: messaging
                       action: send_email
@@ -4978,7 +4975,7 @@ paths:
                     reason: feature_not_allowed
                     evaluated:
                       role: viewer
-                      pathname: /api/messaging/projects/685ad30be129932fbb7a1047/messaging/email
+                      pathname: /api/messaging/projects/65f1a2b3c4d5e6f7a8b9c0d1/messaging/email
                       method: POST
                       resource: messaging
                       action: send_email
@@ -5001,7 +4998,7 @@ paths:
                     reason: no_feature_gate_for_path
                     evaluated:
                       role: customer
-                      pathname: /api/projects/685ad30be129932fbb7a1047/unknown-route
+                      pathname: /api/projects/65f1a2b3c4d5e6f7a8b9c0d1/unknown-route
                       method: GET
                 noGateForOperationId:
                   summary: operationId not listed in server map
@@ -20922,8 +20919,8 @@ components:
           type: string
       type: object
     OrgEdgeHints:
-      description: Edge SSL (SSL-for-SaaS) custom hostname hints returned after Mudbase
-        verification (when the edge SSL integration is configured)
+      description: Managed edge TLS custom-hostname hints returned after Mudbase verification
+        (when the edge TLS integration is configured)
       example:
         reason: reason
         ownershipVerification:
@@ -20982,15 +20979,12 @@ components:
       type: object
     OrgDomainEntryWithDns:
       description: "Full allowed-domain row (admin and legacy): includes **`dnsTxtHost`**\
-        \ / **`dnsTxtValue`**, optional edge SSL hints (`edge`), staff-published step-3\
+        \ / **`dnsTxtValue`**, optional managed edge TLS hints, staff-published step-3\
         \ TXT (`platformDnsVerification` on the manual path), and unified **`dnsRecords`**\
-        \ when the API builds a checklist. **`routingCnameTarget`** mirrors Fly **`dns_requirements.cname`**\
-        \ when ACME has provisioned, else env fallback. Internal edge custom-hostname\
-        \ state is not returned; use `edge`. Fly ACME requires **`CUSTOM_DOMAIN_FLY_ACME_ENABLED`**\
-        \ plus **`FLY_API_TOKEN`** and app slug; edge SSL (SSL-for-SaaS) and Fly ACME\
-        \ cannot both be enabled on the same deployment. Org-facing routes return\
-        \ the compact **`OrgDomainEntryOrgConsole`** shape instead (no raw `verificationToken`\
-        \ or duplicate TXT keys)."
+        \ when the API builds a checklist. **`routingCnameTarget`** is the managed\
+        \ routing CNAME target when the certificate has provisioned, else the platform\
+        \ default. Org-facing routes return the compact **`OrgDomainEntryOrgConsole`**\
+        \ shape instead (no raw `verificationToken` or duplicate TXT keys)."
       properties:
         _id:
           description: Subdocument id when present (MongoDB)
@@ -21042,25 +21036,25 @@ components:
           nullable: true
           type: integer
         routingCnameTarget:
-          description: "Routing CNAME target: Fly Certificates API `dns_requirements.cname`\
-            \ when Fly ACME has provisioned and stored requirements; otherwise fallback\
-            \ from env `CUSTOM_DOMAIN_API_CNAME_TARGET`."
+          description: "Routing CNAME target: the managed certificate's provisioned\
+            \ CNAME target when requirements have been stored; otherwise the platform\
+            \ default target."
           nullable: true
           type: string
         dnsRecords:
-          description: "Unified checklist: Mudbase ownership TXT, routing CNAME from\
-            \ Fly `dns_requirements.cname` (purpose `routing`) when provisioned else\
-            \ env fallback, and Fly rows (`fly_ownership`, `acme_challenge`, …) when\
-            \ Fly ACME is enabled and the certificate has been provisioned after Mudbase\
-            \ TXT. Empty or absent when Fly ACME is off or not yet provisioned. Prefer\
-            \ this over `platformDnsVerification` alone for org-facing DNS UI."
+          description: "Unified checklist: Mudbase ownership TXT, routing CNAME (purpose\
+            \ `routing`) when provisioned else the platform default, and the managed\
+            \ certificate-provisioning rows once the managed certificate has been\
+            \ provisioned after the Mudbase TXT. Empty or absent when the certificate\
+            \ is not yet provisioned. Prefer this over `platformDnsVerification` alone\
+            \ for org-facing DNS UI."
           items:
             $ref: "#/components/schemas/OrgDnsRecord"
           type: array
         flyCertificateStatus:
-          description: "Fly Certificates API `status` when **`CUSTOM_DOMAIN_FLY_ACME_ENABLED`**\
-            \ and token/app are configured (e.g. `pending_validation`, `active`).\
-            \ Null when Fly ACME is not in use for this deployment."
+          description: "Managed certificate `status` during provisioning (e.g. `pending_validation`,\
+            \ `active`). Null when managed certificate provisioning is not in use\
+            \ for this deployment."
           nullable: true
           type: string
         platformDnsVerification:
@@ -21230,9 +21224,10 @@ components:
       - value
       type: object
     OrgPlatformDnsVerificationCustomer:
-      description: "Additional DNS record from platform staff (non-Fly path), or first\
-        \ Fly TXT shim when Fly ACME is enabled. Prefer `dnsRecords` for full instructions.\
-        \ `staffNote` may appear in admin org detail only."
+      description: "Additional DNS record from platform staff (manual path), or the\
+        \ first certificate-provisioning TXT shim when automated provisioning is enabled.\
+        \ Prefer `dnsRecords` for full instructions. `staffNote` may appear in admin\
+        \ org detail only."
       example:
         staffNote: staffNote
         recordType: recordType
@@ -21625,35 +21620,35 @@ components:
         edge:
           $ref: "#/components/schemas/OrgEdgeHints"
         dnsRecords:
-          description: Same shape as `OrgDomainEntryWithDns.dnsRecords` when Fly ACME
-            ran after this successful verify; omit or empty when Fly ACME is disabled
-            or not provisioned.
+          description: Same shape as `OrgDomainEntryWithDns.dnsRecords` when certificate
+            provisioning ran after this successful verify; omit or empty when provisioning
+            is disabled or not yet run.
           items:
             $ref: "#/components/schemas/OrgDnsRecord"
           type: array
         flyCertificateStatus:
-          description: Fly certificate status after verify when Fly ACME is active;
-            null otherwise
+          description: Managed certificate status after verify when provisioning is
+            active; null otherwise
           nullable: true
           type: string
         flyAcmeEnabled:
-          description: "True when Fly ACME would call the Certificates API (token,\
-            \ app, CUSTOM_DOMAIN_FLY_ACME_ENABLED)."
+          description: True when automated managed-certificate provisioning is configured
+            for this deployment.
           type: boolean
         flyAcmeDisabledReason:
-          description: "When `flyAcmeEnabled` is false, why Fly ACME did not run (ops\
-            \ misconfiguration hint)."
+          description: "When `flyAcmeEnabled` is false, why automated provisioning\
+            \ did not run (ops misconfiguration hint)."
           nullable: true
           type: string
         flyProvisionError:
-          description: "When Fly ACME is enabled but POST acme failed, Fly API error\
-            \ message for support; null on success."
+          description: "When provisioning is enabled but certificate issuance failed,\
+            \ the provider error message for support; null on success."
           nullable: true
           type: string
         flyLegacyStaffPipeline:
-          description: "When true, `CUSTOM_DOMAIN_FLY_LEGACY_STAFF_PIPELINE` is on\
-            \ — status may stay `cname_pending_staff` and staff approve-cname is required\
-            \ even if Fly provision succeeds."
+          description: "When true, the legacy staff pipeline is on: status may stay\
+            \ `cname_pending_staff` and staff approve-cname is required even if certificate\
+            \ provisioning succeeds."
           type: boolean
       required:
       - challengeHost
@@ -27400,7 +27395,7 @@ components:
           type: string
         pathname:
           description: "Full path e.g. `/api/messaging/projects/{id}/messaging/email`"
-          example: /api/messaging/projects/685ad30be129932fbb7a1047/messaging/email
+          example: /api/messaging/projects/65f1a2b3c4d5e6f7a8b9c0d1/messaging/email
           type: string
         path:
           description: Alias for `pathname`

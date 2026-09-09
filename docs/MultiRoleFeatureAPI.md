@@ -36,12 +36,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "685ad30be129932fbb7a1047" // string | 
-	addCustomRoleRequest := *openapiclient.NewAddCustomRoleRequest("seller", "Seller", "seller") // AddCustomRoleRequest | 
+	addCustomRoleRequest := *models.NewAddCustomRoleRequest("seller", "Seller", "seller") // AddCustomRoleRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -108,13 +109,14 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "projectId_example" // string | 
 	roleSlug := "roleSlug_example" // string | 
-	applyRoleFeaturePresetRequest := *openapiclient.NewApplyRoleFeaturePresetRequest("Preset_example") // ApplyRoleFeaturePresetRequest | 
+	applyRoleFeaturePresetRequest := *models.NewApplyRoleFeaturePresetRequest("Preset_example") // ApplyRoleFeaturePresetRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -183,7 +185,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -253,7 +256,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -323,7 +327,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -393,7 +398,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -469,12 +475,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	role := "customer" // string | Must match the role's `signupEndpoint` (default `customer`; other values for roles you add).
-	registerWithRoleRequest := *openapiclient.NewRegisterWithRoleRequest("Email_example", "Password_example", "FirstName_example", "LastName_example", "ProjectId_example", false) // RegisterWithRoleRequest | 
+	registerWithRoleRequest := *models.NewRegisterWithRoleRequest("Email_example", "Password_example", "FirstName_example", "LastName_example", "ProjectId_example", false) // RegisterWithRoleRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -541,12 +548,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "projectId_example" // string | 
-	simulateAppPermissionsRequest := *openapiclient.NewSimulateAppPermissionsRequest("customer") // SimulateAppPermissionsRequest | 
+	simulateAppPermissionsRequest := *models.NewSimulateAppPermissionsRequest("customer") // SimulateAppPermissionsRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -611,13 +619,14 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "685ad30be129932fbb7a1047" // string | 
 	roleSlug := "customer" // string | Role slug to toggle (e.g. starter `customer` or a role you added).
-	toggleRoleRequest := *openapiclient.NewToggleRoleRequest(true) // ToggleRoleRequest | 
+	toggleRoleRequest := *models.NewToggleRoleRequest(true) // ToggleRoleRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -686,14 +695,15 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "685ad30be129932fbb7a1047" // string | 
 	roleSlug := "customer" // string | Role slug (e.g. starter `customer` or a role you added).
 	collectionId := "696ba6e4f4a9422ac4be4f74" // string | 
-	updateCollectionPermissionsRequest := *openapiclient.NewUpdateCollectionPermissionsRequest() // UpdateCollectionPermissionsRequest | 
+	updateCollectionPermissionsRequest := *models.NewUpdateCollectionPermissionsRequest() // UpdateCollectionPermissionsRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -764,12 +774,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "685ad30be129932fbb7a1047" // string | 
-	updateMultiRoleSettingsRequest := *openapiclient.NewUpdateMultiRoleSettingsRequest() // UpdateMultiRoleSettingsRequest | 
+	updateMultiRoleSettingsRequest := *models.NewUpdateMultiRoleSettingsRequest() // UpdateMultiRoleSettingsRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -836,13 +847,14 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "685ad30be129932fbb7a1047" // string | 
 	roleSlug := "customer" // string | Role slug to update (e.g. starter `customer` or a role you added).
-	updateProjectRoleRequest := *openapiclient.NewUpdateProjectRoleRequest() // UpdateProjectRoleRequest | Same fields as **Add custom role** — send only fields you want to change. `defaultPermissions` / `collectionPermissions` are normalized the same way as on create. **`featurePermissions`:** `components/schemas/AppRoleFeaturePermissions` (aligned with `services/appRoleFeatureMap.js`). 
+	updateProjectRoleRequest := *models.NewUpdateProjectRoleRequest() // UpdateProjectRoleRequest | Same fields as **Add custom role** — send only fields you want to change. `defaultPermissions` / `collectionPermissions` are normalized the same way as on create. **`featurePermissions`:** `components/schemas/AppRoleFeaturePermissions` (aligned with `services/appRoleFeatureMap.js`). 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

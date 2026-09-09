@@ -35,12 +35,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "projectId_example" // string | 
-	projectEmailSendRequest := *openapiclient.NewProjectEmailSendRequest() // ProjectEmailSendRequest | 
+	projectEmailSendRequest := *models.NewProjectEmailSendRequest() // ProjectEmailSendRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -108,7 +109,8 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -180,7 +182,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -250,7 +253,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -323,7 +327,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -393,12 +398,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "projectId_example" // string | 
-	projectSmtpPatchRequest := *openapiclient.NewProjectSmtpPatchRequest() // ProjectSmtpPatchRequest | 
+	projectSmtpPatchRequest := *models.NewProjectSmtpPatchRequest() // ProjectSmtpPatchRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -465,13 +471,14 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "projectId_example" // string | 
 	name := "name_example" // string | 
-	previewProjectEmailTemplateRequest := *openapiclient.NewPreviewProjectEmailTemplateRequest() // PreviewProjectEmailTemplateRequest |  (optional)
+	previewProjectEmailTemplateRequest := *models.NewPreviewProjectEmailTemplateRequest() // PreviewProjectEmailTemplateRequest |  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -536,7 +543,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
@@ -607,12 +615,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "projectId_example" // string | 
-	projectSmtpTestRequest := *openapiclient.NewProjectSmtpTestRequest("To_example") // ProjectSmtpTestRequest | 
+	projectSmtpTestRequest := *models.NewProjectSmtpTestRequest("To_example") // ProjectSmtpTestRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -679,13 +688,14 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "projectId_example" // string | 
 	name := "name_example" // string | 
-	upsertProjectEmailTemplateRequest := *openapiclient.NewUpsertProjectEmailTemplateRequest("Subject_example", "HtmlBody_example") // UpsertProjectEmailTemplateRequest | 
+	upsertProjectEmailTemplateRequest := *models.NewUpsertProjectEmailTemplateRequest("Subject_example", "HtmlBody_example") // UpsertProjectEmailTemplateRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -752,12 +762,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/themudhaxk/mudbase-sdk-go"
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 func main() {
 	projectId := "projectId_example" // string | 
-	verifyProjectEmailSmtpDomainRequest := *openapiclient.NewVerifyProjectEmailSmtpDomainRequest() // VerifyProjectEmailSmtpDomainRequest |  (optional)
+	verifyProjectEmailSmtpDomainRequest := *models.NewVerifyProjectEmailSmtpDomainRequest() // VerifyProjectEmailSmtpDomainRequest |  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

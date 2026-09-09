@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -18,6 +18,8 @@ import (
 	"net/http"
 	"net/url"
 	"time"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -27,10 +29,10 @@ type MonitoringAPIService service
 type ApiCreateMonitoringAlertRequest struct {
 	ctx context.Context
 	ApiService *MonitoringAPIService
-	createMonitoringAlertRequest *CreateMonitoringAlertRequest
+	createMonitoringAlertRequest *models.CreateMonitoringAlertRequest
 }
 
-func (r ApiCreateMonitoringAlertRequest) CreateMonitoringAlertRequest(createMonitoringAlertRequest CreateMonitoringAlertRequest) ApiCreateMonitoringAlertRequest {
+func (r ApiCreateMonitoringAlertRequest) CreateMonitoringAlertRequest(createMonitoringAlertRequest models.CreateMonitoringAlertRequest) ApiCreateMonitoringAlertRequest {
 	r.createMonitoringAlertRequest = &createMonitoringAlertRequest
 	return r
 }
@@ -118,7 +120,7 @@ func (a *MonitoringAPIService) CreateMonitoringAlertExecute(r ApiCreateMonitorin
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -164,7 +166,7 @@ func (r ApiGetMonitoringAnalyticsRequest) Days(days int32) ApiGetMonitoringAnaly
 	return r
 }
 
-func (r ApiGetMonitoringAnalyticsRequest) Execute() (*MonitoringAnalyticsResponse, *http.Response, error) {
+func (r ApiGetMonitoringAnalyticsRequest) Execute() (*models.MonitoringAnalyticsResponse, *http.Response, error) {
 	return r.ApiService.GetMonitoringAnalyticsExecute(r)
 }
 
@@ -186,13 +188,13 @@ func (a *MonitoringAPIService) GetMonitoringAnalytics(ctx context.Context) ApiGe
 }
 
 // Execute executes the request
-//  @return MonitoringAnalyticsResponse
-func (a *MonitoringAPIService) GetMonitoringAnalyticsExecute(r ApiGetMonitoringAnalyticsRequest) (*MonitoringAnalyticsResponse, *http.Response, error) {
+//  @return models.MonitoringAnalyticsResponse
+func (a *MonitoringAPIService) GetMonitoringAnalyticsExecute(r ApiGetMonitoringAnalyticsRequest) (*models.MonitoringAnalyticsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MonitoringAnalyticsResponse
+		localVarReturnValue  *models.MonitoringAnalyticsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitoringAPIService.GetMonitoringAnalytics")
@@ -266,7 +268,7 @@ func (a *MonitoringAPIService) GetMonitoringAnalyticsExecute(r ApiGetMonitoringA
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -372,7 +374,7 @@ func (a *MonitoringAPIService) GetMonitoringErrorsExecute(r ApiGetMonitoringErro
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -472,7 +474,7 @@ func (a *MonitoringAPIService) GetMonitoringLatencyInsightsExecute(r ApiGetMonit
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -549,7 +551,7 @@ func (r ApiGetMonitoringLogsRequest) Resource(resource string) ApiGetMonitoringL
 	return r
 }
 
-func (r ApiGetMonitoringLogsRequest) Execute() (*MonitoringLogsResponse, *http.Response, error) {
+func (r ApiGetMonitoringLogsRequest) Execute() (*models.MonitoringLogsResponse, *http.Response, error) {
 	return r.ApiService.GetMonitoringLogsExecute(r)
 }
 
@@ -571,13 +573,13 @@ func (a *MonitoringAPIService) GetMonitoringLogs(ctx context.Context) ApiGetMoni
 }
 
 // Execute executes the request
-//  @return MonitoringLogsResponse
-func (a *MonitoringAPIService) GetMonitoringLogsExecute(r ApiGetMonitoringLogsRequest) (*MonitoringLogsResponse, *http.Response, error) {
+//  @return models.MonitoringLogsResponse
+func (a *MonitoringAPIService) GetMonitoringLogsExecute(r ApiGetMonitoringLogsRequest) (*models.MonitoringLogsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MonitoringLogsResponse
+		localVarReturnValue  *models.MonitoringLogsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitoringAPIService.GetMonitoringLogs")
@@ -670,7 +672,7 @@ func (a *MonitoringAPIService) GetMonitoringLogsExecute(r ApiGetMonitoringLogsRe
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -712,7 +714,7 @@ func (r ApiGetMonitoringPerformanceRequest) Period(period string) ApiGetMonitori
 	return r
 }
 
-func (r ApiGetMonitoringPerformanceRequest) Execute() (*MonitoringPerformanceResponse, *http.Response, error) {
+func (r ApiGetMonitoringPerformanceRequest) Execute() (*models.MonitoringPerformanceResponse, *http.Response, error) {
 	return r.ApiService.GetMonitoringPerformanceExecute(r)
 }
 
@@ -734,13 +736,13 @@ func (a *MonitoringAPIService) GetMonitoringPerformance(ctx context.Context) Api
 }
 
 // Execute executes the request
-//  @return MonitoringPerformanceResponse
-func (a *MonitoringAPIService) GetMonitoringPerformanceExecute(r ApiGetMonitoringPerformanceRequest) (*MonitoringPerformanceResponse, *http.Response, error) {
+//  @return models.MonitoringPerformanceResponse
+func (a *MonitoringAPIService) GetMonitoringPerformanceExecute(r ApiGetMonitoringPerformanceRequest) (*models.MonitoringPerformanceResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MonitoringPerformanceResponse
+		localVarReturnValue  *models.MonitoringPerformanceResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitoringAPIService.GetMonitoringPerformance")
@@ -804,7 +806,7 @@ func (a *MonitoringAPIService) GetMonitoringPerformanceExecute(r ApiGetMonitorin
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -839,7 +841,7 @@ func (r ApiGetMonitoringQueueMetricsRequest) Execute() (*http.Response, error) {
 }
 
 /*
-GetMonitoringQueueMetrics Usage metering queue job counts
+GetMonitoringQueueMetrics models.Usage metering queue job counts
 
 BullMQ **usage-events** queue counts when `USE_METERING_QUEUE` and `REDIS_URL` are set.
 
@@ -912,7 +914,7 @@ func (a *MonitoringAPIService) GetMonitoringQueueMetricsExecute(r ApiGetMonitori
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1008,7 +1010,7 @@ func (a *MonitoringAPIService) ListMonitoringAlertsExecute(r ApiListMonitoringAl
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

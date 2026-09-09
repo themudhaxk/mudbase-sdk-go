@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -18,6 +18,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -28,15 +30,15 @@ type ApiCreateBackupRequest struct {
 	ctx context.Context
 	ApiService *BackupsAPIService
 	projectId string
-	createBackupRequest *CreateBackupRequest
+	createBackupRequest *models.CreateBackupRequest
 }
 
-func (r ApiCreateBackupRequest) CreateBackupRequest(createBackupRequest CreateBackupRequest) ApiCreateBackupRequest {
+func (r ApiCreateBackupRequest) CreateBackupRequest(createBackupRequest models.CreateBackupRequest) ApiCreateBackupRequest {
 	r.createBackupRequest = &createBackupRequest
 	return r
 }
 
-func (r ApiCreateBackupRequest) Execute() (*CreateBackup201Response, *http.Response, error) {
+func (r ApiCreateBackupRequest) Execute() (*models.CreateBackup201Response, *http.Response, error) {
 	return r.ApiService.CreateBackupExecute(r)
 }
 
@@ -58,13 +60,13 @@ func (a *BackupsAPIService) CreateBackup(ctx context.Context, projectId string) 
 }
 
 // Execute executes the request
-//  @return CreateBackup201Response
-func (a *BackupsAPIService) CreateBackupExecute(r ApiCreateBackupRequest) (*CreateBackup201Response, *http.Response, error) {
+//  @return models.CreateBackup201Response
+func (a *BackupsAPIService) CreateBackupExecute(r ApiCreateBackupRequest) (*models.CreateBackup201Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CreateBackup201Response
+		localVarReturnValue  *models.CreateBackup201Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BackupsAPIService.CreateBackup")
@@ -135,7 +137,7 @@ func (a *BackupsAPIService) CreateBackupExecute(r ApiCreateBackupRequest) (*Crea
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -146,7 +148,7 @@ func (a *BackupsAPIService) CreateBackupExecute(r ApiCreateBackupRequest) (*Crea
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -157,7 +159,7 @@ func (a *BackupsAPIService) CreateBackupExecute(r ApiCreateBackupRequest) (*Crea
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -188,7 +190,7 @@ type ApiDeleteBackupRequest struct {
 	backupId string
 }
 
-func (r ApiDeleteBackupRequest) Execute() (*DeleteBackup200Response, *http.Response, error) {
+func (r ApiDeleteBackupRequest) Execute() (*models.DeleteBackup200Response, *http.Response, error) {
 	return r.ApiService.DeleteBackupExecute(r)
 }
 
@@ -212,13 +214,13 @@ func (a *BackupsAPIService) DeleteBackup(ctx context.Context, projectId string, 
 }
 
 // Execute executes the request
-//  @return DeleteBackup200Response
-func (a *BackupsAPIService) DeleteBackupExecute(r ApiDeleteBackupRequest) (*DeleteBackup200Response, *http.Response, error) {
+//  @return models.DeleteBackup200Response
+func (a *BackupsAPIService) DeleteBackupExecute(r ApiDeleteBackupRequest) (*models.DeleteBackup200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *DeleteBackup200Response
+		localVarReturnValue  *models.DeleteBackup200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BackupsAPIService.DeleteBackup")
@@ -288,7 +290,7 @@ func (a *BackupsAPIService) DeleteBackupExecute(r ApiDeleteBackupRequest) (*Dele
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -299,7 +301,7 @@ func (a *BackupsAPIService) DeleteBackupExecute(r ApiDeleteBackupRequest) (*Dele
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -329,7 +331,7 @@ type ApiListBackupsRequest struct {
 	projectId string
 }
 
-func (r ApiListBackupsRequest) Execute() (*ListBackups200Response, *http.Response, error) {
+func (r ApiListBackupsRequest) Execute() (*models.ListBackups200Response, *http.Response, error) {
 	return r.ApiService.ListBackupsExecute(r)
 }
 
@@ -351,13 +353,13 @@ func (a *BackupsAPIService) ListBackups(ctx context.Context, projectId string) A
 }
 
 // Execute executes the request
-//  @return ListBackups200Response
-func (a *BackupsAPIService) ListBackupsExecute(r ApiListBackupsRequest) (*ListBackups200Response, *http.Response, error) {
+//  @return models.ListBackups200Response
+func (a *BackupsAPIService) ListBackupsExecute(r ApiListBackupsRequest) (*models.ListBackups200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ListBackups200Response
+		localVarReturnValue  *models.ListBackups200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BackupsAPIService.ListBackups")
@@ -426,7 +428,7 @@ func (a *BackupsAPIService) ListBackupsExecute(r ApiListBackupsRequest) (*ListBa
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -437,7 +439,7 @@ func (a *BackupsAPIService) ListBackupsExecute(r ApiListBackupsRequest) (*ListBa
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -466,15 +468,15 @@ type ApiRestoreBackupRequest struct {
 	ApiService *BackupsAPIService
 	projectId string
 	backupId string
-	restoreBackupRequest *RestoreBackupRequest
+	restoreBackupRequest *models.RestoreBackupRequest
 }
 
-func (r ApiRestoreBackupRequest) RestoreBackupRequest(restoreBackupRequest RestoreBackupRequest) ApiRestoreBackupRequest {
+func (r ApiRestoreBackupRequest) RestoreBackupRequest(restoreBackupRequest models.RestoreBackupRequest) ApiRestoreBackupRequest {
 	r.restoreBackupRequest = &restoreBackupRequest
 	return r
 }
 
-func (r ApiRestoreBackupRequest) Execute() (*RestoreBackup200Response, *http.Response, error) {
+func (r ApiRestoreBackupRequest) Execute() (*models.RestoreBackup200Response, *http.Response, error) {
 	return r.ApiService.RestoreBackupExecute(r)
 }
 
@@ -498,13 +500,13 @@ func (a *BackupsAPIService) RestoreBackup(ctx context.Context, projectId string,
 }
 
 // Execute executes the request
-//  @return RestoreBackup200Response
-func (a *BackupsAPIService) RestoreBackupExecute(r ApiRestoreBackupRequest) (*RestoreBackup200Response, *http.Response, error) {
+//  @return models.RestoreBackup200Response
+func (a *BackupsAPIService) RestoreBackupExecute(r ApiRestoreBackupRequest) (*models.RestoreBackup200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *RestoreBackup200Response
+		localVarReturnValue  *models.RestoreBackup200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BackupsAPIService.RestoreBackup")
@@ -579,7 +581,7 @@ func (a *BackupsAPIService) RestoreBackupExecute(r ApiRestoreBackupRequest) (*Re
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -590,7 +592,7 @@ func (a *BackupsAPIService) RestoreBackupExecute(r ApiRestoreBackupRequest) (*Re
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -601,7 +603,7 @@ func (a *BackupsAPIService) RestoreBackupExecute(r ApiRestoreBackupRequest) (*Re
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

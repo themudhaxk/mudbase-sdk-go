@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -18,6 +18,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -29,15 +31,15 @@ type ApiConfirmAddressVerificationRequest struct {
 	ApiService *ProjectFeesAPIService
 	projectId string
 	currency string
-	confirmAddressVerificationRequest *ConfirmAddressVerificationRequest
+	confirmAddressVerificationRequest *models.ConfirmAddressVerificationRequest
 }
 
-func (r ApiConfirmAddressVerificationRequest) ConfirmAddressVerificationRequest(confirmAddressVerificationRequest ConfirmAddressVerificationRequest) ApiConfirmAddressVerificationRequest {
+func (r ApiConfirmAddressVerificationRequest) ConfirmAddressVerificationRequest(confirmAddressVerificationRequest models.ConfirmAddressVerificationRequest) ApiConfirmAddressVerificationRequest {
 	r.confirmAddressVerificationRequest = &confirmAddressVerificationRequest
 	return r
 }
 
-func (r ApiConfirmAddressVerificationRequest) Execute() (*ConfirmAddressVerification200Response, *http.Response, error) {
+func (r ApiConfirmAddressVerificationRequest) Execute() (*models.ConfirmAddressVerification200Response, *http.Response, error) {
 	return r.ApiService.ConfirmAddressVerificationExecute(r)
 }
 
@@ -65,14 +67,14 @@ func (a *ProjectFeesAPIService) ConfirmAddressVerification(ctx context.Context, 
 }
 
 // Execute executes the request
-//  @return ConfirmAddressVerification200Response
+//  @return models.ConfirmAddressVerification200Response
 // Deprecated
-func (a *ProjectFeesAPIService) ConfirmAddressVerificationExecute(r ApiConfirmAddressVerificationRequest) (*ConfirmAddressVerification200Response, *http.Response, error) {
+func (a *ProjectFeesAPIService) ConfirmAddressVerificationExecute(r ApiConfirmAddressVerificationRequest) (*models.ConfirmAddressVerification200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ConfirmAddressVerification200Response
+		localVarReturnValue  *models.ConfirmAddressVerification200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectFeesAPIService.ConfirmAddressVerification")
@@ -133,7 +135,7 @@ func (a *ProjectFeesAPIService) ConfirmAddressVerificationExecute(r ApiConfirmAd
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -144,7 +146,7 @@ func (a *ProjectFeesAPIService) ConfirmAddressVerificationExecute(r ApiConfirmAd
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -172,15 +174,15 @@ type ApiCreateOrUpdateFeeSettingsRequest struct {
 	ctx context.Context
 	ApiService *ProjectFeesAPIService
 	projectId string
-	createOrUpdateFeeSettingsRequest *CreateOrUpdateFeeSettingsRequest
+	createOrUpdateFeeSettingsRequest *models.CreateOrUpdateFeeSettingsRequest
 }
 
-func (r ApiCreateOrUpdateFeeSettingsRequest) CreateOrUpdateFeeSettingsRequest(createOrUpdateFeeSettingsRequest CreateOrUpdateFeeSettingsRequest) ApiCreateOrUpdateFeeSettingsRequest {
+func (r ApiCreateOrUpdateFeeSettingsRequest) CreateOrUpdateFeeSettingsRequest(createOrUpdateFeeSettingsRequest models.CreateOrUpdateFeeSettingsRequest) ApiCreateOrUpdateFeeSettingsRequest {
 	r.createOrUpdateFeeSettingsRequest = &createOrUpdateFeeSettingsRequest
 	return r
 }
 
-func (r ApiCreateOrUpdateFeeSettingsRequest) Execute() (*ApplyRoleFeaturePreset200Response, *http.Response, error) {
+func (r ApiCreateOrUpdateFeeSettingsRequest) Execute() (*models.ApplyRoleFeaturePreset200Response, *http.Response, error) {
 	return r.ApiService.CreateOrUpdateFeeSettingsExecute(r)
 }
 
@@ -206,14 +208,14 @@ func (a *ProjectFeesAPIService) CreateOrUpdateFeeSettings(ctx context.Context, p
 }
 
 // Execute executes the request
-//  @return ApplyRoleFeaturePreset200Response
+//  @return models.ApplyRoleFeaturePreset200Response
 // Deprecated
-func (a *ProjectFeesAPIService) CreateOrUpdateFeeSettingsExecute(r ApiCreateOrUpdateFeeSettingsRequest) (*ApplyRoleFeaturePreset200Response, *http.Response, error) {
+func (a *ProjectFeesAPIService) CreateOrUpdateFeeSettingsExecute(r ApiCreateOrUpdateFeeSettingsRequest) (*models.ApplyRoleFeaturePreset200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ApplyRoleFeaturePreset200Response
+		localVarReturnValue  *models.ApplyRoleFeaturePreset200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectFeesAPIService.CreateOrUpdateFeeSettings")
@@ -273,7 +275,7 @@ func (a *ProjectFeesAPIService) CreateOrUpdateFeeSettingsExecute(r ApiCreateOrUp
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -284,7 +286,7 @@ func (a *ProjectFeesAPIService) CreateOrUpdateFeeSettingsExecute(r ApiCreateOrUp
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -295,7 +297,7 @@ func (a *ProjectFeesAPIService) CreateOrUpdateFeeSettingsExecute(r ApiCreateOrUp
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -326,7 +328,7 @@ type ApiGetCurrencyFeeBalanceRequest struct {
 	currency string
 }
 
-func (r ApiGetCurrencyFeeBalanceRequest) Execute() (*GetCurrencyFeeBalance200Response, *http.Response, error) {
+func (r ApiGetCurrencyFeeBalanceRequest) Execute() (*models.GetCurrencyFeeBalance200Response, *http.Response, error) {
 	return r.ApiService.GetCurrencyFeeBalanceExecute(r)
 }
 
@@ -354,14 +356,14 @@ func (a *ProjectFeesAPIService) GetCurrencyFeeBalance(ctx context.Context, proje
 }
 
 // Execute executes the request
-//  @return GetCurrencyFeeBalance200Response
+//  @return models.GetCurrencyFeeBalance200Response
 // Deprecated
-func (a *ProjectFeesAPIService) GetCurrencyFeeBalanceExecute(r ApiGetCurrencyFeeBalanceRequest) (*GetCurrencyFeeBalance200Response, *http.Response, error) {
+func (a *ProjectFeesAPIService) GetCurrencyFeeBalanceExecute(r ApiGetCurrencyFeeBalanceRequest) (*models.GetCurrencyFeeBalance200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetCurrencyFeeBalance200Response
+		localVarReturnValue  *models.GetCurrencyFeeBalance200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectFeesAPIService.GetCurrencyFeeBalance")
@@ -417,7 +419,7 @@ func (a *ProjectFeesAPIService) GetCurrencyFeeBalanceExecute(r ApiGetCurrencyFee
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -428,7 +430,7 @@ func (a *ProjectFeesAPIService) GetCurrencyFeeBalanceExecute(r ApiGetCurrencyFee
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -458,7 +460,7 @@ type ApiGetFeeBalancesRequest struct {
 	projectId string
 }
 
-func (r ApiGetFeeBalancesRequest) Execute() (*GetFeeBalances200Response, *http.Response, error) {
+func (r ApiGetFeeBalancesRequest) Execute() (*models.GetFeeBalances200Response, *http.Response, error) {
 	return r.ApiService.GetFeeBalancesExecute(r)
 }
 
@@ -484,14 +486,14 @@ func (a *ProjectFeesAPIService) GetFeeBalances(ctx context.Context, projectId st
 }
 
 // Execute executes the request
-//  @return GetFeeBalances200Response
+//  @return models.GetFeeBalances200Response
 // Deprecated
-func (a *ProjectFeesAPIService) GetFeeBalancesExecute(r ApiGetFeeBalancesRequest) (*GetFeeBalances200Response, *http.Response, error) {
+func (a *ProjectFeesAPIService) GetFeeBalancesExecute(r ApiGetFeeBalancesRequest) (*models.GetFeeBalances200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetFeeBalances200Response
+		localVarReturnValue  *models.GetFeeBalances200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectFeesAPIService.GetFeeBalances")
@@ -546,7 +548,7 @@ func (a *ProjectFeesAPIService) GetFeeBalancesExecute(r ApiGetFeeBalancesRequest
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -576,7 +578,7 @@ type ApiGetFeeSettingsRequest struct {
 	projectId string
 }
 
-func (r ApiGetFeeSettingsRequest) Execute() (*TestIntegration200Response, *http.Response, error) {
+func (r ApiGetFeeSettingsRequest) Execute() (*models.TestIntegration200Response, *http.Response, error) {
 	return r.ApiService.GetFeeSettingsExecute(r)
 }
 
@@ -602,14 +604,14 @@ func (a *ProjectFeesAPIService) GetFeeSettings(ctx context.Context, projectId st
 }
 
 // Execute executes the request
-//  @return TestIntegration200Response
+//  @return models.TestIntegration200Response
 // Deprecated
-func (a *ProjectFeesAPIService) GetFeeSettingsExecute(r ApiGetFeeSettingsRequest) (*TestIntegration200Response, *http.Response, error) {
+func (a *ProjectFeesAPIService) GetFeeSettingsExecute(r ApiGetFeeSettingsRequest) (*models.TestIntegration200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *TestIntegration200Response
+		localVarReturnValue  *models.TestIntegration200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectFeesAPIService.GetFeeSettings")
@@ -664,7 +666,7 @@ func (a *ProjectFeesAPIService) GetFeeSettingsExecute(r ApiGetFeeSettingsRequest
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -675,7 +677,7 @@ func (a *ProjectFeesAPIService) GetFeeSettingsExecute(r ApiGetFeeSettingsRequest
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -729,7 +731,7 @@ func (r ApiGetPayoutHistoryRequest) Status(status string) ApiGetPayoutHistoryReq
 	return r
 }
 
-func (r ApiGetPayoutHistoryRequest) Execute() (*GetPayoutHistory200Response, *http.Response, error) {
+func (r ApiGetPayoutHistoryRequest) Execute() (*models.GetPayoutHistory200Response, *http.Response, error) {
 	return r.ApiService.GetPayoutHistoryExecute(r)
 }
 
@@ -755,14 +757,14 @@ func (a *ProjectFeesAPIService) GetPayoutHistory(ctx context.Context, projectId 
 }
 
 // Execute executes the request
-//  @return GetPayoutHistory200Response
+//  @return models.GetPayoutHistory200Response
 // Deprecated
-func (a *ProjectFeesAPIService) GetPayoutHistoryExecute(r ApiGetPayoutHistoryRequest) (*GetPayoutHistory200Response, *http.Response, error) {
+func (a *ProjectFeesAPIService) GetPayoutHistoryExecute(r ApiGetPayoutHistoryRequest) (*models.GetPayoutHistory200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetPayoutHistory200Response
+		localVarReturnValue  *models.GetPayoutHistory200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectFeesAPIService.GetPayoutHistory")
@@ -837,7 +839,7 @@ func (a *ProjectFeesAPIService) GetPayoutHistoryExecute(r ApiGetPayoutHistoryReq
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -867,7 +869,7 @@ type ApiGetProjectFeeDashboardRequest struct {
 	projectId string
 }
 
-func (r ApiGetProjectFeeDashboardRequest) Execute() (*GetProjectFeeDashboard200Response, *http.Response, error) {
+func (r ApiGetProjectFeeDashboardRequest) Execute() (*models.GetProjectFeeDashboard200Response, *http.Response, error) {
 	return r.ApiService.GetProjectFeeDashboardExecute(r)
 }
 
@@ -889,14 +891,14 @@ func (a *ProjectFeesAPIService) GetProjectFeeDashboard(ctx context.Context, proj
 }
 
 // Execute executes the request
-//  @return GetProjectFeeDashboard200Response
+//  @return models.GetProjectFeeDashboard200Response
 // Deprecated
-func (a *ProjectFeesAPIService) GetProjectFeeDashboardExecute(r ApiGetProjectFeeDashboardRequest) (*GetProjectFeeDashboard200Response, *http.Response, error) {
+func (a *ProjectFeesAPIService) GetProjectFeeDashboardExecute(r ApiGetProjectFeeDashboardRequest) (*models.GetProjectFeeDashboard200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetProjectFeeDashboard200Response
+		localVarReturnValue  *models.GetProjectFeeDashboard200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectFeesAPIService.GetProjectFeeDashboard")
@@ -951,7 +953,7 @@ func (a *ProjectFeesAPIService) GetProjectFeeDashboardExecute(r ApiGetProjectFee
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -982,7 +984,7 @@ type ApiInitiateAddressVerificationRequest struct {
 	currency string
 }
 
-func (r ApiInitiateAddressVerificationRequest) Execute() (*InitiateAddressVerification200Response, *http.Response, error) {
+func (r ApiInitiateAddressVerificationRequest) Execute() (*models.InitiateAddressVerification200Response, *http.Response, error) {
 	return r.ApiService.InitiateAddressVerificationExecute(r)
 }
 
@@ -1010,14 +1012,14 @@ func (a *ProjectFeesAPIService) InitiateAddressVerification(ctx context.Context,
 }
 
 // Execute executes the request
-//  @return InitiateAddressVerification200Response
+//  @return models.InitiateAddressVerification200Response
 // Deprecated
-func (a *ProjectFeesAPIService) InitiateAddressVerificationExecute(r ApiInitiateAddressVerificationRequest) (*InitiateAddressVerification200Response, *http.Response, error) {
+func (a *ProjectFeesAPIService) InitiateAddressVerificationExecute(r ApiInitiateAddressVerificationRequest) (*models.InitiateAddressVerification200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *InitiateAddressVerification200Response
+		localVarReturnValue  *models.InitiateAddressVerification200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectFeesAPIService.InitiateAddressVerification")
@@ -1073,7 +1075,7 @@ func (a *ProjectFeesAPIService) InitiateAddressVerificationExecute(r ApiInitiate
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1084,7 +1086,7 @@ func (a *ProjectFeesAPIService) InitiateAddressVerificationExecute(r ApiInitiate
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1112,15 +1114,15 @@ type ApiRequestManualPayoutRequest struct {
 	ctx context.Context
 	ApiService *ProjectFeesAPIService
 	projectId string
-	requestManualPayoutRequest *RequestManualPayoutRequest
+	requestManualPayoutRequest *models.RequestManualPayoutRequest
 }
 
-func (r ApiRequestManualPayoutRequest) RequestManualPayoutRequest(requestManualPayoutRequest RequestManualPayoutRequest) ApiRequestManualPayoutRequest {
+func (r ApiRequestManualPayoutRequest) RequestManualPayoutRequest(requestManualPayoutRequest models.RequestManualPayoutRequest) ApiRequestManualPayoutRequest {
 	r.requestManualPayoutRequest = &requestManualPayoutRequest
 	return r
 }
 
-func (r ApiRequestManualPayoutRequest) Execute() (*ApplyRoleFeaturePreset200Response, *http.Response, error) {
+func (r ApiRequestManualPayoutRequest) Execute() (*models.ApplyRoleFeaturePreset200Response, *http.Response, error) {
 	return r.ApiService.RequestManualPayoutExecute(r)
 }
 
@@ -1146,14 +1148,14 @@ func (a *ProjectFeesAPIService) RequestManualPayout(ctx context.Context, project
 }
 
 // Execute executes the request
-//  @return ApplyRoleFeaturePreset200Response
+//  @return models.ApplyRoleFeaturePreset200Response
 // Deprecated
-func (a *ProjectFeesAPIService) RequestManualPayoutExecute(r ApiRequestManualPayoutRequest) (*ApplyRoleFeaturePreset200Response, *http.Response, error) {
+func (a *ProjectFeesAPIService) RequestManualPayoutExecute(r ApiRequestManualPayoutRequest) (*models.ApplyRoleFeaturePreset200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ApplyRoleFeaturePreset200Response
+		localVarReturnValue  *models.ApplyRoleFeaturePreset200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectFeesAPIService.RequestManualPayout")
@@ -1213,7 +1215,7 @@ func (a *ProjectFeesAPIService) RequestManualPayoutExecute(r ApiRequestManualPay
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1224,7 +1226,7 @@ func (a *ProjectFeesAPIService) RequestManualPayoutExecute(r ApiRequestManualPay
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1253,15 +1255,15 @@ type ApiUpdateCurrencyFeeSettingsRequest struct {
 	ApiService *ProjectFeesAPIService
 	projectId string
 	currency string
-	updateCurrencyFeeSettingsRequest *UpdateCurrencyFeeSettingsRequest
+	updateCurrencyFeeSettingsRequest *models.UpdateCurrencyFeeSettingsRequest
 }
 
-func (r ApiUpdateCurrencyFeeSettingsRequest) UpdateCurrencyFeeSettingsRequest(updateCurrencyFeeSettingsRequest UpdateCurrencyFeeSettingsRequest) ApiUpdateCurrencyFeeSettingsRequest {
+func (r ApiUpdateCurrencyFeeSettingsRequest) UpdateCurrencyFeeSettingsRequest(updateCurrencyFeeSettingsRequest models.UpdateCurrencyFeeSettingsRequest) ApiUpdateCurrencyFeeSettingsRequest {
 	r.updateCurrencyFeeSettingsRequest = &updateCurrencyFeeSettingsRequest
 	return r
 }
 
-func (r ApiUpdateCurrencyFeeSettingsRequest) Execute() (*ApplyRoleFeaturePreset200Response, *http.Response, error) {
+func (r ApiUpdateCurrencyFeeSettingsRequest) Execute() (*models.ApplyRoleFeaturePreset200Response, *http.Response, error) {
 	return r.ApiService.UpdateCurrencyFeeSettingsExecute(r)
 }
 
@@ -1289,14 +1291,14 @@ func (a *ProjectFeesAPIService) UpdateCurrencyFeeSettings(ctx context.Context, p
 }
 
 // Execute executes the request
-//  @return ApplyRoleFeaturePreset200Response
+//  @return models.ApplyRoleFeaturePreset200Response
 // Deprecated
-func (a *ProjectFeesAPIService) UpdateCurrencyFeeSettingsExecute(r ApiUpdateCurrencyFeeSettingsRequest) (*ApplyRoleFeaturePreset200Response, *http.Response, error) {
+func (a *ProjectFeesAPIService) UpdateCurrencyFeeSettingsExecute(r ApiUpdateCurrencyFeeSettingsRequest) (*models.ApplyRoleFeaturePreset200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *ApplyRoleFeaturePreset200Response
+		localVarReturnValue  *models.ApplyRoleFeaturePreset200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectFeesAPIService.UpdateCurrencyFeeSettings")
@@ -1357,7 +1359,7 @@ func (a *ProjectFeesAPIService) UpdateCurrencyFeeSettingsExecute(r ApiUpdateCurr
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1368,7 +1370,7 @@ func (a *ProjectFeesAPIService) UpdateCurrencyFeeSettingsExecute(r ApiUpdateCurr
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1379,7 +1381,7 @@ func (a *ProjectFeesAPIService) UpdateCurrencyFeeSettingsExecute(r ApiUpdateCurr
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

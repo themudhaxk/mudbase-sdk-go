@@ -1,9 +1,9 @@
 /*
 MUDBASESDK
 
-MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
+MUDBASE is a scalable, real-time, and secure Backend-as-a-Service (BaaS) platform  designed for modern applications. Built with custom logic, it offers fine-grained  control, extensibility, and enterprise-grade security.  ## Features - 🔐 Multi-provider authentication (30+ OAuth providers) - 📊 Real-time database with collections - 📁 File storage and management - 🔑 API key management with permissions - 🔗 Webhook system with retry logic - ⚡ Serverless functions - 💬 Multi-channel messaging (Push, Email, SMS) - 📈 models.Usage analytics and monitoring - 🌐 Real-time WebSocket events - 🔍 Full-text search capabilities - 💳 models.Billing: fiat only for project subscriptions and org BaaS checkout (platform fee split). On-chain billing is not exposed on these APIs (optional `crypto-payment-module/` in repo, not mounted by default). - 🏢 Enterprise / Phase 4: custom domains on Growth, Scale, and Enterprise (TXT DNS at `_mudbase-verify.<hostname>`); `settings.customDomainAddon` is optional (billing/legacy); dedicated DB migration script, periodic DNS recheck job, optional `infrastructureEnvironments[]` and edge/metering fields on `dedicated`. 
 
-API version: 1.3.12
+API version: 1.3.13
 Contact: support@mudbase.dev
 */
 
@@ -19,6 +19,8 @@ import (
 	"net/url"
 	"strings"
 	"time"
+
+	models "github.com/themudhaxk/mudbase-sdk-go/models"
 )
 
 
@@ -30,15 +32,15 @@ type ApiAddParticipantRequest struct {
 	ApiService *ChatAPIService
 	projectId string
 	chatId string
-	addParticipantRequest *AddParticipantRequest
+	addParticipantRequest *models.AddParticipantRequest
 }
 
-func (r ApiAddParticipantRequest) AddParticipantRequest(addParticipantRequest AddParticipantRequest) ApiAddParticipantRequest {
+func (r ApiAddParticipantRequest) AddParticipantRequest(addParticipantRequest models.AddParticipantRequest) ApiAddParticipantRequest {
 	r.addParticipantRequest = &addParticipantRequest
 	return r
 }
 
-func (r ApiAddParticipantRequest) Execute() (*AddParticipant200Response, *http.Response, error) {
+func (r ApiAddParticipantRequest) Execute() (*models.AddParticipant200Response, *http.Response, error) {
 	return r.ApiService.AddParticipantExecute(r)
 }
 
@@ -60,13 +62,13 @@ func (a *ChatAPIService) AddParticipant(ctx context.Context, projectId string, c
 }
 
 // Execute executes the request
-//  @return AddParticipant200Response
-func (a *ChatAPIService) AddParticipantExecute(r ApiAddParticipantRequest) (*AddParticipant200Response, *http.Response, error) {
+//  @return models.AddParticipant200Response
+func (a *ChatAPIService) AddParticipantExecute(r ApiAddParticipantRequest) (*models.AddParticipant200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *AddParticipant200Response
+		localVarReturnValue  *models.AddParticipant200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ChatAPIService.AddParticipant")
@@ -127,7 +129,7 @@ func (a *ChatAPIService) AddParticipantExecute(r ApiAddParticipantRequest) (*Add
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -138,7 +140,7 @@ func (a *ChatAPIService) AddParticipantExecute(r ApiAddParticipantRequest) (*Add
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -168,15 +170,15 @@ type ApiAddReactionRequest struct {
 	projectId string
 	chatId string
 	messageId string
-	addReactionRequest *AddReactionRequest
+	addReactionRequest *models.AddReactionRequest
 }
 
-func (r ApiAddReactionRequest) AddReactionRequest(addReactionRequest AddReactionRequest) ApiAddReactionRequest {
+func (r ApiAddReactionRequest) AddReactionRequest(addReactionRequest models.AddReactionRequest) ApiAddReactionRequest {
 	r.addReactionRequest = &addReactionRequest
 	return r
 }
 
-func (r ApiAddReactionRequest) Execute() (*AddReaction200Response, *http.Response, error) {
+func (r ApiAddReactionRequest) Execute() (*models.AddReaction200Response, *http.Response, error) {
 	return r.ApiService.AddReactionExecute(r)
 }
 
@@ -200,13 +202,13 @@ func (a *ChatAPIService) AddReaction(ctx context.Context, projectId string, chat
 }
 
 // Execute executes the request
-//  @return AddReaction200Response
-func (a *ChatAPIService) AddReactionExecute(r ApiAddReactionRequest) (*AddReaction200Response, *http.Response, error) {
+//  @return models.AddReaction200Response
+func (a *ChatAPIService) AddReactionExecute(r ApiAddReactionRequest) (*models.AddReaction200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *AddReaction200Response
+		localVarReturnValue  *models.AddReaction200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ChatAPIService.AddReaction")
@@ -268,7 +270,7 @@ func (a *ChatAPIService) AddReactionExecute(r ApiAddReactionRequest) (*AddReacti
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -279,7 +281,7 @@ func (a *ChatAPIService) AddReactionExecute(r ApiAddReactionRequest) (*AddReacti
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -307,15 +309,15 @@ type ApiCreateChatRequest struct {
 	ctx context.Context
 	ApiService *ChatAPIService
 	projectId string
-	createChatRequest *CreateChatRequest
+	createChatRequest *models.CreateChatRequest
 }
 
-func (r ApiCreateChatRequest) CreateChatRequest(createChatRequest CreateChatRequest) ApiCreateChatRequest {
+func (r ApiCreateChatRequest) CreateChatRequest(createChatRequest models.CreateChatRequest) ApiCreateChatRequest {
 	r.createChatRequest = &createChatRequest
 	return r
 }
 
-func (r ApiCreateChatRequest) Execute() (*CreateChat201Response, *http.Response, error) {
+func (r ApiCreateChatRequest) Execute() (*models.CreateChat201Response, *http.Response, error) {
 	return r.ApiService.CreateChatExecute(r)
 }
 
@@ -335,13 +337,13 @@ func (a *ChatAPIService) CreateChat(ctx context.Context, projectId string) ApiCr
 }
 
 // Execute executes the request
-//  @return CreateChat201Response
-func (a *ChatAPIService) CreateChatExecute(r ApiCreateChatRequest) (*CreateChat201Response, *http.Response, error) {
+//  @return models.CreateChat201Response
+func (a *ChatAPIService) CreateChatExecute(r ApiCreateChatRequest) (*models.CreateChat201Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CreateChat201Response
+		localVarReturnValue  *models.CreateChat201Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ChatAPIService.CreateChat")
@@ -401,7 +403,7 @@ func (a *ChatAPIService) CreateChatExecute(r ApiCreateChatRequest) (*CreateChat2
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -412,7 +414,7 @@ func (a *ChatAPIService) CreateChatExecute(r ApiCreateChatRequest) (*CreateChat2
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -444,7 +446,7 @@ type ApiDeleteMessageRequest struct {
 	messageId string
 }
 
-func (r ApiDeleteMessageRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiDeleteMessageRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.DeleteMessageExecute(r)
 }
 
@@ -468,13 +470,13 @@ func (a *ChatAPIService) DeleteMessage(ctx context.Context, projectId string, ch
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *ChatAPIService) DeleteMessageExecute(r ApiDeleteMessageRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *ChatAPIService) DeleteMessageExecute(r ApiDeleteMessageRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ChatAPIService.DeleteMessage")
@@ -531,7 +533,7 @@ func (a *ChatAPIService) DeleteMessageExecute(r ApiDeleteMessageRequest) (*Messa
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -542,7 +544,7 @@ func (a *ChatAPIService) DeleteMessageExecute(r ApiDeleteMessageRequest) (*Messa
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -553,7 +555,7 @@ func (a *ChatAPIService) DeleteMessageExecute(r ApiDeleteMessageRequest) (*Messa
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -583,15 +585,15 @@ type ApiEditMessageRequest struct {
 	projectId string
 	chatId string
 	messageId string
-	editMessageRequest *EditMessageRequest
+	editMessageRequest *models.EditMessageRequest
 }
 
-func (r ApiEditMessageRequest) EditMessageRequest(editMessageRequest EditMessageRequest) ApiEditMessageRequest {
+func (r ApiEditMessageRequest) EditMessageRequest(editMessageRequest models.EditMessageRequest) ApiEditMessageRequest {
 	r.editMessageRequest = &editMessageRequest
 	return r
 }
 
-func (r ApiEditMessageRequest) Execute() (*EditMessage200Response, *http.Response, error) {
+func (r ApiEditMessageRequest) Execute() (*models.EditMessage200Response, *http.Response, error) {
 	return r.ApiService.EditMessageExecute(r)
 }
 
@@ -615,13 +617,13 @@ func (a *ChatAPIService) EditMessage(ctx context.Context, projectId string, chat
 }
 
 // Execute executes the request
-//  @return EditMessage200Response
-func (a *ChatAPIService) EditMessageExecute(r ApiEditMessageRequest) (*EditMessage200Response, *http.Response, error) {
+//  @return models.EditMessage200Response
+func (a *ChatAPIService) EditMessageExecute(r ApiEditMessageRequest) (*models.EditMessage200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *EditMessage200Response
+		localVarReturnValue  *models.EditMessage200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ChatAPIService.EditMessage")
@@ -683,7 +685,7 @@ func (a *ChatAPIService) EditMessageExecute(r ApiEditMessageRequest) (*EditMessa
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -694,7 +696,7 @@ func (a *ChatAPIService) EditMessageExecute(r ApiEditMessageRequest) (*EditMessa
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -705,7 +707,7 @@ func (a *ChatAPIService) EditMessageExecute(r ApiEditMessageRequest) (*EditMessa
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -736,7 +738,7 @@ type ApiGetChatDetailsRequest struct {
 	chatId string
 }
 
-func (r ApiGetChatDetailsRequest) Execute() (*GetChatDetails200Response, *http.Response, error) {
+func (r ApiGetChatDetailsRequest) Execute() (*models.GetChatDetails200Response, *http.Response, error) {
 	return r.ApiService.GetChatDetailsExecute(r)
 }
 
@@ -758,13 +760,13 @@ func (a *ChatAPIService) GetChatDetails(ctx context.Context, projectId string, c
 }
 
 // Execute executes the request
-//  @return GetChatDetails200Response
-func (a *ChatAPIService) GetChatDetailsExecute(r ApiGetChatDetailsRequest) (*GetChatDetails200Response, *http.Response, error) {
+//  @return models.GetChatDetails200Response
+func (a *ChatAPIService) GetChatDetailsExecute(r ApiGetChatDetailsRequest) (*models.GetChatDetails200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetChatDetails200Response
+		localVarReturnValue  *models.GetChatDetails200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ChatAPIService.GetChatDetails")
@@ -820,7 +822,7 @@ func (a *ChatAPIService) GetChatDetailsExecute(r ApiGetChatDetailsRequest) (*Get
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -831,7 +833,7 @@ func (a *ChatAPIService) GetChatDetailsExecute(r ApiGetChatDetailsRequest) (*Get
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -862,7 +864,7 @@ type ApiGetChatE2eeParticipantKeysRequest struct {
 	chatId string
 }
 
-func (r ApiGetChatE2eeParticipantKeysRequest) Execute() (*GetChatE2eeParticipantKeys200Response, *http.Response, error) {
+func (r ApiGetChatE2eeParticipantKeysRequest) Execute() (*models.GetChatE2eeParticipantKeys200Response, *http.Response, error) {
 	return r.ApiService.GetChatE2eeParticipantKeysExecute(r)
 }
 
@@ -886,13 +888,13 @@ func (a *ChatAPIService) GetChatE2eeParticipantKeys(ctx context.Context, project
 }
 
 // Execute executes the request
-//  @return GetChatE2eeParticipantKeys200Response
-func (a *ChatAPIService) GetChatE2eeParticipantKeysExecute(r ApiGetChatE2eeParticipantKeysRequest) (*GetChatE2eeParticipantKeys200Response, *http.Response, error) {
+//  @return models.GetChatE2eeParticipantKeys200Response
+func (a *ChatAPIService) GetChatE2eeParticipantKeysExecute(r ApiGetChatE2eeParticipantKeysRequest) (*models.GetChatE2eeParticipantKeys200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetChatE2eeParticipantKeys200Response
+		localVarReturnValue  *models.GetChatE2eeParticipantKeys200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ChatAPIService.GetChatE2eeParticipantKeys")
@@ -948,7 +950,7 @@ func (a *ChatAPIService) GetChatE2eeParticipantKeysExecute(r ApiGetChatE2eeParti
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -959,7 +961,7 @@ func (a *ChatAPIService) GetChatE2eeParticipantKeysExecute(r ApiGetChatE2eeParti
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1014,7 +1016,7 @@ func (r ApiGetChatMessagesRequest) After(after time.Time) ApiGetChatMessagesRequ
 	return r
 }
 
-func (r ApiGetChatMessagesRequest) Execute() (*GetChatMessages200Response, *http.Response, error) {
+func (r ApiGetChatMessagesRequest) Execute() (*models.GetChatMessages200Response, *http.Response, error) {
 	return r.ApiService.GetChatMessagesExecute(r)
 }
 
@@ -1036,13 +1038,13 @@ func (a *ChatAPIService) GetChatMessages(ctx context.Context, projectId string, 
 }
 
 // Execute executes the request
-//  @return GetChatMessages200Response
-func (a *ChatAPIService) GetChatMessagesExecute(r ApiGetChatMessagesRequest) (*GetChatMessages200Response, *http.Response, error) {
+//  @return models.GetChatMessages200Response
+func (a *ChatAPIService) GetChatMessagesExecute(r ApiGetChatMessagesRequest) (*models.GetChatMessages200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetChatMessages200Response
+		localVarReturnValue  *models.GetChatMessages200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ChatAPIService.GetChatMessages")
@@ -1118,7 +1120,7 @@ func (a *ChatAPIService) GetChatMessagesExecute(r ApiGetChatMessagesRequest) (*G
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1160,7 +1162,7 @@ func (r ApiGetUserChatsRequest) Limit(limit int32) ApiGetUserChatsRequest {
 	return r
 }
 
-func (r ApiGetUserChatsRequest) Execute() (*GetUserChats200Response, *http.Response, error) {
+func (r ApiGetUserChatsRequest) Execute() (*models.GetUserChats200Response, *http.Response, error) {
 	return r.ApiService.GetUserChatsExecute(r)
 }
 
@@ -1180,13 +1182,13 @@ func (a *ChatAPIService) GetUserChats(ctx context.Context, projectId string) Api
 }
 
 // Execute executes the request
-//  @return GetUserChats200Response
-func (a *ChatAPIService) GetUserChatsExecute(r ApiGetUserChatsRequest) (*GetUserChats200Response, *http.Response, error) {
+//  @return models.GetUserChats200Response
+func (a *ChatAPIService) GetUserChatsExecute(r ApiGetUserChatsRequest) (*models.GetUserChats200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetUserChats200Response
+		localVarReturnValue  *models.GetUserChats200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ChatAPIService.GetUserChats")
@@ -1255,7 +1257,7 @@ func (a *ChatAPIService) GetUserChatsExecute(r ApiGetUserChatsRequest) (*GetUser
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1284,15 +1286,15 @@ type ApiMarkMessagesAsReadRequest struct {
 	ApiService *ChatAPIService
 	projectId string
 	chatId string
-	markMessagesAsReadRequest *MarkMessagesAsReadRequest
+	markMessagesAsReadRequest *models.MarkMessagesAsReadRequest
 }
 
-func (r ApiMarkMessagesAsReadRequest) MarkMessagesAsReadRequest(markMessagesAsReadRequest MarkMessagesAsReadRequest) ApiMarkMessagesAsReadRequest {
+func (r ApiMarkMessagesAsReadRequest) MarkMessagesAsReadRequest(markMessagesAsReadRequest models.MarkMessagesAsReadRequest) ApiMarkMessagesAsReadRequest {
 	r.markMessagesAsReadRequest = &markMessagesAsReadRequest
 	return r
 }
 
-func (r ApiMarkMessagesAsReadRequest) Execute() (*MarkMessagesAsRead200Response, *http.Response, error) {
+func (r ApiMarkMessagesAsReadRequest) Execute() (*models.MarkMessagesAsRead200Response, *http.Response, error) {
 	return r.ApiService.MarkMessagesAsReadExecute(r)
 }
 
@@ -1314,13 +1316,13 @@ func (a *ChatAPIService) MarkMessagesAsRead(ctx context.Context, projectId strin
 }
 
 // Execute executes the request
-//  @return MarkMessagesAsRead200Response
-func (a *ChatAPIService) MarkMessagesAsReadExecute(r ApiMarkMessagesAsReadRequest) (*MarkMessagesAsRead200Response, *http.Response, error) {
+//  @return models.MarkMessagesAsRead200Response
+func (a *ChatAPIService) MarkMessagesAsReadExecute(r ApiMarkMessagesAsReadRequest) (*models.MarkMessagesAsRead200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MarkMessagesAsRead200Response
+		localVarReturnValue  *models.MarkMessagesAsRead200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ChatAPIService.MarkMessagesAsRead")
@@ -1381,7 +1383,7 @@ func (a *ChatAPIService) MarkMessagesAsReadExecute(r ApiMarkMessagesAsReadReques
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1392,7 +1394,7 @@ func (a *ChatAPIService) MarkMessagesAsReadExecute(r ApiMarkMessagesAsReadReques
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1420,15 +1422,15 @@ type ApiPutChatE2eeKeyRequest struct {
 	ctx context.Context
 	ApiService *ChatAPIService
 	projectId string
-	putChatE2eeKeyRequest *PutChatE2eeKeyRequest
+	putChatE2eeKeyRequest *models.PutChatE2eeKeyRequest
 }
 
-func (r ApiPutChatE2eeKeyRequest) PutChatE2eeKeyRequest(putChatE2eeKeyRequest PutChatE2eeKeyRequest) ApiPutChatE2eeKeyRequest {
+func (r ApiPutChatE2eeKeyRequest) PutChatE2eeKeyRequest(putChatE2eeKeyRequest models.PutChatE2eeKeyRequest) ApiPutChatE2eeKeyRequest {
 	r.putChatE2eeKeyRequest = &putChatE2eeKeyRequest
 	return r
 }
 
-func (r ApiPutChatE2eeKeyRequest) Execute() (*PutChatE2eeKey200Response, *http.Response, error) {
+func (r ApiPutChatE2eeKeyRequest) Execute() (*models.PutChatE2eeKey200Response, *http.Response, error) {
 	return r.ApiService.PutChatE2eeKeyExecute(r)
 }
 
@@ -1452,13 +1454,13 @@ func (a *ChatAPIService) PutChatE2eeKey(ctx context.Context, projectId string) A
 }
 
 // Execute executes the request
-//  @return PutChatE2eeKey200Response
-func (a *ChatAPIService) PutChatE2eeKeyExecute(r ApiPutChatE2eeKeyRequest) (*PutChatE2eeKey200Response, *http.Response, error) {
+//  @return models.PutChatE2eeKey200Response
+func (a *ChatAPIService) PutChatE2eeKeyExecute(r ApiPutChatE2eeKeyRequest) (*models.PutChatE2eeKey200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPut
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *PutChatE2eeKey200Response
+		localVarReturnValue  *models.PutChatE2eeKey200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ChatAPIService.PutChatE2eeKey")
@@ -1518,7 +1520,7 @@ func (a *ChatAPIService) PutChatE2eeKeyExecute(r ApiPutChatE2eeKeyRequest) (*Put
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1529,7 +1531,7 @@ func (a *ChatAPIService) PutChatE2eeKeyExecute(r ApiPutChatE2eeKeyRequest) (*Put
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1558,15 +1560,15 @@ type ApiRemoveParticipantRequest struct {
 	ApiService *ChatAPIService
 	projectId string
 	chatId string
-	removeParticipantRequest *RemoveParticipantRequest
+	removeParticipantRequest *models.RemoveParticipantRequest
 }
 
-func (r ApiRemoveParticipantRequest) RemoveParticipantRequest(removeParticipantRequest RemoveParticipantRequest) ApiRemoveParticipantRequest {
+func (r ApiRemoveParticipantRequest) RemoveParticipantRequest(removeParticipantRequest models.RemoveParticipantRequest) ApiRemoveParticipantRequest {
 	r.removeParticipantRequest = &removeParticipantRequest
 	return r
 }
 
-func (r ApiRemoveParticipantRequest) Execute() (*MessageResponse, *http.Response, error) {
+func (r ApiRemoveParticipantRequest) Execute() (*models.MessageResponse, *http.Response, error) {
 	return r.ApiService.RemoveParticipantExecute(r)
 }
 
@@ -1588,13 +1590,13 @@ func (a *ChatAPIService) RemoveParticipant(ctx context.Context, projectId string
 }
 
 // Execute executes the request
-//  @return MessageResponse
-func (a *ChatAPIService) RemoveParticipantExecute(r ApiRemoveParticipantRequest) (*MessageResponse, *http.Response, error) {
+//  @return models.MessageResponse
+func (a *ChatAPIService) RemoveParticipantExecute(r ApiRemoveParticipantRequest) (*models.MessageResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *MessageResponse
+		localVarReturnValue  *models.MessageResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ChatAPIService.RemoveParticipant")
@@ -1655,7 +1657,7 @@ func (a *ChatAPIService) RemoveParticipantExecute(r ApiRemoveParticipantRequest)
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1666,7 +1668,7 @@ func (a *ChatAPIService) RemoveParticipantExecute(r ApiRemoveParticipantRequest)
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1696,15 +1698,15 @@ type ApiRemoveReactionRequest struct {
 	projectId string
 	chatId string
 	messageId string
-	addReactionRequest *AddReactionRequest
+	addReactionRequest *models.AddReactionRequest
 }
 
-func (r ApiRemoveReactionRequest) AddReactionRequest(addReactionRequest AddReactionRequest) ApiRemoveReactionRequest {
+func (r ApiRemoveReactionRequest) AddReactionRequest(addReactionRequest models.AddReactionRequest) ApiRemoveReactionRequest {
 	r.addReactionRequest = &addReactionRequest
 	return r
 }
 
-func (r ApiRemoveReactionRequest) Execute() (*RemoveReaction200Response, *http.Response, error) {
+func (r ApiRemoveReactionRequest) Execute() (*models.RemoveReaction200Response, *http.Response, error) {
 	return r.ApiService.RemoveReactionExecute(r)
 }
 
@@ -1728,13 +1730,13 @@ func (a *ChatAPIService) RemoveReaction(ctx context.Context, projectId string, c
 }
 
 // Execute executes the request
-//  @return RemoveReaction200Response
-func (a *ChatAPIService) RemoveReactionExecute(r ApiRemoveReactionRequest) (*RemoveReaction200Response, *http.Response, error) {
+//  @return models.RemoveReaction200Response
+func (a *ChatAPIService) RemoveReactionExecute(r ApiRemoveReactionRequest) (*models.RemoveReaction200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *RemoveReaction200Response
+		localVarReturnValue  *models.RemoveReaction200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ChatAPIService.RemoveReaction")
@@ -1796,7 +1798,7 @@ func (a *ChatAPIService) RemoveReactionExecute(r ApiRemoveReactionRequest) (*Rem
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1807,7 +1809,7 @@ func (a *ChatAPIService) RemoveReactionExecute(r ApiRemoveReactionRequest) (*Rem
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1836,15 +1838,15 @@ type ApiSendMessageRequest struct {
 	ApiService *ChatAPIService
 	projectId string
 	chatId string
-	sendMessageRequest *SendMessageRequest
+	sendMessageRequest *models.SendMessageRequest
 }
 
-func (r ApiSendMessageRequest) SendMessageRequest(sendMessageRequest SendMessageRequest) ApiSendMessageRequest {
+func (r ApiSendMessageRequest) SendMessageRequest(sendMessageRequest models.SendMessageRequest) ApiSendMessageRequest {
 	r.sendMessageRequest = &sendMessageRequest
 	return r
 }
 
-func (r ApiSendMessageRequest) Execute() (*SendMessage201Response, *http.Response, error) {
+func (r ApiSendMessageRequest) Execute() (*models.SendMessage201Response, *http.Response, error) {
 	return r.ApiService.SendMessageExecute(r)
 }
 
@@ -1866,13 +1868,13 @@ func (a *ChatAPIService) SendMessage(ctx context.Context, projectId string, chat
 }
 
 // Execute executes the request
-//  @return SendMessage201Response
-func (a *ChatAPIService) SendMessageExecute(r ApiSendMessageRequest) (*SendMessage201Response, *http.Response, error) {
+//  @return models.SendMessage201Response
+func (a *ChatAPIService) SendMessageExecute(r ApiSendMessageRequest) (*models.SendMessage201Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *SendMessage201Response
+		localVarReturnValue  *models.SendMessage201Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ChatAPIService.SendMessage")
@@ -1933,7 +1935,7 @@ func (a *ChatAPIService) SendMessageExecute(r ApiSendMessageRequest) (*SendMessa
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1944,7 +1946,7 @@ func (a *ChatAPIService) SendMessageExecute(r ApiSendMessageRequest) (*SendMessa
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v Error
+			var v models.Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
